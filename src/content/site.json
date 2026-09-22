@@ -1,0 +1,13 @@
+{
+  "name": "Prelimina",
+  "company": "PLASMICA d.o.o.",
+  "launchState": "prelaunch",
+  "publicationApproved": true,
+  "contactEmail": null,
+  "reviewed": "2026-09-22",
+  "hero": {
+    "title": "See the flow. Shape the design.",
+    "descriptor": "GPU-native CFD for early-stage design exploration.",
+    "description": "Explore fluid behaviour, compare design alternatives, and focus your next detailed analysis or prototype. A local, GPU-native workflow for the engineering desktop."
+  }
+}

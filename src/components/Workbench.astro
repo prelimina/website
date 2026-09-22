@@ -1,0 +1,82 @@
+---
+import Study from './Study.astro';
+import { workflow } from '../content/content';
+---
+
+<div
+  class="workbench ambient amb-surface amb-chamfer-2 amb-elevation-0"
+  data-workbench
+>
+  <span class="screw screw-tl" aria-hidden="true"></span>
+  <span class="screw screw-tr" aria-hidden="true"></span>
+  <span class="screw screw-bl" aria-hidden="true"></span>
+  <span class="screw screw-br" aria-hidden="true"></span>
+  <div class="bench-heading">
+    <span class="bench-wordmark">
+      prelimina<span class="tiny-plus">+</span>
+    </span>
+    <span class="instrument-label">
+      <i></i> Workflow schematic
+    </span>
+  </div>
+  <div class="bench-screen" data-step="0">
+    <div class="screen-top">
+      <span data-study-label>01 / Define</span>
+    </div>
+    <Study large />
+    <div class="screen-bottom">
+      <span>
+        <i class="purple-dot"></i> Baffle arrangement
+      </span>
+      <span>Schematic — not simulation data</span>
+    </div>
+  </div>
+  <div
+    class="bench-controls"
+    role="group"
+    aria-label="Explore the workflow schematic"
+  >
+    {workflow.map((step, index) => (
+      <button
+        class="bench-key ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
+        type="button"
+        data-step-button={index}
+        aria-pressed={index === 0}
+        aria-controls="study-caption"
+      >
+        <span class="key-number">0{index + 1}</span>
+        {index === 3 ? 'Refine' : step.title}
+        <span class="key-light" aria-hidden="true"></span>
+      </button>
+    ))}
+  </div>
+  <div class="bench-caption">
+    <p id="study-caption" aria-live="polite">
+      {workflow[0].detail}
+    </p>
+    <span class="bench-grille" aria-hidden="true"></span>
+  </div>
+</div>
+<script>
+  import { workflow } from '../content/content';
+  const workbench = document.querySelector<HTMLElement>('[data-workbench]');
+  const labels = ['Define', 'Preview', 'Compare', 'Refine'];
+  workbench
+    ?.querySelectorAll<HTMLButtonElement>('[data-step-button]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const index = Number(button.dataset.stepButton);
+        workbench
+          .querySelectorAll('[data-step-button]')
+          .forEach((key) =>
+            key.setAttribute('aria-pressed', String(key === button)),
+          );
+        const screen = workbench.querySelector<HTMLElement>('.bench-screen');
+        const caption = workbench.querySelector('#study-caption');
+        const label = workbench.querySelector('[data-study-label]');
+        if (screen) screen.dataset.step = String(index);
+        if (caption) caption.textContent = workflow[index].detail;
+        if (label) label.textContent = `0${index + 1} / ${labels[index]}`;
+      });
+    });
+</script>

@@ -1,0 +1,103 @@
+---
+interface Props {
+  type?: string;
+  large?: boolean;
+}
+const { type = 'baffle', large = false } = Astro.props;
+---
+
+<svg
+  class:list={['study-art', { 'study-art-large': large }]}
+  viewBox="0 0 480 290"
+  fill="none"
+  aria-hidden="true"
+>
+  <g stroke="currentColor" stroke-width="1" opacity=".17">
+    {[60, 120, 180, 240, 300, 360, 420].map((x) => (
+      <path d={`M${x} 24v242`} />
+    ))}
+    {[50, 100, 150, 200, 250].map((y) => (
+      <path d={`M30 ${y}h420`} />
+    ))}
+  </g>
+  {type === 'pipe' ? (
+    <g>
+      <path
+        d="M90 78h116v86h184v70H136V148H90Z"
+        fill="#c5b9d9"
+        fill-opacity=".23"
+        stroke="#7c728c"
+        stroke-width="2"
+      />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <path
+          class="flow-line"
+          d={`M66 ${90 + i * 8}H${190 - i * 8}Q${198 - i * 8} ${90 + i * 8} ${198 - i * 8} ${106 + i * 7}V${175 + i * 8}Q${198 - i * 8} ${180 + i * 8} ${210 - i * 8} ${180 + i * 8}H407`}
+          stroke={i % 2 ? '#a08ac5' : '#8061ab'}
+          stroke-width="1.6"
+        />
+      ))}
+      <path
+        d="m78 107 10 6-10 6m311 70 10 6-10 6"
+        stroke="#715491"
+        stroke-width="2"
+      />
+      <path
+        d="M80 55h137M80 48v14m137-14v14M420 164v70m-7-70h14m-14 70h14"
+        stroke="#8e8896"
+      />
+    </g>
+  ) : (
+    <g>
+      <path
+        d="M85 68v151l45 27h245V95l-45-27H85Z"
+        fill="#cfc5df"
+        fill-opacity=".10"
+        stroke="#aaa1b5"
+        stroke-width="1.5"
+      />
+      <path
+        d="m85 68 45 27h245M130 95v151M85 219h245l45 27M330 68v151"
+        stroke="#b2aabb"
+        stroke-width="1.2"
+      />
+      <path
+        class="liquid-fill"
+        d="M87 139C130 120 145 144 180 133s58-14 88-2 47 14 61 4l44 25v83H132l-45-25Z"
+        fill="#af97d0"
+        fill-opacity=".3"
+      />
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <path
+          class="flow-line"
+          d={`M91 ${144 + i * 9}C133 ${119 + i * 12} 158 ${153 + i * 8} 196 ${140 + i * 10}S268 ${130 + i * 12} 326 ${142 + i * 10}L367 ${167 + i * 9}`}
+          stroke={i % 2 ? '#b09ace' : '#8667ac'}
+          stroke-width="1.4"
+          opacity={0.85 - i * 0.045}
+        />
+      ))}
+      {type === 'baffle' && (
+        <g class="baffles" stroke="#8b8198" stroke-width="1.5">
+          <path d="m196 104 24 14v112l-24-14Z" fill="#dcd5e5" />
+          <path d="m275 98 23 14v113l-23-14Z" fill="#dcd5e5" />
+          <path d="M205 130v62m80-68v62" stroke="#f7f4fc" stroke-width="2" />
+        </g>
+      )}
+      <path
+        d="M85 268h290m-290-6v12m290-12v12M61 68v151m-6-151h12m-12 151h12"
+        stroke="#b1a9ba"
+      />
+      {type === 'tank' && (
+        <path
+          d="M190 39h110m-101-6-9 6 9 6m92-12 9 6-9 6"
+          stroke="#8061ab"
+          stroke-width="1.5"
+        />
+      )}
+    </g>
+  )}
+  <g stroke="#8f879a" stroke-width="1.2">
+    <path d="M35 251v-24m0 24h24m-24 0 13-12" />
+    <path d="m32 231 3-4 3 4m17 17 4 3-4 3" />
+  </g>
+</svg>

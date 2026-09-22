@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Study from '../../components/Study.astro';
+import Icon from '../../components/Icon.astro';
+import { showcases } from '../../content/content';
+export function getStaticPaths() {
+  return showcases.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+const { item } = Astro.props;
+---
+
+<Layout title={item.category} description={item.description}>
+  <div class="container">
+    <header class="page-hero">
+      <a href="/showcases/" class="back-link">
+        <Icon size={15} /> All candidate studies
+      </a>
+      <div class="case-label">
+        Candidate study / {item.number} · {item.category}
+      </div>
+      <h1>{item.title}</h1>
+      <p>{item.question}</p>
+    </header>
+    <div class="page-container">
+      <div class="case-layout">
+        <dl>
+          <dt>The changed variables</dt>
+          <dd>{item.variables}</dd>
+          <dt>Model assumptions</dt>
+          <dd>{item.assumptions}</dd>
+          <dt>The requested metric</dt>
+          <dd>{item.metric}</dd>
+          <dt>Evidence status</dt>
+          <dd>{item.limitation}</dd>
+          <dt>Version & hardware</dt>
+          <dd>
+            No public application version, measured performance, or hardware
+            qualification is attached to this candidate.
+          </dd>
+        </dl>
+        <div class="showcase-visual ambient amb-surface amb-chamfer amb-elevation-0">
+          <div class="showcase-meta">
+            <span>STUDY / {item.number}</span>
+            <span>Concept schematic</span>
+          </div>
+          <Study type={item.type} />
+          <span class="study-stamp">Illustration — not simulation data</span>
+        </div>
+      </div>
+      <p class="notice">
+        This is an exploration concept. A released case needs reproducible
+        inputs, approved results, and a documented scope before it can support a
+        numerical claim.
+      </p>
+      <a
+        href="/support/#early-access"
+        class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+      >
+        Discuss a similar question <Icon name="diagonal" size={18} />
+      </a>
+    </div>
+  </div>
+</Layout>

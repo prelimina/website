@@ -1,0 +1,28 @@
+---
+import Study from './Study.astro';
+import Icon from './Icon.astro';
+import { showcases } from '../content/content';
+interface Props {
+  item: (typeof showcases)[number];
+}
+const { item } = Astro.props;
+---
+
+<a class="showcase-card" href={`/showcases/${item.slug}/`}>
+  <div class="showcase-visual ambient amb-surface amb-chamfer amb-elevation-0">
+    <div class="showcase-meta">
+      <span>STUDY / {item.number}</span>
+      <span>Concept schematic</span>
+    </div>
+    <Study type={item.type} />
+    <span class="study-stamp">Candidate study</span>
+  </div>
+  <div class="showcase-copy">
+    <span class="showcase-category">{item.category}</span>
+    <h3>{item.title}</h3>
+    <p>{item.description}</p>
+    <span class="text-link">
+      Explore the question <Icon />
+    </span>
+  </div>
+</a>

@@ -1,0 +1,33 @@
+{
+  "name": "prelimina-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "node scripts/check-content.mjs && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "check": "astro check && node scripts/check-content.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "check:publication": "node scripts/check-content.mjs --publication",
+    "deploy": "npm run check:publication && wrangler deploy"
+  },
+  "dependencies": {
+    "@ambientcss/css": "3.1.0",
+    "astro": "7.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.6",
+    "prettier": "3.9.8",
+    "prettier-plugin-astro": "1.0.1",
+    "typescript": "6.0.3",
+    "wrangler": "4.136.3"
+  }
+}

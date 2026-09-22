@@ -1,0 +1,239 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Workbench from '../components/Workbench.astro';
+import ShowcaseCard from '../components/ShowcaseCard.astro';
+import site from '../content/site.json';
+import { workflow, showcases, faqs } from '../content/content';
+---
+
+<Layout>
+  <section class="hero container">
+    <div class="hero-copy">
+      <h1>
+        See the flow.
+        <br />
+        Shape the <em>design.</em>
+      </h1>
+      <p class="hero-descriptor">{site.hero.descriptor}</p>
+      <p class="hero-description">{site.hero.description}</p>
+      <div class="hero-actions">
+        <a
+          href="/support/#early-access"
+          class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
+        >
+          Discuss your case <Icon name="diagonal" size={18} />
+        </a>
+        <a
+          href="#workflow"
+          class="button button-quiet ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+        >
+          Explore the workflow <Icon size={18} />
+        </a>
+      </div>
+      <p class="hero-note">
+        <span class="small-status"></span> In development.
+      </p>
+    </div>
+    <div class="hero-object">
+      <Workbench />
+    </div>
+  </section>
+  <div class="principles container">
+    <span>
+      <Icon name="chip" /> GPU-native by design
+    </span>
+    <span>
+      <Icon name="desktop" /> A local desktop workflow
+    </span>
+    <span>
+      <Icon name="layers" /> Made for exploration
+    </span>
+    <a href="/validation/">
+      Scope matters. See ours. <Icon size={16} />
+    </a>
+  </div>
+  <section class="section product-section" id="product">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <h2>
+            Make room for
+            <br />
+            <em>better questions.</em>
+          </h2>
+        </div>
+        <p>
+          The early stages are where a small design change can open a new
+          direction. Prelimina is being built to help you explore that space.
+        </p>
+      </div>
+      <div class="benefit-grid">
+        <article>
+          <div class="icon-tile ambient amb-surface amb-chamfer amb-elevation-0">
+            <Icon name="layers" size={25} />
+          </div>
+          <h3>Make behaviour visible.</h3>
+          <p>
+            Build an intuition for fluid motion. Look at what happens around
+            your geometry and decide where to investigate.
+          </p>
+        </article>
+        <article>
+          <div class="icon-tile ambient amb-surface amb-chamfer amb-elevation-0">
+            <Icon name="chip" size={25} />
+          </div>
+          <h3>Keep the work close.</h3>
+          <p>
+            A GPU-native approach on your desktop, with your engineering
+            question at the centre of the workflow.
+          </p>
+        </article>
+        <article>
+          <div class="icon-tile ambient amb-surface amb-chamfer amb-elevation-0">
+            <Icon name="diagonal" size={25} />
+          </div>
+          <h3>Give the next step direction.</h3>
+          <p>
+            Explore alternatives with explicit assumptions. Bring a clearer
+            question to detailed analysis or a physical prototype.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section container" id="workflow">
+    <div class="section-heading">
+      <div>
+        <h2>
+          Stay in the <em>flow.</em>
+        </h2>
+      </div>
+      <p>
+        A deliberate path from an engineering question to a more informed design
+        decision.
+      </p>
+    </div>
+    <div class="workflow-rail ambient amb-surface amb-chamfer">
+      <ol>
+        {workflow.map((step, index) => (
+          <li>
+            <span class="workflow-number ambient amb-surface amb-chamfer amb-elevation-0">
+              0{index + 1}
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+            {index < 3 && (
+              <span class="workflow-arrow">
+                <Icon />
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+    <p class="section-note">
+      The intended product workflow. Release-specific features and limits will
+      accompany public builds.
+    </p>
+  </section>
+  <section class="section showcase-section">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <h2>
+            Where could <em>you take it?</em>
+          </h2>
+        </div>
+        <a href="/showcases/" class="text-link">
+          View all studies <Icon />
+        </a>
+      </div>
+      <div class="showcase-grid">
+        {showcases.map((item) => (
+          <ShowcaseCard item={item} />
+        ))}
+      </div>
+      <p class="section-note">
+        Illustrative candidate cases. Schematics show the idea, not simulated or
+        validated results.
+      </p>
+    </div>
+  </section>
+  <section class="section container evidence-section">
+    <div>
+      <h2>
+        Know what’s behind
+        <br />
+        <em>the picture.</em>
+      </h2>
+      <p>
+        A useful result needs context: the method, the assumptions, and the
+        limits. We’re building that clarity into how we talk about Prelimina.
+      </p>
+      <a href="/validation/" class="text-link">
+        Our approach to evidence <Icon />
+      </a>
+    </div>
+    <div class="evidence-list">
+      <div>
+        <span>01</span>
+        <p>
+          <strong>Capability is a starting point.</strong>A feature being
+          implemented does not establish its accuracy for your application.
+        </p>
+      </div>
+      <div>
+        <span>02</span>
+        <p>
+          <strong>Every case has a scope.</strong>Models, conditions, and
+          numerical choices should travel with a result.
+        </p>
+      </div>
+      <div>
+        <span>03</span>
+        <p>
+          <strong>A comparison needs context.</strong>Performance and validation
+          claims need reproducible, case-specific evidence.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="section container faq-section">
+    <div>
+      <h2>
+        Before you <em>begin.</em>
+      </h2>
+    </div>
+    <div class="faq-list">
+      {faqs.map((item) => (
+        <details>
+          <summary>
+            {item.question}
+            <Icon name="plus" size={18} />
+          </summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+  <section class="container cta-wrap">
+    <div class="cta-panel ambient amb-surface amb-chamfer-2 amb-elevation-0">
+      <div>
+        <h2>
+          What are you <em>working on?</em>
+        </h2>
+        <p>
+          A geometry to rethink. A fluid behaviour to understand. A next step to
+          clarify.
+        </p>
+      </div>
+      <a
+        href="/support/#early-access"
+        class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
+      >
+        Discuss your case <Icon name="diagonal" size={18} />
+      </a>
+    </div>
+  </section>
+</Layout>

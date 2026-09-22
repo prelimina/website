@@ -1,7 +1,11 @@
 {
   "name": "prelimina-website",
   "compatibility_date": "2026-09-16",
+  "build": {
+    "command": "npm run build",
+  },
   "assets": {
-    "directory": "./public"
-  }
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
 }

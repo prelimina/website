@@ -1,0 +1,136 @@
+---
+import '@ambientcss/css/ambient.css';
+import '../styles/global.css';
+import site from '../content/site.json';
+import { nav } from '../content/content';
+import Icon from '../components/Icon.astro';
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'See the flow. Shape the design.',
+  description = site.hero.descriptor,
+} = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#000000" />
+    <title>{title} — Prelimina</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/logo_black_white.svg" />
+    <link
+      rel="preload"
+      href="/assets/BacasimeAntique-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+  </head>
+  <body class="amb-light-tl">
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand" aria-label="Prelimina home">
+          <img
+            src="/assets/logo_black_white.svg"
+            width="48"
+            height="48"
+            alt=""
+          />
+          <span>Prelimina</span>
+        </a>
+        <button
+          class="menu-toggle ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+          type="button"
+          aria-expanded="false"
+          aria-controls="main-navigation"
+        >
+          Menu <span aria-hidden="true">☰</span>
+        </button>
+        <nav id="main-navigation" aria-label="Main navigation">
+          {nav.map((link) => (
+            <a
+              class="ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+              href={link.href}
+              aria-current={path === link.href ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <a
+          class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+          href="/support/#early-access"
+        >
+          Early access <Icon name="diagonal" size={15} />
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-top">
+        <div>
+          <a href="/" class="brand">
+            <img
+              src="/assets/logo_black_white.svg"
+              width="36"
+              height="36"
+              alt=""
+            />
+            <span>Prelimina</span>
+          </a>
+          <p>A clearer view of what comes next.</p>
+        </div>
+        <div class="footer-links">
+          <a href="/validation/">Evidence & limitations</a>
+          <a href="/pricing/">Access & licensing</a>
+          <a href="/support/">Get in touch</a>
+          <a href="/legal/">Website information</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>Developed by {site.company}</span>
+        <span class="preview-label">
+          <i></i> DESIGN PREVIEW · PRELAUNCH
+        </span>
+        <span>© {new Date().getFullYear()} Prelimina</span>
+      </div>
+    </footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const nav = document.querySelector<HTMLElement>('#main-navigation');
+      toggle?.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(expanded));
+        nav?.classList.toggle('is-open', expanded);
+      });
+      nav?.querySelectorAll('a').forEach((link) =>
+        link.addEventListener('click', () => {
+          toggle?.setAttribute('aria-expanded', 'false');
+          nav.classList.remove('is-open');
+        }),
+      );
+      document.addEventListener('keydown', (event) => {
+        if (
+          event.key === 'Escape' &&
+          toggle?.getAttribute('aria-expanded') === 'true'
+        ) {
+          toggle.setAttribute('aria-expanded', 'false');
+          nav?.classList.remove('is-open');
+          toggle.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
