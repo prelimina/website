@@ -1,0 +1,45 @@
+---
+import Icon from './Icon.astro';
+import { capabilityGroups } from '../content/capabilities';
+---
+
+<section class="section container capability-summary" id="capabilities">
+  <div class="section-heading">
+    <h2>
+      From moving liquid
+      <br />
+      to <em>better decisions.</em>
+    </h2>
+    <p>
+      Bring your geometry, explore the flow, and turn what you learn into your
+      next design.
+    </p>
+  </div>
+  <div class="capability-summary-grid">
+    {capabilityGroups.map((group) => (
+      <a
+        class="capability-card ambient amb-surface amb-chamfer amb-elevation-0"
+        href={`/capabilities/#${group.id}`}
+      >
+        <span class="capability-icon">
+          <Icon name={group.icon} size={28} />
+        </span>
+        <h3>{group.summaryTitle}</h3>
+        <p>{group.summary}</p>
+        <span class="capability-card-link">
+          {group.title}
+          <Icon size={16} />
+        </span>
+      </a>
+    ))}
+  </div>
+  <div class="capability-summary-action">
+    <a
+      class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+      href="/capabilities/"
+    >
+      Explore all capabilities <Icon size={18} />
+    </a>
+    <p>See the full feature list and the maturity of each capability.</p>
+  </div>
+</section>

@@ -20,43 +20,18 @@ export const licensingAction = {
   ),
 };
 
-export const workflow = [
+export const workflowIllustration = [
   {
-    id: 'scene',
-    title: 'Scene',
-    detail: 'Set up the physical experiment.',
-    text: 'Bring in supported geometry, define the initial liquid and material properties, and set boundaries and prescribed motion for the chosen method.',
+    id: 'setup',
+    title: 'Setup',
     illustration: 'Define a tank, its fill level, and the baffle geometry.',
-  },
-  {
-    id: 'prepare',
-    title: 'Prepare',
-    detail: 'Choose the numerical detail.',
-    text: 'Set resolution, time-step controls, and numerical settings. Start with the basic controls, then review the choices that matter for your question.',
-    illustration:
-      'Choose the resolution needed to represent the baffle and liquid.',
   },
   {
     id: 'simulate',
     title: 'Simulate',
-    detail: 'Run, inspect, and measure.',
-    text: 'Inspect the live fluid view and diagnostics, track supported pressure or velocity probes, and export measurements or simulation fields for review.',
     illustration:
       'Inspect liquid motion and choose where to sample the response.',
   },
-] as const;
-
-export const iteration = {
-  title: 'Then iterate on the design.',
-  text: 'Change an input, rerun, and compare relevant results with consistent assumptions. Use exported measurements for your comparison and make geometry changes in your existing tools.',
-};
-
-export const workflowIllustration = [
-  ...workflow
-    .filter((step) => step.id !== 'prepare')
-    .map((step) =>
-      step.id === 'scene' ? { ...step, id: 'setup', title: 'Setup' } : step,
-    ),
   {
     id: 'optimize',
     title: 'Optimize',
@@ -125,8 +100,8 @@ export const showcases = [
     limitation:
       'Thin baffles, breaking surfaces, and local impacts can be sensitive to resolution and time step. A regional pressure probe samples fluid around it; it is not a wall-pressure tap. This candidate has no approved public comparison results.',
     nextAction: {
-      label: 'Review measurements and their limits',
-      href: '/docs/#measurements',
+      label: 'Explore measurement capabilities',
+      href: '/capabilities/#measurements',
     },
   },
   {
@@ -154,7 +129,10 @@ export const showcases = [
       'The tank follows an imposed motion, as in a controlled moving-vessel experiment. Specify the motion frame and the gas treatment. Predicting a freely responding tank requires a different coupling setup.',
     limitation:
       'This scope does not qualify all translations, rotations, gas effects, or rigid-body coupling. Impact pressures and breaking waves need dedicated resolution, time-step, and reference checks. No approved public result is attached.',
-    nextAction: { label: 'Explore the physical setup', href: '/docs/#scene' },
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
   },
   {
     slug: 'liquid-handling',
@@ -183,8 +161,8 @@ export const showcases = [
     limitation:
       'General inlet/outlet combinations, moving inlet surfaces, and finite outlet surfaces still have implementation or qualification gaps. This is a planned application, with no filling wizard or approved public validation record.',
     nextAction: {
-      label: 'Review the boundary scope',
-      href: '/docs/#boundaries',
+      label: 'Explore geometry and boundaries',
+      href: '/capabilities/#geometry',
     },
   },
 ] as const satisfies readonly Application[];
@@ -291,6 +269,6 @@ export const faqs = [
 
 export const nav = [
   { label: 'Applications', href: '/#applications' },
-  { label: 'Workflow', href: '/#workflow' },
+  { label: 'Capabilities', href: '/#capabilities' },
   { label: 'Download', href: '/#download' },
 ];

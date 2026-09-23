@@ -6,7 +6,7 @@ import { buildContactFixture } from './contact-fixture';
 const routes = [
   '/',
   '/showcases/',
-  '/docs/',
+  '/capabilities/',
   '/support/',
   '/legal/',
   '/changelog/',
@@ -64,12 +64,6 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     ['01 Setup', '02 Simulate', '03 Optimize'],
     { useInnerText: true },
   );
-  await expect(page.locator('.workflow-rail h3')).toHaveText([
-    'Scene',
-    'Prepare',
-    'Simulate',
-  ]);
-  await expect(page.locator('.workflow-arrow')).toHaveCount(2);
   const setup = controls.getByRole('button', { name: '01 Setup' });
   await setup.focus();
   await page.keyboard.press('Enter');
@@ -193,7 +187,7 @@ test('homepage order, primary actions, and application status communicate the pr
   expect(sections).toEqual([
     'hero container',
     'applications',
-    'workflow',
+    'capabilities',
     'product',
     'download',
     'faq',
@@ -239,7 +233,7 @@ test('homepage order, primary actions, and application status communicate the pr
     );
     await expect(page.locator('.page-container > .button')).toHaveAttribute(
       'href',
-      /\/docs\/#/,
+      /\/capabilities\/#/,
     );
   }
   await page.goto('/support/#early-access');
@@ -253,6 +247,76 @@ test('homepage order, primary actions, and application status communicate the pr
   await expect(
     page.getByRole('link', { name: 'Ask about licensing' }),
   ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
+});
+
+test('capability panels lead to grouped features with a maturity label on every feature', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Capabilities', exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/#capabilities$/);
+  await expect(page.locator('#capabilities h2')).toBeInViewport();
+  const cards = page.locator('.capability-card');
+  await expect(cards).toHaveCount(6);
+  const destinations = await cards.evaluateAll((links) =>
+    links.map((link) => link.getAttribute('href')),
+  );
+  await page.getByRole('link', { name: 'Explore all capabilities' }).click();
+  await expect(page).toHaveURL(/\/capabilities\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Capabilities',
+  );
+  const labels = ['Implemented', 'Experimental', 'In development', 'Planned'];
+  await expect(page.locator('.maturity-guide dt')).toHaveText(labels);
+  await expect(page.locator('.capability-group h2')).toHaveText([
+    'Fluid flow',
+    'Geometry & boundaries',
+    'Motion & coupling',
+    'GPU computing',
+    'Desktop workspace',
+    'Measurements & output',
+  ]);
+  const featureGroups = await page
+    .locator('.capability-group')
+    .evaluateAll((groups) =>
+      groups.map((group) => ({
+        destination: `/capabilities/#${group.id}`,
+        features: [
+          ...group.querySelectorAll('.capability-feature-list li'),
+        ].map((feature) => ({
+          name: feature.querySelector('h3')?.textContent?.trim(),
+          labels: [...feature.querySelectorAll('.maturity-badge')].map(
+            (badge) => badge.textContent?.trim(),
+          ),
+        })),
+      })),
+    );
+  expect(destinations).toEqual(featureGroups.map((group) => group.destination));
+  for (const group of featureGroups) {
+    expect(group.features.length).toBeGreaterThan(0);
+    for (const feature of group.features) {
+      expect(feature.name).toBeTruthy();
+      expect(feature.labels).toHaveLength(1);
+      expect(labels).toContain(feature.labels[0]);
+    }
+  }
+  await page
+    .getByRole('navigation', { name: 'Capability groups' })
+    .getByRole('link', { name: 'Measurements & output' })
+    .click();
+  await expect(page.locator('#measurements h2')).toBeInViewport();
+  await page.goto('/');
+  await page.getByRole('link', { name: /Start with your geometry/ }).click();
+  await expect(page).toHaveURL(/\/capabilities\/#geometry$/);
+  await expect(page.locator('#geometry h2')).toBeInViewport();
+  await page.goto('/docs/');
+  await expect(page).toHaveURL(/\/capabilities\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Capabilities',
+  );
 });
 
 test('an approved configured contact enables real draft links with the edited outline', async ({
@@ -442,7 +506,7 @@ test('homepage downloads, licensing FAQ, and retired routes work', async ({
     await expect(page.locator('#download h2')).toBeInViewport();
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/docs/');
+  await page.goto('/capabilities/');
   const menu = page.getByRole('button', { name: 'Menu' });
   await menu.click();
   await page
@@ -484,7 +548,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/',
     '/showcases/',
     '/support/',
-    '/docs/',
+    '/capabilities/',
     '/showcases/baffle-design/',
     '/showcases/liquid-handling/',
     '/legal/',
@@ -523,6 +587,9 @@ test('capture desktop and mobile views and measure initial local resource weight
   await page.locator('#download').screenshot({
     path: testInfo.outputPath('download-desktop.png'),
   });
+  await page.locator('#capabilities').screenshot({
+    path: testInfo.outputPath('capability-summary-desktop.png'),
+  });
   const resources = await page.evaluate(() =>
     performance.getEntriesByType('resource').map((entry) => ({
       name: new URL(entry.name).pathname,
@@ -542,10 +609,14 @@ test('capture desktop and mobile views and measure initial local resource weight
   await page.locator('#download').screenshot({
     path: testInfo.outputPath('download-mobile.png'),
   });
+  await page.locator('#capabilities').screenshot({
+    path: testInfo.outputPath('capability-summary-mobile.png'),
+  });
   for (const [route, width] of [
     ['/showcases/', 1440],
     ['/showcases/baffle-design/', 1440],
-    ['/docs/', 1440],
+    ['/capabilities/', 1440],
+    ['/capabilities/', 390],
     ['/legal/', 390],
     ['/support/', 390],
   ] as const) {

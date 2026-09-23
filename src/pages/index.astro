@@ -4,14 +4,9 @@ import Icon from '../components/Icon.astro';
 import Workbench from '../components/Workbench.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import DownloadSection from '../components/DownloadSection.astro';
+import CapabilitySummary from '../components/CapabilitySummary.astro';
 import site from '../content/site.json';
-import {
-  access,
-  workflow,
-  iteration,
-  showcases,
-  faqs,
-} from '../content/content';
+import { access, showcases, faqs } from '../content/content';
 ---
 
 <Layout>
@@ -32,10 +27,10 @@ import {
           {access.primary.label} <Icon name="diagonal" size={18} />
         </a>
         <a
-          href="#workflow"
+          href="#capabilities"
           class="button button-quiet ambient amb-surface-convex amb-mat-matte amb-fillet-2"
         >
-          See the workflow <Icon size={18} />
+          Explore capabilities <Icon size={18} />
         </a>
       </div>
       <p class="hero-note">
@@ -67,49 +62,7 @@ import {
       </p>
     </div>
   </section>
-  <section class="section container" id="workflow">
-    <div class="section-heading">
-      <h2>
-        From the experiment
-        <br />
-        to <em>the next iteration.</em>
-      </h2>
-      <p>
-        Three stages in the desktop application, currently in development.
-        Understand how your liquid moves, then use that insight to improve the
-        design.
-      </p>
-    </div>
-    <div class="workflow-rail ambient amb-surface amb-chamfer">
-      <ol>
-        {workflow.map((step, index) => (
-          <li>
-            <span class="workflow-number ambient amb-surface amb-chamfer amb-elevation-0">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <h3>{step.title}</h3>
-            <p>
-              <strong>{step.detail}</strong> {step.text}
-            </p>
-            {index < workflow.length - 1 && (
-              <span class="workflow-arrow" aria-hidden="true">
-                <Icon />
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </div>
-    <p class="section-note">
-      <strong>{iteration.title}</strong> {iteration.text}
-    </p>
-    <p class="section-note">
-      Geometry, motion, measurements, and exports depend on the selected method.{' '}
-      <a class="text-link" href="/docs/">
-        Review the workflow and its limits <Icon size={16} />
-      </a>
-    </p>
-  </section>
+  <CapabilitySummary />
   <section class="section product-section" id="product">
     <div class="container">
       <div class="section-heading">

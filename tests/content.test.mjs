@@ -135,16 +135,19 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 12);
+  assert.equal(htmlFiles.length, 13);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
-    if (
-      ['pricing', 'download'].some(
-        (route) => path === join(root, route, 'index.html'),
-      )
-    ) {
+    const redirect = Object.entries({
+      pricing: '/#download',
+      download: '/#download',
+      docs: '/capabilities/',
+    }).find(([route]) => path === join(root, route, 'index.html'));
+    if (redirect) {
       assert.match(html, /name="robots" content="noindex"/);
-      assert.match(html, /http-equiv="refresh" content="0;url=\/#download"/);
+      assert.ok(
+        html.includes(`http-equiv="refresh" content="0;url=${redirect[1]}"`),
+      );
     } else {
       assert.match(html, /name="robots" content="noindex, nofollow"/);
       assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, path);
@@ -183,6 +186,7 @@ test('active pages remain available and retired pages are removed or redirected'
   for (const route of [
     'showcases',
     'docs',
+    'capabilities',
     'support',
     'pricing',
     'legal',
@@ -273,7 +277,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
       html,
       /https?:[^"\s<>]*SlangSolvers|github\.com\/[^"\s<>]*SlangSolvers/i,
     );
-    assert.doesNotMatch(html, /href="\/(?:validation|pricing|download)\//);
+    assert.doesNotMatch(html, /href="\/(?:validation|pricing|download|docs)\//);
     if (path !== resolve('dist/index.html')) {
       assert.doesNotMatch(
         html,

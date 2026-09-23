@@ -27,6 +27,13 @@ const path = Astro.url.pathname;
     <link rel="icon" type="image/svg+xml" href="/assets/logo_black_white.svg" />
     <link
       rel="preload"
+      href="/assets/Quicksand-Variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
       href="/assets/BacasimeAntique-Regular.ttf"
       as="font"
       type="font/ttf"
@@ -95,7 +102,7 @@ const path = Astro.url.pathname;
         <div class="footer-links">
           <a href="/#download">Download</a>
           <a href="/#licensing">Licensing FAQ</a>
-          <a href="/docs/">Workflow guide</a>
+          <a href="/capabilities/">All capabilities</a>
           <a href="/support/">
             {access.open ? 'Discuss your case' : 'Prepare a case outline'}
           </a>

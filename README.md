@@ -1,8 +1,10 @@
 # Prelimina website
 
-A standalone Astro/TypeScript static site for the native Prelimina desktop product. It does not build, import, or run SlangSolvers. The visual direction combines the supplied black header/logo, locally hosted Bacasime Antique, system sans-serif text, and AmbientCSS lighting, material surfaces, raised controls, and recessed panels.
+A standalone Astro/TypeScript static site for the native Prelimina desktop product. It does not build, import, or run SlangSolvers. The visual direction combines the supplied black header/logo, locally hosted Bacasime Antique headings and Quicksand sans-serif text, and AmbientCSS lighting, material surfaces, raised controls, and recessed panels.
 
-The site positions Prelimina as GPU-native desktop CFD for moving liquids and early-stage design. The homepage moves from initial applications to workflow, fit with existing tools, Download with a licensing FAQ, general FAQ, and a next action. The interactive **workflow illustration** has three steps: Setup, Simulate, and Optimize. The native workflow below it retains Scene, Prepare, and Simulate. Optimize illustrates manual design iteration in the user's geometry tools followed by another run and comparison. It is not an application screenshot, CFD result, or automatic optimisation feature. Candidate applications retain `/showcases/` and their existing detail URLs. Applications and Download in the main menu link to homepage sections. The Evidence page and section are removed; `/pricing/` and `/download/` redirect to `/#download`.
+The site positions Prelimina as GPU-native desktop CFD for moving liquids and early-stage design. The homepage moves from initial applications to six capability panels, fit with existing tools, Download with a licensing FAQ, general FAQ, and a next action. The panels link to feature groups on `/capabilities/`, where each feature has a maturity label. The interactive **workflow illustration** in the hero retains Setup, Simulate, and Optimize. Optimize illustrates manual design iteration in the user's geometry tools followed by another run and comparison. It is not an application screenshot, CFD result, or automatic optimisation feature.
+
+Candidate applications retain `/showcases/` and their existing detail URLs. Applications, Capabilities, and Download in the main menu link to homepage sections. The former workflow guide at `/docs/` redirects to `/capabilities/`. The Evidence page and section are removed; `/pricing/` and `/download/` redirect to `/#download`.
 
 ## Run locally
 
@@ -39,7 +41,7 @@ To use an already installed Chrome instead of downloading Playwright's browser:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/opt/google/chrome/chrome npm run test:browser
 ```
 
-The tests cover content boundaries, rejected email injection, prelaunch-only behavior, publication blocking, preserved routes and anchors, availability/evidence labels, and absence of invented downloads or commercial offers. Browser checks cover desktop/tablet/mobile overflow, the Setup / Simulate / Optimize illustration and three-stage native workflow, keyboard navigation, FAQ, clipboard success/failure, reduced motion, and automated axe WCAG A/AA checks. A temporary build with a reserved test email checks the configured inquiry route and encoding of edited outlines without changing the real site's configuration or build. Screenshots go to ignored `test-results/`. Automated accessibility checks are not a complete manual accessibility certification. The 640px layout is a reflow proxy for a 1280px viewport at 200% zoom.
+The tests cover content boundaries, rejected email injection, prelaunch-only behavior, publication blocking, preserved routes and anchors, availability/evidence labels, and absence of invented downloads or commercial offers. Browser checks cover desktop/tablet/mobile overflow, the Setup / Simulate / Optimize illustration, capability panels and group links, per-feature maturity labels, the retired guide redirect, keyboard navigation, FAQ, clipboard success/failure, reduced motion, and automated axe WCAG A/AA checks. A temporary build with a reserved test email checks the configured inquiry route and encoding of edited outlines without changing the real site's configuration or build. Screenshots go to ignored `test-results/`. Automated accessibility checks are not a complete manual accessibility certification. The 640px layout is a reflow proxy for a 1280px viewport at 200% zoom.
 
 To check the actual Cloudflare static-asset headers locally:
 
@@ -53,19 +55,24 @@ The GitHub Actions check workflow installs from the lockfile, builds, and runs t
 
 ## Edit content
 
-| File                      | Purpose                                                                                                                |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `src/content/site.json`   | Product/company name, launch state, application contact, licence metadata/contact, temporary download preview, review date, homepage introduction. |
-| `src/content/content.ts`  | Typed workflow copy, navigation, platform targets, FAQs, and candidate application records.                           |
-| `src/components/DownloadSection.astro` | Homepage download panels, release preview, and licensing FAQ. |
-| `src/content/inquiry.mjs` | Shared contact/status decisions, inquiry outline, and safe email-draft URL construction.                               |
-| `src/content/pages.ts`    | Supporting-page titles and introductions.                                                                              |
-| `src/pages/index.astro`   | Homepage section copy and composition.                                                                                 |
-| `src/pages/[page].astro`  | Supporting-page body copy and contact controls.                                                                        |
-| `src/styles/global.css`   | Palette, type, layout, AmbientCSS materials, responsive rules.                                                         |
-| `public/assets/`          | Supplied logo and original font.                                                                                       |
+| File                                     | Purpose                                                                                                                                            |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/content/site.json`                  | Product/company name, launch state, application contact, licence metadata/contact, temporary download preview, review date, homepage introduction. |
+| `src/content/content.ts`                 | Workflow illustration copy, navigation, platform targets, FAQs, and candidate application records.                                                 |
+| `src/content/capabilities.ts`            | Feature groups, maturity definitions, and homepage capability summaries.                                                                           |
+| `src/components/CapabilitySummary.astro` | Homepage feature panels and links to the full catalogue.                                                                                           |
+| `src/components/CapabilityCatalog.astro` | Grouped Capabilities page, maturity legend, and group navigation.                                                                                  |
+| `src/components/DownloadSection.astro`   | Homepage download panels, release preview, and licensing FAQ.                                                                                      |
+| `src/content/inquiry.mjs`                | Shared contact/status decisions, inquiry outline, and safe email-draft URL construction.                                                           |
+| `src/content/pages.ts`                   | Supporting-page titles and introductions.                                                                                                          |
+| `src/pages/index.astro`                  | Homepage section copy and composition.                                                                                                             |
+| `src/pages/[page].astro`                 | Supporting-page body copy and contact controls.                                                                                                    |
+| `src/styles/global.css`                  | Palette, type, layout, AmbientCSS materials, responsive rules.                                                                                     |
+| `public/assets/`                         | Supplied logo and locally hosted Bacasime Antique and Quicksand fonts.                                                                             |
 
 Hero title and its line breaks are composed in `index.astro`; its descriptor and supporting paragraph come from `site.json`. No remote font or asset request is required. Font and AmbientCSS licenses are included in `public/licenses/`.
+
+Quicksand is the default sans-serif family for body text, navigation, controls, and labels. `public/assets/Quicksand-Variable.ttf` is the unmodified variable font from [Google Fonts](https://github.com/google/fonts/tree/main/ofl/quicksand), supporting weights 300–700. Its SIL Open Font License is included as `public/licenses/Quicksand-OFL.txt`.
 
 Set `contactEmail` only when an address is approved for application inquiries and inquiries are open. That enables “Discuss your case” and the email-draft action. The edited outline is encoded into the draft; the visitor reviews and sends it in their own email application. A visible address provides a fallback. Until configured, the primary action is “Explore applications”, the support page explicitly says application inquiries are not open, and users can prepare/copy an outline. Copying never implies submission. No outline is submitted, persisted, or sent to analytics.
 
@@ -79,7 +86,20 @@ Platform cards describe the current native packaging targets, checked against `S
 
 Application availability (`released`, `in_development`, `planned`) and evidence (`illustration`, `software_demonstration`, `numerical_verification`, `physical_validation`) are independent fields. The current records are illustrative candidates: baffle arrangements and tank motion are in development; filling and overflow are planned and retain explicit boundary/measurement gaps. Their status labels remain on the application pages.
 
-Capability wording was checked against the accessible product implementation and current native workflow, geometry-loader, measurement/export, and boundary contracts on 2026-09-23. Implemented capabilities are described as development scope, not as released or physically validated features. No private source, repository links, internal benchmarks, or partner media are published here.
+The feature catalogue in `src/content/capabilities.ts` was checked against current product contracts and implementation on 2026-09-23. It contains six groups and uses four maturity labels: **Implemented** for working functionality in the development build, **Experimental** for functionality needing broader testing and qualification, **In development** for partial implementation, and **Planned** for roadmap work. These describe development maturity; they do not establish a released package or physical validation. Feature descriptions identify relevant method or configuration scope. The RHOXYZ reference supplied for the design is presentation inspiration, not a source of Prelimina feature claims.
+
+For maintainers, the local product sources used for this review are listed below. Paths are relative to the sibling `SlangSolvers` repository; they are not published as links on the website.
+
+| Group                 | Current product sources                                                                                                                                                           |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fluid flow            | `docs/solvers/capability-matrix.md`, `docs/solvers/{flip,fvm,firm}/README.md`, `solvers/cfd_core/config_common.hpp`, `docs/solvers/fvm/features/turbulence-and-wall-treatment.md` |
+| Geometry & boundaries | `libs/loaders/loader_factory.cpp`, `docs/features/native-scene-authoring.md`, `docs/features/physical-inlets.md`, `docs/solvers/capability-matrix.md`                             |
+| Motion & coupling     | `docs/features/scene-motion-core.md`, `docs/features/rigid-body-motion.md`, `docs/features/coupling/README.md`, `docs/features/waves.md`                                          |
+| GPU computing         | `docs/solvers/flip/README.md`, `docs/development/deployment.md`, `scripts/release_artifacts.py`, `docs/solvers/capability-matrix.md`                                              |
+| Desktop workspace     | `docs/features/native-scene-authoring.md`, `docs/features/scene-motion-core.md`, `apps/libs/viewer/slice_plane.hpp`, `apps/libs/viewer/engine.cpp`                                |
+| Measurements & output | `docs/reference/simulation-results.md`, `docs/reference/study-runner.md`, `docs/solvers/capability-matrix.md`                                                                     |
+
+Keep the catalogue and its homepage summaries together when revising scope or maturity. No private source, repository links, internal benchmarks, or partner media are published on the rendered site.
 
 When replacing a concept schematic with a real capture, record the product version, model assumptions, case status, and any limits. Use explicit dimensions, compressed local media, meaningful alt text, and click-to-play for optional videos. Never present these SVG illustrations as simulation evidence.
 

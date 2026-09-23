@@ -4,10 +4,10 @@ export const pages = {
     description:
       'Explore the initial applications for GPU-native CFD: sloshing, baffle arrangements, and moving liquids. These candidate applications state the question, inputs, and scope still to qualify.',
   },
-  docs: {
-    title: 'From setup to fluid insight.',
+  capabilities: {
+    title: 'Capabilities',
     description:
-      'Scene, Prepare, Simulate: the native desktop workflow in development for moving-liquid studies. This overview describes implementation scope; release-specific guides will accompany an approved public build.',
+      'From your first geometry to the measurements behind a design decision. Explore Prelimina’s features and where each stands today.',
   },
   support: {
     title: 'Start with your design question.',
