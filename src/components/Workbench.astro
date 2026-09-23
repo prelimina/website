@@ -61,6 +61,12 @@ import { workflow } from '../content/content';
   import { workflow } from '../content/content';
   const workbench = document.querySelector<HTMLElement>('[data-workbench]');
   const labels = ['Define', 'Preview', 'Compare', 'Refine'];
+  // SMIL ignores the stylesheet's reduced-motion rule, so stop the flow pulses here.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    workbench
+      ?.querySelectorAll<SVGSVGElement>('svg.study-art')
+      .forEach((svg) => svg.pauseAnimations());
+  }
   workbench
     ?.querySelectorAll<HTMLButtonElement>('[data-step-button]')
     .forEach((button) => {

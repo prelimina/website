@@ -4,14 +4,83 @@ interface Props {
   large?: boolean;
 }
 const { type = 'baffle', large = false } = Astro.props;
+// Each instance needs its own gradient ids; the schematic appears several times per page.
+const uid = `study-${Math.random().toString(36).slice(2, 8)}`;
+const [x0, x1] = type === 'pipe' ? [66, 407] : [91, 367];
+// Spacing of the travelling bright bands; they move only on the large workbench schematic.
+const pulse = 120;
+// Gradient stops inherit from the <svg>, not from the paths using them, so tones live here.
+const tones =
+  type === 'pipe'
+    ? '--flow-a: #6a4b96; --flow-b: #8b73b3'
+    : '--flow-a: #6f5199; --flow-b: #9a83bb';
 ---
 
 <svg
   class:list={['study-art', { 'study-art-large': large }]}
   viewBox="0 0 480 290"
   fill="none"
+  style={tones}
   aria-hidden="true"
 >
+  <defs>
+    {['a', 'b'].map((tone) => (
+      <linearGradient
+        id={`${uid}-${tone}`}
+        gradientUnits="userSpaceOnUse"
+        spreadMethod="repeat"
+        x1={x0}
+        y1="0"
+        x2={x0 + pulse}
+        y2="0"
+      >
+        <stop
+          offset="0"
+          style={`stop-color: var(--flow-${tone}); stop-opacity: .15`}
+        />
+        <stop
+          offset=".85"
+          style={`stop-color: var(--flow-${tone}); stop-opacity: 1`}
+        />
+        <stop
+          offset="1"
+          style={`stop-color: var(--flow-${tone}); stop-opacity: .15`}
+        />
+        {large && (
+          <animateTransform
+            attributeName="gradientTransform"
+            type="translate"
+            from="0 0"
+            to={`${pulse} 0`}
+            dur="2.4s"
+            repeatCount="indefinite"
+          />
+        )}
+      </linearGradient>
+    ))}
+    <linearGradient
+      id={`${uid}-fade`}
+      gradientUnits="userSpaceOnUse"
+      x1={x0}
+      y1="0"
+      x2={x1}
+      y2="0"
+    >
+      <stop offset="0" stop-color="#fff" stop-opacity=".25" />
+      <stop offset=".45" stop-color="#fff" stop-opacity=".7" />
+      <stop offset="1" stop-color="#fff" />
+    </linearGradient>
+    <mask
+      id={`${uid}-mask`}
+      maskUnits="userSpaceOnUse"
+      x="0"
+      y="0"
+      width="480"
+      height="290"
+    >
+      <rect width="480" height="290" fill={`url(#${uid}-fade)`} />
+    </mask>
+  </defs>
   <g stroke="currentColor" stroke-width="1" opacity=".17">
     {[60, 120, 180, 240, 300, 360, 420].map((x) => (
       <path d={`M${x} 24v242`} />
@@ -29,14 +98,16 @@ const { type = 'baffle', large = false } = Astro.props;
         stroke="#7c728c"
         stroke-width="2"
       />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <path
-          class="flow-line"
-          d={`M66 ${90 + i * 8}H${190 - i * 8}Q${198 - i * 8} ${90 + i * 8} ${198 - i * 8} ${106 + i * 7}V${175 + i * 8}Q${198 - i * 8} ${180 + i * 8} ${210 - i * 8} ${180 + i * 8}H407`}
-          stroke={i % 2 ? '#a08ac5' : '#8061ab'}
-          stroke-width="1.6"
-        />
-      ))}
+      <g mask={`url(#${uid}-mask)`}>
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <path
+            class="flow-line"
+            d={`M66 ${90 + i * 8}H${190 - i * 8}Q${198 - i * 8} ${90 + i * 8} ${198 - i * 8} ${106 + i * 7}V${175 + i * 8}Q${198 - i * 8} ${180 + i * 8} ${210 - i * 8} ${180 + i * 8}H407`}
+            stroke={`url(#${uid}-${i % 2 ? 'b' : 'a'})`}
+            stroke-width="1.6"
+          />
+        ))}
+      </g>
       <path
         d="m78 107 10 6-10 6m311 70 10 6-10 6"
         stroke="#715491"
@@ -67,15 +138,18 @@ const { type = 'baffle', large = false } = Astro.props;
         fill="#af97d0"
         fill-opacity=".3"
       />
-      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-        <path
-          class="flow-line"
-          d={`M91 ${144 + i * 9}C133 ${119 + i * 12} 158 ${153 + i * 8} 196 ${140 + i * 10}S268 ${130 + i * 12} 326 ${142 + i * 10}L367 ${167 + i * 9}`}
-          stroke={i % 2 ? '#b09ace' : '#8667ac'}
-          stroke-width="1.4"
-          opacity={0.85 - i * 0.045}
-        />
-      ))}
+      <g mask={`url(#${uid}-mask)`}>
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+          <path
+            class="flow-line"
+            d={`M91 ${144 + i * 9}C133 ${119 + i * 12} 158 ${153 + i * 8} 196 ${140 + i * 10}S268 ${130 + i * 12} 326 ${142 + i * 10}C343 ${146 + i * 9.4} 352 ${158 + i * 9} 367 ${167 + i * 9}`}
+            stroke={`url(#${uid}-${i % 2 ? 'b' : 'a'})`}
+            stroke-width="1.4"
+            stroke-linecap="round"
+            opacity={0.85 - i * 0.045}
+          />
+        ))}
+      </g>
       {type === 'baffle' && (
         <g class="baffles" stroke="#8b8198" stroke-width="1.5">
           <path d="m196 104 24 14v112l-24-14Z" fill="#dcd5e5" />
@@ -90,7 +164,7 @@ const { type = 'baffle', large = false } = Astro.props;
       {type === 'tank' && (
         <path
           d="M190 39h110m-101-6-9 6 9 6m92-12 9 6-9 6"
-          stroke="#8061ab"
+          stroke="#6a4b96"
           stroke-width="1.5"
         />
       )}
