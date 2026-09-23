@@ -135,11 +135,20 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 13);
+  assert.equal(htmlFiles.length, 12);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
-    assert.match(html, /name="robots" content="noindex, nofollow"/);
-    assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, path);
+    if (
+      ['pricing', 'download'].some(
+        (route) => path === join(root, route, 'index.html'),
+      )
+    ) {
+      assert.match(html, /name="robots" content="noindex"/);
+      assert.match(html, /http-equiv="refresh" content="0;url=\/#download"/);
+    } else {
+      assert.match(html, /name="robots" content="noindex, nofollow"/);
+      assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, path);
+    }
     assert.doesNotMatch(
       html,
       /<iframe|action="https?:|src="https?:|href="javascript:/,
@@ -165,17 +174,16 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       );
     }
   }
-  const download = readFileSync(join(root, 'download/index.html'), 'utf8');
+  const download = readFileSync(join(root, 'index.html'), 'utf8');
   assert.doesNotMatch(download, /href="[^"]+\.(exe|msi|dmg|zip|AppImage)/);
-  assert.match(download, /No public build has been approved/);
+  assert.match(download, /Downloads will be published on GitHub Releases/);
 });
 
-test('all existing public routes remain available', () => {
+test('active pages remain available and retired pages are removed or redirected', () => {
   for (const route of [
     'showcases',
     'docs',
     'support',
-    'validation',
     'pricing',
     'legal',
     'download',
@@ -185,6 +193,13 @@ test('all existing public routes remain available', () => {
     'showcases/liquid-handling',
   ]) {
     assert.ok(existsSync(join('dist', route, 'index.html')), route);
+  }
+  assert.equal(existsSync('dist/validation/index.html'), false);
+  for (const route of ['pricing', 'download']) {
+    assert.match(
+      readFileSync(`dist/${route}/index.html`, 'utf8'),
+      /http-equiv="refresh" content="0;url=\/#download"/,
+    );
   }
 });
 
@@ -213,25 +228,25 @@ test('licensing summaries link the supplied agreement and preserve its core perm
   ]) {
     assert.ok(agreement.includes(`## ${section}`), section);
   }
-  const pricing = readFileSync('dist/pricing/index.html', 'utf8')
+  const licensing = readFileSync('dist/index.html', 'utf8')
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ');
-  assert.match(pricing, /Free noncommercial use/);
+  assert.match(licensing, /Is Prelimina free\?/);
   assert.match(
-    pricing,
+    licensing,
     /No purchase, subscription, academic affiliation, or separate permission is required/,
   );
   assert.match(
-    pricing,
-    /Commercial evaluation requires a paid entitlement before it starts/,
+    licensing,
+    /paid commercial licence or subscription before the work begins\. This includes business evaluation/,
   );
   assert.match(
-    pricing,
+    licensing,
     /no limits on users, installations, computing capacity, simulation size, or duration of noncommercial use/,
   );
-  assert.match(pricing, /no public installer is available here yet/);
-  for (const route of ['pricing', 'legal']) {
-    const html = readFileSync(`dist/${route}/index.html`, 'utf8');
+  assert.match(licensing, /Do I keep my data and results\?/);
+  for (const path of ['dist/index.html', 'dist/legal/index.html']) {
+    const html = readFileSync(path, 'utf8');
     assert.ok(html.includes(`href="${site.licence.href}"`));
     assert.doesNotMatch(
       html,
@@ -258,7 +273,13 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
       html,
       /https?:[^"\s<>]*SlangSolvers|github\.com\/[^"\s<>]*SlangSolvers/i,
     );
-    assert.doesNotMatch(html, /<[^>]+(?:disabled|aria-disabled="true")[^>]*>/);
+    assert.doesNotMatch(html, /href="\/(?:validation|pricing|download)\//);
+    if (path !== resolve('dist/index.html')) {
+      assert.doesNotMatch(
+        html,
+        /<[^>]+(?:disabled|aria-disabled="true")[^>]*>/,
+      );
+    }
   }
   for (const path of files(resolve('src'))) {
     assert.doesNotMatch(
@@ -271,20 +292,12 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   const navigation = home.match(/<nav\b[^>]*>(.*?)<\/nav>/s)?.[1];
   assert.ok(navigation);
   assert.match(navigation, /Applications/);
-  assert.match(navigation, /\/validation\//);
+  assert.match(navigation, /href="\/#download"[^>]*>\s*Download\s*</);
   assert.doesNotMatch(navigation, /Showcases|\/download\/|\/changelog\//);
-  const evidence = readFileSync('dist/validation/index.html', 'utf8')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ');
-  assert.match(evidence, /Results need context/);
-  assert.match(
-    evidence,
-    /No approved public demonstration, numerical verification, physical validation, or performance records/,
-  );
-  assert.match(
-    readFileSync('dist/pricing/index.html', 'utf8'),
-    /Access &amp; licensing/,
-  );
+  assert.doesNotMatch(navigation, /Evidence|Access &amp; licensing/);
+  assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
+  assert.ok(home.includes(`v${site.downloadPreview.version}`));
+  assert.ok(home.includes(`datetime="${site.downloadPreview.date}"`));
   for (const slug of ['baffle-design', 'tank-motion', 'liquid-handling']) {
     const application = readFileSync(
       `dist/showcases/${slug}/index.html`,

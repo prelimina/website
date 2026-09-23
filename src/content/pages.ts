@@ -1,9 +1,4 @@
 export const pages = {
-  download: {
-    title: 'A new tool. Taking shape.',
-    description:
-      'Prelimina is in development. Public installers will appear here when a release and its platform requirements are ready.',
-  },
   showcases: {
     title: 'Start with an engineering question.',
     description:
@@ -18,16 +13,6 @@ export const pages = {
     title: 'Start with your design question.',
     description:
       'Outline what you want to understand, what you want to compare, and the decision your fluid study would inform. Confidential geometry is unnecessary for the first conversation.',
-  },
-  validation: {
-    title: 'Results need context.',
-    description:
-      'Inspect the question, setup, numerical method, and reference behind a result. CFD capability, numerical verification, and physical validation answer different questions.',
-  },
-  pricing: {
-    title: 'Access & licensing',
-    description:
-      'Prelimina is free for lawful noncommercial use under its Licence Agreement. Commercial use requires a paid licence or subscription before it begins. The desktop product remains in development.',
   },
   legal: {
     title: 'The details, clearly stated.',

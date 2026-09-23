@@ -6,11 +6,8 @@ import { buildContactFixture } from './contact-fixture';
 const routes = [
   '/',
   '/showcases/',
-  '/download/',
   '/docs/',
   '/support/',
-  '/validation/',
-  '/pricing/',
   '/legal/',
   '/changelog/',
   '/showcases/baffle-design/',
@@ -30,7 +27,7 @@ test('all pages render without script errors, missing assets, or horizontal over
     if (response.status() >= 400)
       errors.push(`${response.status()} ${response.url()}`);
   });
-  for (const width of [360, 768, 1024, 1440]) {
+  for (const width of [360, 640, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 960 });
     for (const route of routes) {
       await page.goto(route);
@@ -39,6 +36,17 @@ test('all pages render without script errors, missing assets, or horizontal over
         () => document.documentElement.scrollWidth > window.innerWidth,
       );
       expect(overflow, `${route} overflows at ${width}px`).toBe(false);
+      const crowdedPlatformHeadings = await page
+        .locator('.platform-heading')
+        .evaluateAll((headings) =>
+          headings
+            .filter((heading) => heading.scrollWidth > heading.clientWidth)
+            .map((heading) => heading.textContent),
+        );
+      expect(
+        crowdedPlatformHeadings,
+        `${route} platform headings at ${width}px`,
+      ).toEqual([]);
       await expect(page.locator('main')).toBeVisible();
     }
   }
@@ -152,9 +160,20 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
     .getByRole('navigation')
     .getByRole('link', { name: 'Applications' })
     .click();
+  await expect(page).toHaveURL(/\/#applications$/);
+  await expect(menu).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#applications h2')).toBeInViewport();
+  await page.getByRole('link', { name: 'Explore all applications' }).click();
   await expect(page).toHaveURL(/\/showcases\//);
   await page.getByRole('link', { name: /APPLICATION \/ 01/ }).click();
   await expect(page).toHaveURL(/\/showcases\/baffle-design\//);
+  await menu.click();
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Applications' })
+    .click();
+  await expect(page).toHaveURL(/\/#applications$/);
+  await expect(page.locator('#applications h2')).toBeInViewport();
   await page.goto('/');
   await page.getByText('Are these validated results?', { exact: true }).click();
   await expect(page.locator('details[open]')).toContainText(
@@ -176,7 +195,7 @@ test('homepage order, primary actions, and application status communicate the pr
     'applications',
     'workflow',
     'product',
-    'evidence',
+    'download',
     'faq',
     'container cta-wrap',
   ]);
@@ -193,15 +212,20 @@ test('homepage order, primary actions, and application status communicate the pr
   await expect(page.locator('.cta-panel .button')).toHaveText(
     'Explore applications',
   );
-  await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
+  await expect(page.locator('a[href^="mailto:"]')).toHaveCount(1);
   await expect(
     page.locator('a').filter({ hasText: 'Discuss your case' }),
   ).toHaveCount(0);
   await expect(
     page
       .getByRole('navigation')
+      .getByRole('link', { name: 'Download', exact: true }),
+  ).toHaveAttribute('href', '/#download');
+  await expect(
+    page
+      .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
-  ).toHaveAttribute('href', '/validation/');
+  ).toHaveCount(0);
   await expect(page.locator('.application-status')).toHaveCount(3);
   for (const slug of ['baffle-design', 'tank-motion', 'liquid-handling']) {
     await page.goto(`/showcases/${slug}/`);
@@ -225,7 +249,7 @@ test('homepage order, primary actions, and application status communicate the pr
   await expect(
     page.getByRole('link', { name: 'Open an email draft' }),
   ).toHaveCount(0);
-  await page.goto('/pricing/');
+  await page.goto('/#licensing');
   await expect(
     page.getByRole('link', { name: 'Ask about licensing' }),
   ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
@@ -298,11 +322,10 @@ test('an approved configured contact enables real draft links with the edited ou
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
       .analyze();
     expect(a11y.violations).toEqual([]);
-    await page.goto('/pricing/');
-    await expect(page.locator('main .button')).toHaveAttribute(
-      'href',
-      /^mailto:licensing@prelimina\.com\?/,
-    );
+    await page.goto('/#licensing');
+    await expect(
+      page.getByRole('link', { name: 'Ask about licensing' }),
+    ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
     await expect(page.locator('main')).not.toContainText(
       'inquiries are not open',
     );
@@ -344,21 +367,55 @@ test('contact copying is honest and the unavailable clipboard has a usable fallb
   await expect(page.getByLabel('Your case outline')).toBeFocused();
 });
 
-test('the supplied licence is readable while software downloads remain unavailable', async ({
+test('homepage downloads, licensing FAQ, and retired routes work', async ({
   page,
 }) => {
-  await page.goto('/pricing/');
-  await expect(
-    page.getByRole('heading', { name: 'Free noncommercial use', exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Commercial use', exact: true }),
-  ).toBeVisible();
-  await expect(page.locator('main')).toContainText(
-    'Commercial evaluation requires a paid entitlement before it starts',
+  await page.goto('/');
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Download', exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/#download$/);
+  await expect(page.locator('#download h2')).toBeInViewport();
+  await expect(page.locator('.platform-card h3')).toHaveText([
+    'Windows',
+    'Linux',
+    'macOS',
+  ]);
+  await expect(page.locator('.release-summary')).toContainText('v0.1');
+  await expect(page.locator('.release-summary time')).toHaveAttribute(
+    'datetime',
+    '2026-09-23',
   );
-  await expect(page.locator('main')).toContainText(
-    'no public installer is available here yet',
+  for (const platform of ['Windows', 'Linux']) {
+    await expect(
+      page.getByRole('link', { name: `Download for ${platform}`, exact: true }),
+    ).toHaveAttribute('href', 'https://github.com/prelimina/desktop/releases');
+  }
+  await expect(
+    page.getByRole('button', { name: 'Coming soon' }),
+  ).toBeDisabled();
+  await expect(page.locator('.platform-requirements').nth(1)).toContainText(
+    'glibc 2.28',
+  );
+  await page.getByText('Is Prelimina free?', { exact: true }).click();
+  await expect(page.locator('#licensing details[open]')).toContainText(
+    'lawful noncommercial use',
+  );
+  const commercial = page.getByText('Can I use it for commercial work?', {
+    exact: true,
+  });
+  await commercial.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#licensing details').nth(1)).toHaveAttribute(
+    'open',
+    '',
+  );
+  await expect(page.locator('#licensing details').nth(1)).toContainText(
+    'before the work begins',
+  );
+  await expect(page.locator('#licensing details').nth(1)).toContainText(
+    'business evaluation',
   );
   await page.getByRole('link', { name: 'Read the full agreement' }).click();
   await expect(page).toHaveURL(/\/licenses\/Prelimina-Licence-Agreement\.txt$/);
@@ -379,6 +436,24 @@ test('the supplied licence is readable while software downloads remain unavailab
   await expect(
     page.getByRole('link', { name: 'licensing@prelimina.com', exact: true }),
   ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
+  for (const route of ['/pricing/', '/download/']) {
+    await page.goto(route);
+    await expect(page).toHaveURL(/\/#download$/);
+    await expect(page.locator('#download h2')).toBeInViewport();
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/docs/');
+  const menu = page.getByRole('button', { name: 'Menu' });
+  await menu.click();
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Download', exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/#download$/);
+  await expect(page.locator('#download h2')).toBeInViewport();
+  await expect(menu).toHaveAttribute('aria-expanded', 'false');
+  const removed = await page.goto('/validation/');
+  expect(removed?.status()).toBe(404);
 });
 
 test('reduced motion and compact zoom layout remain readable', async ({
@@ -409,11 +484,8 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/',
     '/showcases/',
     '/support/',
-    '/download/',
     '/docs/',
     '/showcases/baffle-design/',
-    '/pricing/',
-    '/validation/',
     '/showcases/liquid-handling/',
     '/legal/',
   ]) {
@@ -437,6 +509,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
 test('capture desktop and mobile views and measure initial local resource weight', async ({
   page,
 }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 1440, height: 1050 });
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
@@ -446,6 +519,9 @@ test('capture desktop and mobile views and measure initial local resource weight
   });
   await page.screenshot({
     path: testInfo.outputPath('prelimina-hero-desktop.png'),
+  });
+  await page.locator('#download').screenshot({
+    path: testInfo.outputPath('download-desktop.png'),
   });
   const resources = await page.evaluate(() =>
     performance.getEntriesByType('resource').map((entry) => ({
@@ -463,12 +539,13 @@ test('capture desktop and mobile views and measure initial local resource weight
     path: testInfo.outputPath('prelimina-mobile.png'),
     fullPage: true,
   });
+  await page.locator('#download').screenshot({
+    path: testInfo.outputPath('download-mobile.png'),
+  });
   for (const [route, width] of [
     ['/showcases/', 1440],
     ['/showcases/baffle-design/', 1440],
     ['/docs/', 1440],
-    ['/validation/', 390],
-    ['/pricing/', 1440],
     ['/legal/', 390],
     ['/support/', 390],
   ] as const) {

@@ -3,13 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Workbench from '../components/Workbench.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
+import DownloadSection from '../components/DownloadSection.astro';
 import site from '../content/site.json';
 import {
   access,
   workflow,
   iteration,
   showcases,
-  evidenceGuide,
   faqs,
 } from '../content/content';
 ---
@@ -141,8 +141,8 @@ import {
           </div>
           <h3>Use the GPU on your desktop.</h3>
           <p>
-            Prelimina is built around GPU-native simulation. It's faster than the
-            fastest competitors.
+            Prelimina is built around GPU-native simulation. It's faster than
+            the fastest competitors.
           </p>
         </article>
         <article>
@@ -165,31 +165,7 @@ import {
       </p>
     </div>
   </section>
-  <section class="section container evidence-section" id="evidence">
-    <div>
-      <h2>
-        Results need <em>context.</em>
-      </h2>
-      <p>
-        Look for the physical question, the setup, and the comparison behind a
-        result. A convincing flow picture is the beginning of that assessment.
-      </p>
-      <a href="/validation/" class="text-link">
-        Inspect the evidence criteria <Icon />
-      </a>
-    </div>
-    <div class="evidence-list">
-      {evidenceGuide.map((item, index) => (
-        <div>
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <p>
-            <strong>{item.title}</strong>
-            {item.text}
-          </p>
-        </div>
-      ))}
-    </div>
-  </section>
+  <DownloadSection />
   <section class="section container faq-section" id="faq">
     <h2>
       Before you <em>begin.</em>

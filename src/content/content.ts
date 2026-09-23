@@ -189,18 +189,70 @@ export const showcases = [
   },
 ] as const satisfies readonly Application[];
 
-export const evidenceGuide = [
+// Build targets from the native packaging contract; public releases will supply
+// qualified requirements through the shared release manifest.
+export const downloadPlatforms = [
   {
-    title: 'Capability',
-    text: 'A feature exists in a particular software configuration. A demonstration shows it running; neither establishes accuracy for your application.',
+    id: 'windows',
+    name: 'Windows',
+    icon: 'windows',
+    status: 'In development',
+    requirements: [
+      ['System', '64-bit Windows (x86-64). OS versions to be confirmed.'],
+      ['GPU', 'Vulkan-capable GPU with a vendor driver.'],
+      ['Memory', 'RAM and VRAM minimums to be confirmed.'],
+    ],
   },
   {
-    title: 'Numerical verification',
-    text: 'Check the calculation against a known solution and examine conservation, convergence, and sensitivity to resolution and time step.',
+    id: 'linux',
+    name: 'Linux',
+    icon: 'linux',
+    status: 'In development',
+    requirements: [
+      ['System', '64-bit Linux (x86-64), glibc 2.28 or newer.'],
+      ['GPU', 'Vulkan-capable GPU with a vendor driver.'],
+      ['Memory', 'RAM and VRAM minimums to be confirmed.'],
+      ['Runtime', 'FUSE 2 for AppImage mounting.'],
+    ],
   },
   {
-    title: 'Physical validation',
-    text: 'Compare defined quantities with experimental or relevant physical reference data, including uncertainty and the limits of the comparison.',
+    id: 'macos',
+    name: 'macOS',
+    icon: 'apple',
+    status: 'Not available yet',
+    requirements: [
+      ['System', 'Supported macOS versions and processors to be announced.'],
+      ['GPU', 'Graphics support to be confirmed.'],
+      ['Memory', 'RAM minimum to be confirmed.'],
+    ],
+  },
+] as const;
+
+export const licensingFaqs = [
+  {
+    question: 'Is Prelimina free?',
+    answer:
+      'Yes, for lawful noncommercial use: personal projects, learning, teaching, and research without a commercial purpose. No purchase, subscription, academic affiliation, or separate permission is required.',
+  },
+  {
+    question: 'Can I use it for commercial work?',
+    answer:
+      'Yes, with a paid commercial licence or subscription before the work begins. This includes business evaluation, internal design work, and consulting. Eligibility depends on the purpose of the work, not your organisation’s status.',
+  },
+  {
+    question: 'Are there limits on noncommercial use?',
+    answer:
+      'The licence places no limits on users, installations, computing capacity, simulation size, or duration of noncommercial use. Your hardware still determines which simulations you can run.',
+  },
+  {
+    question: 'Do I keep my data and results?',
+    answer:
+      'Yes. You retain your rights in your data, designs, and results. The agreement gives PLASMICA no permission to publish them or use them to train AI models. Commercial use of results requires the appropriate entitlement.',
+  },
+  {
+    question: 'Can I modify or share the software?',
+    answer:
+      'Yes, for noncommercial purposes. Include the agreement, retain the required notices, and identify your changes. Commercial redistribution needs express coverage in a separate agreement.',
   },
 ] as const;
 
@@ -223,7 +275,7 @@ export const faqs = [
   {
     question: 'Which GPUs and operating systems are supported?',
     answer:
-      'A qualified public platform and GPU matrix has not been published yet. Operating system, GPU, driver, and memory requirements will accompany an approved release.',
+      'The Download section lists the current Windows and Linux build targets. Final operating system, GPU, driver, and memory requirements will accompany a public release. A macOS package is not available yet.',
   },
   {
     question: 'Does it run in my browser?',
@@ -231,20 +283,14 @@ export const faqs = [
       'Prelimina is a native desktop product. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation. Browser execution is not offered here.',
   },
   {
-    question: 'How is Prelimina licensed?',
-    answer:
-      'The Prelimina Licence Agreement grants free use for lawful noncommercial purposes, including independent learning, teaching, and research that does not serve a commercial purpose. No purchase or academic affiliation is required. Any commercial use needs a paid licence or subscription first, including business evaluation and consulting. Eligibility depends on the activity’s purpose, not an organisation’s status. The Access & licensing page links the full agreement; public installers are not yet available here.',
-  },
-  {
     question: 'Are these validated results?',
     answer:
-      'The images are workflow illustrations. The candidate applications show engineering questions, with availability and evidence labelled separately. The evidence page explains what a public numerical verification or physical validation record must contain; a simulation recording alone would not establish physical validation.',
+      'The images are workflow illustrations, not validated simulation results. The application pages describe engineering questions and their current scope. Results need independent verification and validation for your intended use.',
   },
 ] as const;
 
 export const nav = [
-  { label: 'Applications', href: '/showcases/' },
+  { label: 'Applications', href: '/#applications' },
   { label: 'Workflow', href: '/#workflow' },
-  { label: 'Evidence', href: '/validation/' },
-  { label: 'Access & licensing', href: '/pricing/' },
+  { label: 'Download', href: '/#download' },
 ];

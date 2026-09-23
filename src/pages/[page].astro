@@ -11,7 +11,6 @@ import {
   showcases,
   workflow,
   iteration,
-  evidenceGuide,
 } from '../content/content';
 import { inquiryOutline, inquiryHref } from '../content/inquiry.mjs';
 export function getStaticPaths() {
@@ -43,36 +42,6 @@ const { page } = Astro.params;
             Evidence describes what you can inspect. An illustration does not
             establish numerical accuracy or physical validation.
           </p>
-          <a href="/validation/" class="text-link">
-            Inspect the evidence criteria <Icon />
-          </a>
-        </>
-      )}
-      {page === 'download' && (
-        <>
-          <div class="info-panel ambient amb-surface amb-chamfer">
-            <h2>Public release status</h2>
-            <p>
-              No public build has been approved for download. When one is ready,
-              each installer will include its version, requirements, release
-              notes, file size, and checksum.
-            </p>
-            <a class="text-link" href={access.primary.href}>
-              {access.primary.label} <Icon />
-            </a>
-          </div>
-          <div class="article">
-            <h2>Requirements come with the release.</h2>
-            <p>
-              Operating system, GPU, driver, and memory requirements have not
-              been qualified for a public build. A development build path does
-              not establish platform support.
-            </p>
-            <p>
-              <a href="/pricing/">Read about access and licensing</a> or{' '}
-              <a href="/changelog/">view release status</a>.
-            </p>
-          </div>
         </>
       )}
       {page === 'docs' && (
@@ -158,10 +127,9 @@ const { page } = Astro.params;
               interchangeable accuracy guarantees.
             </p>
             <p>
-              Review <a href="/showcases/">initial applications</a> and the{' '}
-              <a href="/validation/">evidence criteria</a> when framing a study.
-              A version-specific quick start and platform requirements will
-              accompany an approved public release.
+              Review the <a href="/showcases/">initial applications</a> when
+              framing a study. A version-specific quick start and platform
+              requirements will accompany an approved public release.
             </p>
           </div>
         </>
@@ -243,7 +211,7 @@ const { page } = Astro.params;
               To obtain a commercial entitlement or clarify the scope of an
               intended use,{' '}
               <a href={licensingAction.href}>contact {licence.email}</a>. Read
-              the <a href="/pricing/">access and licensing summary</a> and the{' '}
+              the <a href="/#licensing">licensing FAQ</a> and the{' '}
               <a href={licence.href}>full Licence Agreement</a>.
             </p>
             <h2>Product questions & issue reports</h2>
@@ -260,181 +228,6 @@ const { page } = Astro.params;
               published before public release.
             </p>
             <p>No public issue tracker is linked during this preview.</p>
-          </div>
-        </>
-      )}
-      {page === 'validation' && (
-        <>
-          <div class="info-panel ambient amb-surface amb-chamfer">
-            <h2>Public evidence status</h2>
-            <p>
-              No approved public demonstration, numerical verification, physical
-              validation, or performance records are published here yet. This
-              describes the public record, not the existence of internal
-              testing.
-            </p>
-            <p class="section-note">
-              Website content reviewed: {site.reviewed}. No public product
-              version is attached to these illustrations.
-            </p>
-          </div>
-          <div class="article">
-            {evidenceGuide.map((item) => (
-              <section>
-                <h2>{item.title}</h2>
-                <p>{item.text}</p>
-              </section>
-            ))}
-            <h2>What to inspect in a result record</h2>
-            <ul>
-              <li>
-                The physical question, reference source, and scope of the
-                comparison.
-              </li>
-              <li>
-                The application version, solver configuration, and reproducible
-                input setup.
-              </li>
-              <li>
-                Geometry, liquid properties, boundary conditions, resolution,
-                time steps, and observation interval.
-              </li>
-              <li>
-                Measured quantities, extraction methods, comparison results, and
-                uncertainty or known limitations.
-              </li>
-            </ul>
-            <h2>Performance needs its own context.</h2>
-            <p>
-              A timing record also needs hardware and driver details, the
-              workload, and a timing method that states what is included. An
-              accelerated recording does not establish physical real-time
-              performance.
-            </p>
-            <h2>Read availability and evidence separately.</h2>
-            <p>
-              A feature can be implemented while its application remains in
-              development. A released build may still lack validation for a
-              particular use. Application records label availability as
-              released, in development, or planned, and evidence as
-              illustration, software demonstration, numerical verification, or
-              physical validation.
-            </p>
-            <a class="text-link" href="/showcases/">
-              Explore the application questions <Icon />
-            </a>
-          </div>
-        </>
-      )}
-      {page === 'pricing' && (
-        <>
-          <div class="access-grid">
-            <article class="platform-card">
-              <h2>Free noncommercial use</h2>
-              <p>
-                Install, run, study, copy, modify, and redistribute the Software
-                for lawful noncommercial purposes under the agreement. No
-                purchase, subscription, academic affiliation, or separate
-                permission is required.
-              </p>
-              <span class="tag">Royalty-free noncommercial licence</span>
-            </article>
-            <article class="platform-card">
-              <h2>Commercial use</h2>
-              <p>
-                Purchase a commercial licence or subscription before any
-                commercial use. This includes internal business analysis,
-                design, training, procurement evaluation, consulting, and work
-                on products or services intended for sale.
-              </p>
-              <span class="tag">Paid entitlement required</span>
-            </article>
-          </div>
-          <div class="article">
-            <p>
-              Summary of the Prelimina Licence Agreement, version{' '}
-              {licence.version}, dated{' '}
-              <time datetime={licence.date}>{licence.dateLabel}</time>.{' '}
-              <a href={licence.href}>Read the full agreement</a> for the
-              complete terms.
-            </p>
-            <h2>The purpose of the work determines eligibility.</h2>
-            <p>
-              Noncommercial activity is not directed towards commercial
-              advantage or monetary compensation for you or anyone else.
-              Personal projects, independent learning, teaching, and research
-              can qualify when they do not serve a commercial purpose. Academic
-              salaries, tuition, public funding, and research grants do not by
-              themselves make an activity commercial.
-            </p>
-            <p>
-              An organisation’s legal form or nonprofit status does not decide
-              eligibility. Unpaid work, free delivery, or calling work
-              “evaluation” or “research” does not make an otherwise commercial
-              activity noncommercial.
-            </p>
-            <h2>Noncommercial permissions</h2>
-            <p>
-              The licence imposes no limits on users, installations, computing
-              capacity, simulation size, or duration of noncommercial use. When
-              sharing the Software or a derivative, include the agreement,
-              retain the required notices, and identify modifications. This is a
-              noncommercial licence, not an open-source licence granting
-              unrestricted commercial use.
-            </p>
-            <h2>Commercial evaluations and pilots</h2>
-            <p>
-              Evaluate Prelimina against a real engineering question. Commercial
-              pilots are scoped around your application, the required
-              capabilities, and the support involved. Commercial evaluation
-              requires a paid entitlement before it starts; the ability to run
-              without a key does not authorise commercial use.
-            </p>
-            <p>
-              Your accepted order or separate commercial agreement sets the
-              permitted activities, covered versions, quantities or capacity,
-              term, fees, and purchased services. Hosted access, embedding,
-              resale, and commercial redistribution need express coverage. No
-              public price or standard commercial package is published here.
-            </p>
-            <h2>Your data and results</h2>
-            <p>
-              You retain your rights in inputs, projects, designs, and outputs.
-              The agreement gives PLASMICA no permission to publish your data or
-              use it to train AI models. Outputs lawfully produced under a
-              commercial entitlement may continue to be used and supplied to
-              clients after it expires; further commercial simulations require a
-              valid entitlement.
-            </p>
-            <p>
-              Using outputs originally created for a noncommercial purpose in
-              commercial work requires an entitlement covering that use before
-              the commercial use begins.
-            </p>
-            <h2>Support, services, and responsibility</h2>
-            <p>
-              The licence alone does not promise source code, updates, support,
-              or additional functionality. Product support and project-specific
-              engineering services need an agreed scope. Payment alone does not
-              promise accuracy, certification, or suitability. You remain
-              responsible for independently verifying and validating results;
-              express written commitments and mandatory legal rights remain
-              applicable.
-            </p>
-            <p class="notice">
-              Prelimina is in development. These permissions apply to Software
-              supplied under the agreement; no public installer is available
-              here yet.
-            </p>
-            <a
-              href={licensingAction.href}
-              class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-            >
-              {licensingAction.label} <Icon name="diagonal" size={18} />
-            </a>
-            <p class="contact-email section-note">
-              Licensing and legal enquiries: {licence.email}
-            </p>
           </div>
         </>
       )}
@@ -477,9 +270,8 @@ const { page } = Astro.params;
             {licence.version} dated{' '}
             <time datetime={licence.date}>{licence.dateLabel}</time>, grants
             free noncommercial use and requires a paid entitlement before
-            commercial use. The{' '}
-            <a href="/pricing/">access and licensing summary</a> explains these
-            permissions; the full agreement governs.
+            commercial use. The <a href="/#licensing">licensing FAQ</a> explains
+            these permissions; the full agreement governs.
           </p>
           <p>
             The agreement retains your rights in your data and results, requires
@@ -509,7 +301,7 @@ const { page } = Astro.params;
             No public product version or installer is attached to this design
             preview.
           </p>
-          <a class="text-link" href="/download/">
+          <a class="text-link" href="/#download">
             Check download availability <Icon />
           </a>
         </div>
