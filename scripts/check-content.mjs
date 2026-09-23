@@ -1,6 +1,15 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+function isPlainEmail(value) {
+  return (
+    typeof value === 'string' &&
+    /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}$/.test(
+      value,
+    )
+  );
+}
+
 export function validateContent(site, { publication = false } = {}) {
   if (site.launchState !== 'prelaunch')
     throw new Error(
@@ -10,16 +19,12 @@ export function validateContent(site, { publication = false } = {}) {
     throw new Error(
       'publicationApproved must explicitly record whether the website owner approved publishing this preview.',
     );
-  if (
-    site.contactEmail !== null &&
-    (typeof site.contactEmail !== 'string' ||
-      !/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}$/.test(
-        site.contactEmail,
-      ))
-  )
+  if (site.contactEmail !== null && !isPlainEmail(site.contactEmail))
     throw new Error(
       'contactEmail must be null or a plain valid email address.',
     );
+  if (!isPlainEmail(site.licence?.email))
+    throw new Error('licence.email must be a plain valid licensing address.');
   if (!site.company || !site.name || !site.hero?.descriptor)
     throw new Error('Required product content is missing.');
   if (/\{\{[^}]+\}\}/.test(JSON.stringify(site)))

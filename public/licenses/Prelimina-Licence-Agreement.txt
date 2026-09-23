@@ -1,0 +1,267 @@
+# Prelimina Licence Agreement
+
+Version 1.0 | 23 September 2026
+
+Copyright (c) 2026 PLASMICA d.o.o.
+
+Licensor and owner of the Prelimina intellectual property:
+
+PLASMICA d.o.o.
+R. Boškovića 32, 21000 Split, Croatia
+VAT-ID: HR57846556748
+Licensing and legal enquiries: licensing@prelimina.com
+
+## 1. Scope and agreement
+
+This agreement is between PLASMICA d.o.o. ("PLASMICA", "we") and the person or
+organisation exercising rights under it ("you"). It covers Prelimina software
+supplied with this agreement, including its GUI, command-line tools, first-party
+libraries, runtime resources, documentation, and any source code, updates, or
+maintenance releases we make available under these terms (the "Software").
+Third-party materials and materials expressly supplied under a separate licence
+are governed by their own terms.
+
+By installing, running, copying, modifying, or distributing the Software after
+this agreement has been made available to you, you agree to its terms. If you
+act for an organisation, you must have authority to bind it. If you do not agree,
+do not exercise the permissions granted here. Merely receiving a copy does not
+by itself mean you accept. Mandatory cancellation and refund rights remain
+unaffected.
+
+## 2. Free noncommercial licence
+
+Subject to this agreement, PLASMICA grants you a worldwide, non-exclusive,
+royalty-free licence to use the Software for any lawful noncommercial purpose.
+You may install, run, study, test, copy, modify, create derivative works from,
+and redistribute the Software for such purposes. You may automate it, combine it
+with other software, and make it available to others for noncommercial use.
+
+There are no licence-imposed limits on users, installations, computing capacity,
+simulation size, or duration of noncommercial use. No purchase, subscription,
+academic affiliation, or separate permission from PLASMICA is required for use
+that meets this section. This grant does not require PLASMICA to supply source
+code, updates, support, or functionality not included in the supplied Software.
+
+"Noncommercial" means that the activity is not directed towards commercial
+advantage or monetary compensation for you or anyone else. Examples include
+personal projects, hobbies, independent learning, teaching, and research that
+does not serve a commercial purpose. An organisation's name, legal form, or
+non-profit status does not determine whether a particular activity is
+noncommercial. Ordinary academic salaries, tuition fees, public funding, or
+research grants do not by themselves make teaching or research commercial;
+the purpose and intended use of the work determine that.
+
+When you share the Software or a derivative, include this agreement and retain
+applicable copyright and third-party notices. Clearly identify modifications
+and do not present a modified version as an official PLASMICA release. The
+Prelimina material in your distribution, including adaptations of that material,
+must remain subject to these terms; you cannot grant commercial rights to it
+on PLASMICA's behalf. Separately identifiable independent material retains its
+own licence. Recipients receive the noncommercial permission directly from
+PLASMICA under this agreement and need their own entitlement for commercial use.
+
+## 3. Commercial use requires a paid entitlement
+
+Before any commercial use, you must purchase a commercial licence or
+subscription from PLASMICA or an authorised seller that covers that use.
+Being able to download or run the Software without a key is not permission
+for commercial use.
+
+Commercial use includes:
+
+- Work for a business or professional activity, including internal analysis,
+  design, development, optimisation, testing, training, or procurement evaluation.
+- Consulting, contract work, or other services for commercial benefit, including
+  work delivered to a commercial client without a separate charge for Prelimina.
+- Developing, validating, manufacturing, marketing, or supporting products or
+  services intended for sale or other commercial exploitation.
+- Research intended to benefit a commercial activity, including sponsored work
+  that provides a commercial sponsor with proprietary deliverables or advantages.
+- Selling or commercially licensing the Software or its derivatives, or offering
+  access through a commercial hosted service or an embedded commercial product.
+- Selling simulation outputs, or using outputs to support any of the commercial
+  activities described above.
+
+A free delivery, a lack of profit, an unpaid assignment, or calling work
+"evaluation" or "research" does not make an otherwise commercial activity
+noncommercial. Commercial use of outputs originally generated for a
+noncommercial purpose also requires an entitlement covering that use before
+the commercial use begins. Buying a licence later does not automatically
+authorise earlier unlicensed commercial activity.
+
+The accepted order or separate commercial agreement identifies the licensee,
+permitted activities, covered versions, quantities or capacity, term, fees,
+and any purchased services. A subscription permits commercial use only during
+its active term. A perpetual licence permits continued commercial use of the
+covered versions within its agreed scope. Resale, commercial redistribution,
+embedding, and hosted access must be expressly covered by the commercial
+agreement; an ordinary commercial-use licence does not itself grant them.
+
+The warranty exclusions, validation responsibilities, and liability provisions
+below also apply to paid use unless an express written agreement with PLASMICA
+changes them. Payment alone is not a promise of accuracy, certification,
+support, updates, or suitability. After a commercial entitlement ends, you may
+continue genuinely noncommercial use under section 2 if you comply with this
+agreement. Contact licensing@prelimina.com to obtain a commercial entitlement
+or clarify the scope of an intended use.
+
+## 4. Intellectual property and third-party rights
+
+PLASMICA retains ownership of the first-party Software and its intellectual
+property. You receive only the permissions expressly granted by this agreement
+or a separate agreement with PLASMICA. This is a noncommercial licence, not an
+open-source licence granting unrestricted commercial use. It does not transfer
+ownership or grant a general right to use PLASMICA or Prelimina trademarks,
+except to identify the Software accurately and reproduce required notices.
+
+Third-party components belong to their respective owners. Their own licences
+and notices, including those in THIRD_PARTY_LICENSES.md and other accompanying
+notices, govern those components. Nothing here restricts rights they grant,
+including any commercial-use, modification, redistribution, or source-access
+rights. When redistributing such components, comply with their licences.
+
+Nothing in this agreement restricts rights that mandatory law gives you,
+including any protected rights to observe, study, test, make backups, achieve
+interoperability, decompile, or transfer a lawfully acquired copy.
+
+## 5. Your data and results
+
+You retain your rights in your inputs, projects, designs, and outputs. PLASMICA
+does not acquire ownership of them merely because you use Prelimina. This
+agreement gives PLASMICA no permission to publish your data or use it to train
+AI models. You are responsible for having the rights needed for the data and
+materials you use and share.
+
+You may retain, copy, publish, and share results within the scope of the
+entitlement under which they are used. Outputs lawfully produced under a
+commercial entitlement may continue to be used and supplied to clients after
+that entitlement expires; no continuing subscription is required solely to use
+those outputs. Running further commercial simulations still requires a valid
+commercial entitlement. Giving someone outputs does not give them a commercial
+licence to run the Software. Outputs created under section 2 remain subject to
+the commercial-use requirement in section 3.
+
+Your obligations concerning commercial use of outputs are contractual
+obligations owed to PLASMICA. They do not give PLASMICA ownership of your outputs
+or automatically bind someone who has not agreed to them.
+
+You may publish reviews, benchmarks, and noncommercial research results without
+our approval. No publication or citation obligation is imposed by this agreement.
+Do not falsely claim PLASMICA endorsement or certification.
+
+## 6. You must independently verify results
+
+Prelimina is a computational tool. Simulations are approximations and may contain
+modelling, numerical, implementation, input, hardware, or interpretation errors.
+A completed run, low residual, converged solver, plausible image, or comparison
+between designs does not establish physical correctness, safety, compliance,
+or fitness for an intended use.
+
+You are solely responsible for:
+
+- Selecting and checking models, assumptions, geometry, units, material data,
+  initial and boundary conditions, resolution, time steps, and solver settings.
+- Checking applicable limitations, convergence, sensitivity, numerical error,
+  and the relevance of the model to the physical problem.
+- Independently validating results against suitable analytical solutions,
+  experiments, measurements, or other reliable evidence before relying on them.
+- Obtaining qualified professional review, certification, approvals, and other
+  checks required for your intended application.
+- Decisions, designs, products, services, publications, and actions based on the
+  Software or its outputs, including their safety and regulatory compliance.
+- Protecting your data, keeping backups, and checking exported or transferred
+  results before use.
+
+The Software and any assistance from PLASMICA do not replace your professional
+judgment or independent verification. Do not rely on the Software as the sole
+basis for a safety-critical decision. Unless expressly agreed in writing, the
+Software is not supplied as a certified safety system or a substitute for
+required engineering approval. You assume the risks of your use and reliance
+to the fullest extent permitted by law. This allocation of responsibility does
+not remove obligations or liability that the law does not permit us to exclude.
+
+## 7. No warranty or service commitment
+
+TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE, DOCUMENTATION,
+OUTPUTS, UPDATES, AND ANY ASSISTANCE ARE PROVIDED "AS IS" AND "AS AVAILABLE",
+WITHOUT ANY WARRANTY, GUARANTEE, OR CONDITION, EXPRESS, IMPLIED, OR STATUTORY.
+PLASMICA DISCLAIMS, TO THAT EXTENT, WARRANTIES OR CONDITIONS OF MERCHANTABILITY,
+SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT,
+ACCURACY, COMPLETENESS, RELIABILITY, SECURITY, AND ERROR-FREE OR UNINTERRUPTED
+OPERATION.
+
+We do not warrant that the Software or any result is correct, that defects will
+be corrected, or that it will meet your requirements or work with every system.
+No demonstration, example, benchmark, documentation, or informal advice creates
+an additional contractual warranty. Alpha, beta, preview, and experimental
+features may be incomplete or change, including their formats and behaviour.
+
+Except where a separate written agreement or mandatory law requires otherwise,
+PLASMICA has no obligation to provide maintenance, support, updates, continued
+availability, compatibility, or a particular response time. These exclusions
+apply to free and paid use alike. They do not override express commitments in
+an accepted commercial agreement or mandatory statutory rights.
+
+## 8. Exclusion of liability and mandatory exceptions
+
+TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, PLASMICA AND ITS DIRECTORS,
+EMPLOYEES, CONTRIBUTORS, AND SUPPLIERS SHALL NOT BE LIABLE FOR ANY CLAIM, LOSS,
+DAMAGE, COST, OR OTHER LIABILITY ARISING FROM OR CONNECTED WITH THE SOFTWARE,
+ITS USE OR INABILITY TO BE USED, OR RELIANCE ON ITS OUTPUTS OR ANY ASSISTANCE.
+THIS EXCLUSION COVERS DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL,
+AND PUNITIVE DAMAGES, INCLUDING LOST PROFITS, REVENUE, BUSINESS, OPPORTUNITIES,
+SAVINGS, DATA, OR GOODWILL; BUSINESS INTERRUPTION; AND COSTS OF REPLACEMENT,
+REWORK, FAILED DESIGNS, OR PROCUREMENT. IT APPLIES REGARDLESS OF THE LEGAL
+BASIS OF THE CLAIM, INCLUDING CONTRACT, TORT, OR NEGLIGENCE, AND EVEN IF THE
+POSSIBILITY OF SUCH LOSS WAS KNOWN OR ADVISED.
+
+Nothing in this agreement excludes or limits liability for fraud, intentional
+misconduct, or gross negligence, or for death or personal injury where exclusion
+or limitation is unlawful. Nor does it exclude or limit any other liability,
+statutory guarantee, remedy, or consumer right that applicable law does not
+allow to be excluded or limited. In particular, applicable mandatory rights
+concerning digital-content conformity, necessary updates, repair, price
+reduction, termination, withdrawal, and refunds remain unaffected. These
+mandatory protections prevail over every other provision of this agreement.
+
+## 9. Duration and termination
+
+The noncommercial permission has no fixed expiry for the version supplied under
+this agreement. It continues while you comply with these terms. PLASMICA may
+terminate that permission for a material breach by written notice. For a breach
+that can be remedied, the notice must allow 30 days to remedy it before
+termination. This remedy period does not authorise continued unlicensed
+commercial use. Commercial entitlements also follow their agreed duration
+and termination terms.
+
+On termination, stop the activities no longer authorised and delete copies for
+which you have no surviving permission, subject to mandatory retention rights.
+You may retain your own inputs and lawfully generated outputs, subject to the
+use rights in sections 3 and 5. Termination of your permission does not by itself
+terminate the permissions of compliant recipients of copies you previously
+distributed. Provisions concerning ownership, outputs, responsibility, warranty,
+liability, accrued obligations, and disputes survive as applicable.
+
+## 10. Governing law and other terms
+
+Croatian law governs this agreement. For disputes with a business licensee,
+the competent courts in Split, Croatia have exclusive jurisdiction, unless a
+separate agreement provides otherwise. Consumers retain the mandatory
+protections and rights to bring or defend proceedings in the courts available
+under applicable law, including mandatory protections in their country of
+habitual residence.
+
+You must comply with applicable export-control and sanctions laws when using,
+exporting, re-exporting, or transferring the Software.
+
+An individually agreed written contract with PLASMICA takes precedence to the
+extent of an express conflict, followed by expressly agreed commercial order
+terms, then this agreement. Third-party licences and mandatory law prevail
+where applicable. A later website notice or licence version does not
+retroactively change rights already granted for a supplied version. New terms
+may accompany future versions or purchases.
+
+If a provision is unenforceable, the remaining provisions continue to the
+extent lawful. A failure to enforce a provision is not a waiver. Send licensing
+questions, legal notices, and complaints to licensing@prelimina.com or the
+PLASMICA postal address above.

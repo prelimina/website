@@ -5,34 +5,34 @@ export const pages = {
       'Prelimina is in development. Public installers will appear here when a release and its platform requirements are ready.',
   },
   showcases: {
-    title: 'Start with a possibility.',
+    title: 'Start with an engineering question.',
     description:
-      'A few engineering questions that help explain the direction of Prelimina. These are candidate studies, with illustrative schematics and explicit limits.',
+      'Explore the initial applications for GPU-native CFD: sloshing, baffle arrangements, and moving liquids. These candidate applications state the question, inputs, and scope still to qualify.',
   },
   docs: {
-    title: 'A little orientation.',
+    title: 'From setup to fluid insight.',
     description:
-      'An introduction to the intended workflow. Installation instructions and version-specific guides will accompany the first public release.',
+      'Scene, Prepare, Simulate: the native desktop workflow in development for moving-liquid studies. This overview describes implementation scope; release-specific guides will accompany an approved public build.',
   },
   support: {
-    title: 'What are you working on?',
+    title: 'Start with your design question.',
     description:
-      'The most useful starting point is a design decision. Tell us what you want to understand and what would make the next step clearer.',
+      'Outline what you want to understand, what you want to compare, and the decision your fluid study would inform. Confidential geometry is unnecessary for the first conversation.',
   },
   validation: {
-    title: 'Evidence, with its limits.',
+    title: 'Results need context.',
     description:
-      'A useful picture is only part of the story. The method, assumptions, numerical checks, and reference evidence matter just as much.',
+      'Inspect the question, setup, numerical method, and reference behind a result. CFD capability, numerical verification, and physical validation answer different questions.',
   },
   pricing: {
-    title: 'The right starting point.',
+    title: 'Access & licensing',
     description:
-      'We’re shaping access around the people using Prelimina and the work they do. Commercial access is by agreement.',
+      'Prelimina is free for lawful noncommercial use under its Licence Agreement. Commercial use requires a paid licence or subscription before it begins. The desktop product remains in development.',
   },
   legal: {
     title: 'The details, clearly stated.',
     description:
-      'This is a preliminary design preview. Public release terms, corporate details, and the full privacy notice are not yet approved for publication.',
+      'Company details, the Prelimina Licence Agreement, and privacy information for this prelaunch website.',
   },
   changelog: {
     title: 'The story starts here.',

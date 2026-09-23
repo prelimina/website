@@ -1,8 +1,8 @@
-# Prelimina website — first design iteration
+# Prelimina website
 
 A standalone Astro/TypeScript static site for the native Prelimina desktop product. It does not build, import, or run SlangSolvers. The visual direction combines the supplied black header/logo, locally hosted Bacasime Antique, system sans-serif text, and AmbientCSS lighting, material surfaces, raised controls, and recessed panels.
 
-The homepage workbench is an interactive **workflow schematic**, not an application screenshot or CFD result. Its four buttons change the illustrated workflow stage. Candidate showcases have their own scope pages. The mobile menu, FAQ disclosures, navigation, and case-outline copy control work.
+The site positions Prelimina as GPU-native desktop CFD for moving liquids and early-stage design. The homepage moves from initial applications to workflow, fit with existing tools, evidence, FAQ, and a next action. The interactive **workflow illustration** has three steps: Setup, Simulate, and Optimize. The native workflow below it retains Scene, Prepare, and Simulate. Optimize illustrates manual design iteration in the user's geometry tools followed by another run and comparison. It is not an application screenshot, CFD result, or automatic optimisation feature. Candidate applications retain `/showcases/` and their existing detail URLs.
 
 ## Run locally
 
@@ -39,7 +39,7 @@ To use an already installed Chrome instead of downloading Playwright's browser:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/opt/google/chrome/chrome npm run test:browser
 ```
 
-The tests cover content boundaries, rejected email injection, prelaunch-only behavior, publication blocking, generated routes and local asset links, desktop/tablet/mobile overflow, keyboard navigation, schematic controls, FAQ, clipboard success/failure, reduced motion, and automated axe WCAG A/AA checks. Screenshots go to ignored `test-results/`. Automated accessibility checks are not a complete manual accessibility certification. The 640px layout is a reflow proxy for a 1280px viewport at 200% zoom.
+The tests cover content boundaries, rejected email injection, prelaunch-only behavior, publication blocking, preserved routes and anchors, availability/evidence labels, and absence of invented downloads or commercial offers. Browser checks cover desktop/tablet/mobile overflow, the Setup / Simulate / Optimize illustration and three-stage native workflow, keyboard navigation, FAQ, clipboard success/failure, reduced motion, and automated axe WCAG A/AA checks. A temporary build with a reserved test email checks the configured inquiry route and encoding of edited outlines without changing the real site's configuration or build. Screenshots go to ignored `test-results/`. Automated accessibility checks are not a complete manual accessibility certification. The 640px layout is a reflow proxy for a 1280px viewport at 200% zoom.
 
 To check the actual Cloudflare static-asset headers locally:
 
@@ -53,25 +53,34 @@ The GitHub Actions check workflow installs from the lockfile, builds, and runs t
 
 ## Edit content
 
-| File                     | Purpose                                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------------------- |
-| `src/content/site.json`  | Product/company name, launch state, public contact email, review date, homepage introduction. |
-| `src/content/content.ts` | Typed workflow copy, navigation, FAQs, and candidate showcase records.                        |
-| `src/content/pages.ts`   | Supporting-page titles and introductions.                                                     |
-| `src/pages/index.astro`  | Homepage section copy and composition.                                                        |
-| `src/pages/[page].astro` | Supporting-page body copy and contact controls.                                               |
-| `src/styles/global.css`  | Palette, type, layout, AmbientCSS materials, responsive rules.                                |
-| `public/assets/`         | Supplied logo and original font.                                                              |
+| File                      | Purpose                                                                                                                |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `src/content/site.json`   | Product/company name, launch state, application contact, licence metadata/contact, review date, homepage introduction. |
+| `src/content/content.ts`  | Typed workflow copy, navigation, FAQs, evidence guidance, and candidate application records.                           |
+| `src/content/inquiry.mjs` | Shared contact/status decisions, inquiry outline, and safe email-draft URL construction.                               |
+| `src/content/pages.ts`    | Supporting-page titles and introductions.                                                                              |
+| `src/pages/index.astro`   | Homepage section copy and composition.                                                                                 |
+| `src/pages/[page].astro`  | Supporting-page body copy and contact controls.                                                                        |
+| `src/styles/global.css`   | Palette, type, layout, AmbientCSS materials, responsive rules.                                                         |
+| `public/assets/`          | Supplied logo and original font.                                                                                       |
 
 Hero title and its line breaks are composed in `index.astro`; its descriptor and supporting paragraph come from `site.json`. No remote font or asset request is required. Font and AmbientCSS licenses are included in `public/licenses/`.
 
-Set `contactEmail` to an approved public address to enable the email-draft action. The visitor must send the email in their own application. Until configured, the support page explicitly says inquiries are not open, and users can only prepare/copy an outline. No outline is submitted, persisted, or sent to analytics.
+Set `contactEmail` only when an address is approved for application inquiries and inquiries are open. That enables “Discuss your case” and the email-draft action. The edited outline is encoded into the draft; the visitor reviews and sends it in their own email application. A visible address provides a fallback. Until configured, the primary action is “Explore applications”, the support page explicitly says application inquiries are not open, and users can prepare/copy an outline. Copying never implies submission. No outline is submitted, persisted, or sent to analytics.
+
+The owner directed the licensing content to follow the supplied Prelimina Licence Agreement, version 1.0, dated 23 September 2026. Its complete, unchanged text is published at `public/licenses/Prelimina-Licence-Agreement.txt`; access, FAQ, and legal copy summarise that agreement. When updating it, replace the complete text from the authoritative product licence and review the summaries and `site.json` metadata together. The tests check the version, contact, core permissions, and built copy. The agreement grants free noncommercial use and requires a paid entitlement before commercial use, including business evaluation. It does not itself make a public installer available.
+
+`licence.email` is the agreement's licensing/legal contact, used to obtain commercial entitlement or clarify intended use. It does not enable the general application-inquiry CTA or change `contactEmail`. Prices, commercial packages, and purchased support commitments require their own approved terms.
+
+Application availability (`released`, `in_development`, `planned`) and evidence (`illustration`, `software_demonstration`, `numerical_verification`, `physical_validation`) are independent fields. The current records are illustrative candidates: baffle arrangements and tank motion are in development; filling and overflow are planned and retain explicit boundary/measurement gaps. The evidence page describes record requirements without fabricating public results.
+
+Capability wording was checked against the accessible product implementation and current native workflow, geometry-loader, measurement/export, and boundary contracts on 2026-09-23. Implemented capabilities are described as development scope, not as released or physically validated features. No private source, repository links, internal benchmarks, or partner media are published here.
 
 When replacing a concept schematic with a real capture, record the product version, model assumptions, case status, and any limits. Use explicit dimensions, compressed local media, meaningful alt text, and click-to-play for optional videos. Never present these SVG illustrations as simulation evidence.
 
 ## Publication and release scope
 
-The owner approved publishing this **prelaunch design preview** on 2026-09-22. `src/content/site.json` records that website approval as `publicationApproved: true`. It does not approve software releases, prices, legal terms, or a contact service. The site still labels its candidate illustrations and unavailable downloads explicitly.
+The owner approved publishing this **prelaunch design preview** on 2026-09-22. `src/content/site.json` records that website approval as `publicationApproved: true`. That website approval does not approve software releases, prices, or a general application contact service. The later instruction to publish the supplied Licence Agreement is recorded above. The site still labels its candidate illustrations and unavailable downloads explicitly.
 
 `robots.txt`, page metadata, and `_headers` request no indexing. Noindex is not access control: the approved preview may be public, and nothing in this repository should depend on it being private.
 
@@ -90,10 +99,12 @@ If the repo is already connected through Cloudflare Workers Builds, use the repo
 
 Before a public product launch:
 
-1. Publish confirmed company/contact details and approved legal and hosting disclosures.
+1. Complete hosting-specific privacy and website disclosures. Company details and the software licence are published from the supplied agreement; the general application contact still needs configuration.
 2. Add the final domain, canonical URLs, sitemap, and an intentional indexing policy.
 3. Integrate the **existing shared schemaVersion 2 release manifest**, owned at `SlangSolvers/schemas/release-manifest.schema.json`, when real approved releases exist. No competing release schema or fake manifest is created here. Add schema/approved-host validation, actual platform eligibility, hashes/sizes, freshness, and failure-state tests before enabling downloads or `alpha_open`.
 4. Configure the agreed release/deployment process. Keep installers on their separate release host.
+
+Outstanding publication inputs are an approved public application-inquiry address, approved genuine product media with version/case/evidence context, approved public verification/validation records, qualified release/platform information, and approved commercial offers, pricing, and support schedules. Any later indexing change requires its own decision. Website publication approval does not supply any of those approvals. No commercial price proposals or draft licence promises belong in this public repository.
 
 No advertising, cookies, analytics, session replay, remote fonts, third-party embeds, or backend have been added. Hosting providers may process request logs; the full hosting-specific privacy notice remains product-launch work.
 

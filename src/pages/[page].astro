@@ -4,7 +4,16 @@ import Icon from '../components/Icon.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import site from '../content/site.json';
 import { pages } from '../content/pages';
-import { showcases, workflow } from '../content/content';
+import {
+  access,
+  licence,
+  licensingAction,
+  showcases,
+  workflow,
+  iteration,
+  evidenceGuide,
+} from '../content/content';
+import { inquiryOutline, inquiryHref } from '../content/inquiry.mjs';
 export function getStaticPaths() {
   return Object.entries(pages).map(([page, content]) => ({
     params: { page },
@@ -13,8 +22,6 @@ export function getStaticPaths() {
 }
 const { content } = Astro.props;
 const { page } = Astro.params;
-const inquiry =
-  'My design question:\n\nWhat I want to compare:\n\nThe decision this would inform:\n\nOperating system and GPU (if known):\n\nOptional work contact:';
 ---
 
 <Layout title={content.title} description={content.description}>
@@ -32,53 +39,38 @@ const inquiry =
             ))}
           </div>
           <p class="notice">
-            Candidate studies are not validated applications. No public
-            numerical dataset, benchmark, or product screenshot is represented
-            by these illustrations.
+            Availability describes application development or release status.
+            Evidence describes what you can inspect. An illustration does not
+            establish numerical accuracy or physical validation.
           </p>
           <a href="/validation/" class="text-link">
-            Read our approach to evidence <Icon />
+            Inspect the evidence criteria <Icon />
           </a>
         </>
       )}
       {page === 'download' && (
         <>
           <div class="info-panel ambient amb-surface amb-chamfer">
-            <h2>Not quite on your desktop. Yet.</h2>
+            <h2>Public release status</h2>
             <p>
               No public build has been approved for download. When one is ready,
               each installer will include its version, requirements, release
               notes, file size, and checksum.
             </p>
-            <a class="text-link" href="/support/#early-access">
-              About early access <Icon />
+            <a class="text-link" href={access.primary.href}>
+              {access.primary.label} <Icon />
             </a>
           </div>
-          <div class="platform-grid">
-            {['Windows', 'Linux', 'macOS'].map((platform) => (
-              <article class="platform-card">
-                <Icon name="desktop" size={28} />
-                <h3>{platform}</h3>
-                <p>No qualified public release is available.</p>
-                <span class="tag">Support not announced</span>
-              </article>
-            ))}
-          </div>
-          <p class="notice">
-            Your operating system is a starting point, not a compatibility
-            guarantee. GPU, driver, and memory requirements will be published
-            for each qualified release.
-          </p>
           <div class="article">
-            <h2>One product. A deeper workflow when you need it.</h2>
+            <h2>Requirements come with the release.</h2>
             <p>
-              The desktop application is the starting point. Any CLI release
-              will be presented as an advanced companion, alongside the matching
-              version and requirements.
+              Operating system, GPU, driver, and memory requirements have not
+              been qualified for a public build. A development build path does
+              not establish platform support.
             </p>
             <p>
-              There are no older public versions to list.{' '}
-              <a href="/changelog/">View release status.</a>
+              <a href="/pricing/">Read about access and licensing</a> or{' '}
+              <a href="/changelog/">view release status</a>.
             </p>
           </div>
         </>
@@ -86,52 +78,90 @@ const inquiry =
       {page === 'docs' && (
         <>
           <div class="info-panel ambient amb-surface amb-chamfer">
-            <h2>A guide to the idea.</h2>
+            <h2>A workflow in development.</h2>
             <p>
-              This is a workflow overview for the design preview. A runnable
-              quick start, bundled example, troubleshooting guide, and
-              documented hardware requirements will accompany a qualified public
-              build.
+              The native application separates the physical experiment from
+              numerical preparation and execution. No public installer is
+              attached to this overview.
             </p>
           </div>
           <div class="article">
-            <h2>From a question to a next step.</h2>
             {workflow.map((step, index) => (
-              <div class="quickstart-step">
-                <span>0{index + 1}</span>
+              <section class="quickstart-step" id={step.id}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
                 <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
+                  <h2>{step.title}</h2>
+                  <p>
+                    <strong>{step.detail}</strong> {step.text}
+                  </p>
                 </div>
-              </div>
+              </section>
             ))}
-            <h2>When a public build is available</h2>
-            <ol>
-              <li>
-                Choose the qualified installer for your system and check its
-                requirements and release notes.
-              </li>
-              <li>
-                Open the bundled example for that version. Inspect the units,
-                fluid properties, boundary conditions, and method limitations.
-              </li>
-              <li>
-                Run the example and examine its documented numerical checks
-                before interpreting a result.
-              </li>
-              <li>
-                Change one parameter and compare it against the baseline,
-                keeping the relevant assumptions consistent.
-              </li>
-              <li>
-                Save your setup and use the version’s documented export options.
-                Record the version and assumptions with your findings.
-              </li>
-            </ol>
+            <h2>{iteration.title}</h2>
+            <p>{iteration.text}</p>
+            <h2 id="geometry">Geometry and physical setup</h2>
             <p>
-              For now, you can explore our{' '}
-              <a href="/showcases/">candidate study questions</a> and{' '}
-              <a href="/validation/">approach to evidence</a>.
+              The development application imports mesh files in STL, OBJ, PLY,
+              glTF, and GLB formats. Create geometry in your usual tools and
+              check units, orientation, and suitability for the intended fluid
+              region. Native CAD history, automatic repair, and retained
+              boundary assignments after reimport are not promised.
+            </p>
+            <p>
+              Define the initial liquid, material properties, gravity, and
+              prescribed motion. Choose a configuration that supports the
+              physical assumptions of your experiment, including the treatment
+              of the surrounding gas.
+            </p>
+            <h2 id="boundaries">Boundary and motion scope</h2>
+            <p>
+              Boundary support depends on the method and configuration.
+              Prescribed tank or body motion is distinct from freely responding
+              rigid-body coupling. Saved wall-velocity settings do not establish
+              a moving wall: the current FLIP domain-wall colliders remain
+              fixed; moving bodies and domain-frame motion are separate
+              mechanisms.
+            </p>
+            <p>
+              Selected configurations implement prescribed inflow and domain
+              pressure outlets. General inlet/outlet combinations, finite outlet
+              surfaces, and moving inlet surfaces still need implementation or
+              qualification. Filling and overflow remain a candidate
+              application.
+            </p>
+            <h2 id="measurements">Measurements and exports</h2>
+            <p>
+              Simulate provides live visualisation and diagnostics. Configured
+              pressure and velocity probes record measurements to CSV, with
+              availability and units. Field and surface exports use VTK where
+              supported by the selected method. Review both numerical
+              diagnostics and measurement availability before comparing runs.
+            </p>
+            <p>
+              A pressure probe samples a fluid region; it is not a reconstructed
+              wall-pressure tap. Body forces and moments are whole-body
+              quantities with method-specific limits. The experimental FLIP
+              Wavelet mode does not provide quantitative pressure or
+              force/moment measurements. Exported data still needs case-specific
+              verification and validation.
+            </p>
+            <h2 id="numerical-scope">
+              Numerical choices have different scopes.
+            </h2>
+            <p>
+              Prepare exposes resolution, time-step, and method settings. The
+              FLIP interface starts with Basic controls and offers Advanced and
+              Expert detail. FVM and FIRM use different methods and currently
+              have less curated settings interfaces. Experimental variants have
+              narrower capability and qualification limits. These are
+              development paths within one product, not purchasing tiers or
+              interchangeable accuracy guarantees.
+            </p>
+            <p>
+              Review <a href="/showcases/">initial applications</a> and the{' '}
+              <a href="/validation/">evidence criteria</a> when framing a study.
+              A version-specific quick start and platform requirements will
+              accompany an approved public release.
             </p>
           </div>
         </>
@@ -149,25 +179,11 @@ const inquiry =
               study inform? Please leave confidential geometry and project data
               out of an initial inquiry.
             </p>
-            {site.contactEmail ? (
-              <>
-                <a
-                  href={`mailto:${site.contactEmail}?subject=${encodeURIComponent('Prelimina — discuss my case')}&body=${encodeURIComponent(inquiry)}`}
-                  class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-                >
-                  Open an email draft <Icon name="diagonal" size={18} />
-                </a>
-                <p class="contact-email">Email: {site.contactEmail}</p>
-                <p class="section-note">
-                  Opens your email application. Review and send the message
-                  there.
-                </p>
-              </>
-            ) : (
+            {!access.open && (
               <p class="notice">
-                Early-access inquiries are not open through this preview yet.
-                You can prepare an outline below; a public contact address will
-                be added when it is confirmed.
+                Application inquiries are not open through this preview yet. You
+                can prepare an outline below; a public application contact
+                address will be added when it is confirmed.
               </p>
             )}
             <label for="inquiry" class="contact-label">
@@ -175,10 +191,21 @@ const inquiry =
             </label>
             <textarea
               id="inquiry"
+              rows={8}
               class="contact-summary"
               spellcheck="true"
-            >{inquiry}</textarea>
+            >{inquiryOutline}</textarea>
             <div class="copy-row">
+              {site.contactEmail && (
+                <a
+                  id="email-inquiry"
+                  data-inquiry-email={site.contactEmail}
+                  href={inquiryHref(site.contactEmail, inquiryOutline)}
+                  class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+                >
+                  Open an email draft <Icon name="diagonal" size={18} />
+                </a>
+              )}
               <button
                 id="copy-inquiry"
                 type="button"
@@ -187,6 +214,23 @@ const inquiry =
                 Copy your outline <Icon size={17} />
               </button>
             </div>
+            {site.contactEmail && (
+              <>
+                <p class="contact-email section-note">
+                  Email: {site.contactEmail}
+                </p>
+                <p class="section-note">
+                  Opens your email application. Review and send the message
+                  there.
+                </p>
+                <noscript>
+                  <p>
+                    To include an edited outline, copy it into a message to the
+                    address above.
+                  </p>
+                </noscript>
+              </>
+            )}
             <p id="copy-status" class="copy-status" role="status"></p>
             <p class="section-note">
               Nothing is submitted or saved by this website. Refreshing the page
@@ -194,6 +238,14 @@ const inquiry =
             </p>
           </section>
           <div class="article">
+            <h2>Licensing questions</h2>
+            <p>
+              To obtain a commercial entitlement or clarify the scope of an
+              intended use,{' '}
+              <a href={licensingAction.href}>contact {licence.email}</a>. Read
+              the <a href="/pricing/">access and licensing summary</a> and the{' '}
+              <a href={licence.href}>full Licence Agreement</a>.
+            </p>
             <h2>Product questions & issue reports</h2>
             <p>
               Include your application version, operating system, GPU and
@@ -214,46 +266,62 @@ const inquiry =
       {page === 'validation' && (
         <>
           <div class="info-panel ambient amb-surface amb-chamfer">
-            <h2>The distinction matters.</h2>
+            <h2>Public evidence status</h2>
             <p>
-              No approved public validation or performance record is published
-              on this site yet. The candidate studies describe potential
-              questions; they do not establish accuracy or suitability for an
-              application.
+              No approved public demonstration, numerical verification, physical
+              validation, or performance records are published here yet. This
+              describes the public record, not the existence of internal
+              testing.
             </p>
             <p class="section-note">
-              Website content reviewed: {site.reviewed}. Product version: no
-              public release attached.
+              Website content reviewed: {site.reviewed}. No public product
+              version is attached to these illustrations.
             </p>
           </div>
           <div class="article">
-            <h2>Implemented capability</h2>
+            {evidenceGuide.map((item) => (
+              <section>
+                <h2>{item.title}</h2>
+                <p>{item.text}</p>
+              </section>
+            ))}
+            <h2>What to inspect in a result record</h2>
+            <ul>
+              <li>
+                The physical question, reference source, and scope of the
+                comparison.
+              </li>
+              <li>
+                The application version, solver configuration, and reproducible
+                input setup.
+              </li>
+              <li>
+                Geometry, liquid properties, boundary conditions, resolution,
+                time steps, and observation interval.
+              </li>
+              <li>
+                Measured quantities, extraction methods, comparison results, and
+                uncertainty or known limitations.
+              </li>
+            </ul>
+            <h2>Performance needs its own context.</h2>
             <p>
-              A method or feature exists in the software. That alone does not
-              establish convergence, accuracy, or suitability across physical
-              regimes.
+              A timing record also needs hardware and driver details, the
+              workload, and a timing method that states what is included. An
+              accelerated recording does not establish physical real-time
+              performance.
             </p>
-            <h2>Numerical health</h2>
+            <h2>Read availability and evidence separately.</h2>
             <p>
-              Conservation, residuals, stability, and refinement help assess how
-              a particular calculation behaves. Passing one check does not
-              replace physical validation.
-            </p>
-            <h2>Validation for a defined case</h2>
-            <p>
-              A public case record should connect the model and its assumptions
-              to a relevant analytical, experimental, or reference result. It
-              should state the application version, method, inputs, metrics, and
-              known limitations.
-            </p>
-            <h2>Performance with context</h2>
-            <p>
-              Any published timing should identify the hardware, software,
-              workload, and measurement method. This preview makes no measured
-              speedup claim.
+              A feature can be implemented while its application remains in
+              development. A released build may still lack validation for a
+              particular use. Application records label availability as
+              released, in development, or planned, and evidence as
+              illustration, software demonstration, numerical verification, or
+              physical validation.
             </p>
             <a class="text-link" href="/showcases/">
-              Explore the candidate questions <Icon />
+              Explore the application questions <Icon />
             </a>
           </div>
         </>
@@ -261,47 +329,135 @@ const inquiry =
       {page === 'pricing' && (
         <>
           <div class="access-grid">
-            {[
-              {
-                title: 'Learning & research',
-                text: 'Eligibility for any free use will be defined in the approved release terms.',
-                tag: 'Eligibility to be published',
-              },
-              {
-                title: 'Commercial evaluation',
-                text: 'Discuss the decision you need to make and whether an evaluation fits your case.',
-                tag: 'By agreement',
-              },
-              {
-                title: 'Professional & pilot',
-                text: 'Business access and bounded project support, with scope and terms agreed in advance.',
-                tag: 'By agreement',
-              },
-            ].map((plan) => (
-              <article class="platform-card">
-                <h3>{plan.title}</h3>
-                <p>{plan.text}</p>
-                <span class="tag">{plan.tag}</span>
-              </article>
-            ))}
+            <article class="platform-card">
+              <h2>Free noncommercial use</h2>
+              <p>
+                Install, run, study, copy, modify, and redistribute the Software
+                for lawful noncommercial purposes under the agreement. No
+                purchase, subscription, academic affiliation, or separate
+                permission is required.
+              </p>
+              <span class="tag">Royalty-free noncommercial licence</span>
+            </article>
+            <article class="platform-card">
+              <h2>Commercial use</h2>
+              <p>
+                Purchase a commercial licence or subscription before any
+                commercial use. This includes internal business analysis,
+                design, training, procurement evaluation, consulting, and work
+                on products or services intended for sale.
+              </p>
+              <span class="tag">Paid entitlement required</span>
+            </article>
           </div>
-          <p class="notice">
-            Prices, evaluation durations, concurrency, and perpetual-use terms
-            have not been approved for publication. This preview is not a
-            licensing offer.
-          </p>
-          <a href="/support/#early-access" class="text-link">
-            About early conversations <Icon />
-          </a>
+          <div class="article">
+            <p>
+              Summary of the Prelimina Licence Agreement, version{' '}
+              {licence.version}, dated{' '}
+              <time datetime={licence.date}>{licence.dateLabel}</time>.{' '}
+              <a href={licence.href}>Read the full agreement</a> for the
+              complete terms.
+            </p>
+            <h2>The purpose of the work determines eligibility.</h2>
+            <p>
+              Noncommercial activity is not directed towards commercial
+              advantage or monetary compensation for you or anyone else.
+              Personal projects, independent learning, teaching, and research
+              can qualify when they do not serve a commercial purpose. Academic
+              salaries, tuition, public funding, and research grants do not by
+              themselves make an activity commercial.
+            </p>
+            <p>
+              An organisation’s legal form or nonprofit status does not decide
+              eligibility. Unpaid work, free delivery, or calling work
+              “evaluation” or “research” does not make an otherwise commercial
+              activity noncommercial.
+            </p>
+            <h2>Noncommercial permissions</h2>
+            <p>
+              The licence imposes no limits on users, installations, computing
+              capacity, simulation size, or duration of noncommercial use. When
+              sharing the Software or a derivative, include the agreement,
+              retain the required notices, and identify modifications. This is a
+              noncommercial licence, not an open-source licence granting
+              unrestricted commercial use.
+            </p>
+            <h2>Commercial evaluations and pilots</h2>
+            <p>
+              Evaluate Prelimina against a real engineering question. Commercial
+              pilots are scoped around your application, the required
+              capabilities, and the support involved. Commercial evaluation
+              requires a paid entitlement before it starts; the ability to run
+              without a key does not authorise commercial use.
+            </p>
+            <p>
+              Your accepted order or separate commercial agreement sets the
+              permitted activities, covered versions, quantities or capacity,
+              term, fees, and purchased services. Hosted access, embedding,
+              resale, and commercial redistribution need express coverage. No
+              public price or standard commercial package is published here.
+            </p>
+            <h2>Your data and results</h2>
+            <p>
+              You retain your rights in inputs, projects, designs, and outputs.
+              The agreement gives PLASMICA no permission to publish your data or
+              use it to train AI models. Outputs lawfully produced under a
+              commercial entitlement may continue to be used and supplied to
+              clients after it expires; further commercial simulations require a
+              valid entitlement.
+            </p>
+            <p>
+              Using outputs originally created for a noncommercial purpose in
+              commercial work requires an entitlement covering that use before
+              the commercial use begins.
+            </p>
+            <h2>Support, services, and responsibility</h2>
+            <p>
+              The licence alone does not promise source code, updates, support,
+              or additional functionality. Product support and project-specific
+              engineering services need an agreed scope. Payment alone does not
+              promise accuracy, certification, or suitability. You remain
+              responsible for independently verifying and validating results;
+              express written commitments and mandatory legal rights remain
+              applicable.
+            </p>
+            <p class="notice">
+              Prelimina is in development. These permissions apply to Software
+              supplied under the agreement; no public installer is available
+              here yet.
+            </p>
+            <a
+              href={licensingAction.href}
+              class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+            >
+              {licensingAction.label} <Icon name="diagonal" size={18} />
+            </a>
+            <p class="contact-email section-note">
+              Licensing and legal enquiries: {licence.email}
+            </p>
+          </div>
         </>
       )}
       {page === 'legal' && (
         <div class="article">
           <h2>About this preview</h2>
           <p>
-            Prelimina is developed by {site.company}. This preliminary website
-            is not a software release, a licensing agreement, or an offer of
-            platform support.
+            Prelimina is developed by {site.company} This preliminary website is
+            not a software release or an offer of platform support. Software
+            supplied under the Prelimina Licence Agreement is governed by that
+            agreement.
+          </p>
+          <h2>Company and legal contact</h2>
+          <p>
+            {site.company}
+            <br />
+            {licence.address}
+            <br />
+            VAT-ID: {licence.vatId}
+          </p>
+          <p>
+            Licensing and legal enquiries, notices, and complaints:{' '}
+            <a href={licensingAction.href}>{licence.email}</a>.
           </p>
           <h2>Privacy in this implementation</h2>
           <p>
@@ -312,14 +468,26 @@ const inquiry =
           </p>
           <p>
             A hosting provider may process network request logs.
-            Hosting-specific disclosures, the company contact details, and
-            approved public privacy and website terms will accompany the public
-            product release.
+            Hosting-specific disclosures and the full public privacy and website
+            terms will accompany the public product release.
           </p>
-          <h2>Software terms</h2>
+          <h2>Software licence</h2>
           <p>
-            The public EULA, license schedules, and support terms are not yet
-            published here. No draft terms are presented as approved.
+            The <a href={licence.href}>Prelimina Licence Agreement</a>, version{' '}
+            {licence.version} dated{' '}
+            <time datetime={licence.date}>{licence.dateLabel}</time>, grants
+            free noncommercial use and requires a paid entitlement before
+            commercial use. The{' '}
+            <a href="/pricing/">access and licensing summary</a> explains these
+            permissions; the full agreement governs.
+          </p>
+          <p>
+            The agreement retains your rights in your data and results, requires
+            independent verification, and sets warranty and liability provisions
+            with mandatory legal exceptions. An accepted commercial order or
+            separate agreement defines any additional commercial scope and
+            services. A later website notice does not retroactively change
+            rights granted for a supplied version.
           </p>
           <h2>Third-party design assets</h2>
           <p>
@@ -350,16 +518,18 @@ const inquiry =
   </div>
 </Layout>
 <script>
-  const emailLink =
-    document.querySelector<HTMLAnchorElement>('a[href^="mailto:"]');
-  emailLink?.addEventListener('click', () => {
-    const outline = document.querySelector<HTMLTextAreaElement>('#inquiry');
-    const address = emailLink.href.split('?')[0];
-    emailLink.href = `${address}?subject=${encodeURIComponent('Prelimina — discuss my case')}&body=${encodeURIComponent(outline?.value || '')}`;
-  });
+  import { inquiryHref } from '../content/inquiry.mjs';
+  const emailLink = document.querySelector<HTMLAnchorElement>('#email-inquiry');
+  const outline = document.querySelector<HTMLTextAreaElement>('#inquiry');
+  const updateDraft = () => {
+    const address = emailLink?.dataset.inquiryEmail;
+    if (emailLink && address && outline)
+      emailLink.href = inquiryHref(address, outline.value);
+  };
+  outline?.addEventListener('input', updateDraft);
+  emailLink?.addEventListener('click', updateDraft);
   const copy = document.querySelector<HTMLButtonElement>('#copy-inquiry');
   copy?.addEventListener('click', async () => {
-    const outline = document.querySelector<HTMLTextAreaElement>('#inquiry');
     const status = document.querySelector<HTMLElement>('#copy-status');
     if (!outline || !status) return;
     try {

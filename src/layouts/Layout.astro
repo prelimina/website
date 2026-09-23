@@ -2,15 +2,15 @@
 import '@ambientcss/css/ambient.css';
 import '../styles/global.css';
 import site from '../content/site.json';
-import { nav } from '../content/content';
+import { nav, access } from '../content/content';
 import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
   description?: string;
 }
 const {
-  title = 'See the flow. Shape the design.',
-  description = site.hero.descriptor,
+  title = 'GPU-native CFD for moving liquids and early-stage design',
+  description = 'Explore sloshing, baffle layouts, and free-surface motion with Prelimina, a GPU-native desktop CFD application in development for early-stage design.',
 } = Astro.props;
 const path = Astro.url.pathname;
 ---
@@ -69,9 +69,9 @@ const path = Astro.url.pathname;
         </nav>
         <a
           class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-          href="/support/#early-access"
+          href={access.primary.href}
         >
-          Early access <Icon name="diagonal" size={15} />
+          {access.primary.label} <Icon name="diagonal" size={15} />
         </a>
       </div>
     </header>
@@ -90,12 +90,17 @@ const path = Astro.url.pathname;
             />
             <span>Prelimina</span>
           </a>
-          <p>A clearer view of what comes next.</p>
+          <p>Fluid insight for your next design iteration.</p>
         </div>
         <div class="footer-links">
           <a href="/validation/">Evidence & limitations</a>
           <a href="/pricing/">Access & licensing</a>
-          <a href="/support/">Get in touch</a>
+          <a href="/docs/">Workflow guide</a>
+          <a href="/support/">
+            {access.open ? 'Discuss your case' : 'Prepare a case outline'}
+          </a>
+          <a href="/download/">Download status</a>
+          <a href="/changelog/">Release status</a>
           <a href="/legal/">Website information</a>
         </div>
       </div>

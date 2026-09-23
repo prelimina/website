@@ -161,6 +161,14 @@ const tones =
         d="M85 268h290m-290-6v12m290-12v12M61 68v151m-6-151h12m-12 151h12"
         stroke="#b1a9ba"
       />
+      {large && (
+        <>
+          <g class="probe-marker" stroke="#674583" stroke-width="2">
+            <circle cx="165" cy="180" r="9" fill="#f4f0f8" />
+            <path d="M165 165v30m-15-15h30" />
+          </g>
+        </>
+      )}
       {type === 'tank' && (
         <path
           d="M190 39h110m-101-6-9 6 9 6m92-12 9 6-9 6"

@@ -4,10 +4,18 @@
   "launchState": "prelaunch",
   "publicationApproved": true,
   "contactEmail": null,
-  "reviewed": "2026-09-22",
+  "licence": {
+    "version": "1.0",
+    "date": "2026-09-23",
+    "href": "/licenses/Prelimina-Licence-Agreement.txt",
+    "email": "licensing@prelimina.com",
+    "address": "R. Boškovića 32, 21000 Split, Croatia",
+    "vatId": "HR57846556748"
+  },
+  "reviewed": "2026-09-23",
   "hero": {
     "title": "See the flow. Shape the design.",
-    "descriptor": "GPU-native CFD for early-stage design exploration.",
-    "description": "Explore fluid behaviour, compare design alternatives, and focus your next detailed analysis or prototype. A local, GPU-native workflow for the engineering desktop."
+    "descriptor": "GPU-native CFD for moving liquids and early-stage design.",
+    "description": "Explore sloshing, baffle layouts, and free-surface motion using geometry from your existing tools. Examine how the liquid responds and use what you learn to guide your next design iteration."
   }
 }
