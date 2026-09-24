@@ -1,12 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import site from '../content/site.json';
-import {
-  downloadPlatforms,
-  licence,
-  licensingAction,
-  licensingFaqs,
-} from '../content/content';
+import { downloadPlatforms } from '../content/content';
 const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
   'en-GB',
   { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
@@ -17,18 +12,18 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
   <div class="section-heading">
     <div>
       <h2>
-        Download <em>Prelimina.</em>
+        Download <em>desktop app.</em>
       </h2>
-      <p class="download-intro">Free for noncommercial use. Commercial licences available.</p>
+      <p class="download-intro">
+        Free for noncommercial use. Commercial licences available.
+      </p>
     </div>
   </div>
-  <div class="release-summary ambient amb-surface amb-chamfer-concave amb-fillet">
+  <div class="release-summary ambient amb-surface-concave amb-chamfer-2 amb-elevation-0">
     <dl>
       <div>
         <dt>Current version</dt>
-        <dd>
-          v{site.downloadPreview.version} <span>Release preview</span>
-        </dd>
+        <dd>v{site.downloadPreview.version}</dd>
       </div>
       <div>
         <dt>Release date</dt>
@@ -36,19 +31,26 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
           <time datetime={site.downloadPreview.date}>{releaseDateLabel}</time>
         </dd>
       </div>
+      <div>
+        <dt>Changes</dt>
+        <dd>
+          <a class="text-link" href="/changelog/">
+            Changelog <Icon size={16} />
+          </a>
+        </dd>
+      </div>
     </dl>
     <a class="text-link" href={site.downloadPreview.releasesUrl}>
-      GitHub Releases <Icon name="diagonal" size={16} />
+      See all releases <Icon name="diagonal" size={16} />
     </a>
   </div>
   <div class="platform-grid">
     {downloadPlatforms.map((platform) => (
-      <article class="platform-card ambient amb-surface amb-chamfer amb-elevation-0">
+      <article class="platform-card ambient amb-surface-concave amb-chamfer amb-elevation-0">
         <div class="platform-heading">
           <Icon name={platform.icon} size={36} />
           <div>
             <h3>{platform.name}</h3>
-            <p id={`${platform.id}-status`}>{platform.status}</p>
           </div>
         </div>
         <dl class="platform-requirements">
@@ -64,7 +66,6 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
             type="button"
             class="button platform-download ambient amb-surface-convex amb-mat-matte amb-fillet-2"
             disabled
-            aria-describedby={`${platform.id}-status`}
           >
             <Icon name="download" size={18} /> Coming soon
           </button>
@@ -72,7 +73,6 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
           <a
             href={site.downloadPreview.releasesUrl}
             class="button platform-download ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-            aria-describedby={`${platform.id}-status`}
           >
             <Icon name="download" size={18} /> Download for {platform.name}
           </a>
@@ -80,33 +80,11 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
       </article>
     ))}
   </div>
-  <p class="download-note">
-    Downloads will be published on GitHub Releases. These are current build
-    targets; final system requirements will accompany each release.
+  <p class="section-note">
+    Provisional hardware targets, based on a source assessment and testing on
+    Windows 11 with an NVIDIA RTX 5070 Ti. Entry-level GPUs, low-memory systems,
+    and Linux have not yet been qualified. RAM and VRAM are separate
+    requirements; larger scenes may need more of both. Vulkan support alone does
+    not guarantee compatibility with every solver.
   </p>
-  <div class="download-licensing" id="licensing">
-    <div>
-      <h3>
-        Licensing, <em>simply.</em>
-      </h3>
-      <p>A few answers before you get started.</p>
-      <a class="text-link" href={licence.href}>
-        Read the full agreement <Icon size={16} />
-      </a>
-      <a class="text-link" href={licensingAction.href}>
-        {licensingAction.label} <Icon size={16} />
-      </a>
-    </div>
-    <div class="faq-list">
-      {licensingFaqs.map((item) => (
-        <details>
-          <summary>
-            {item.question}
-            <Icon name="plus" size={18} />
-          </summary>
-          <p>{item.answer}</p>
-        </details>
-      ))}
-    </div>
-  </div>
 </section>

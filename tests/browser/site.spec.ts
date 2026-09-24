@@ -129,9 +129,6 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'Define a tank, its fill level, and the baffle geometry.',
   );
   await expect(page.locator('.probe-marker')).toBeHidden();
-  await expect(page.locator('.screen-bottom')).toContainText(
-    'Workflow illustration — not simulation results',
-  );
 });
 
 test('mobile menu, page navigation, FAQ, and skip link work', async ({
@@ -431,7 +428,7 @@ test('contact copying is honest and the unavailable clipboard has a usable fallb
   await expect(page.getByLabel('Your case outline')).toBeFocused();
 });
 
-test('homepage downloads, licensing FAQ, and retired routes work', async ({
+test('homepage downloads, combined FAQ, and retired routes work', async ({
   page,
 }) => {
   await page.goto('/');
@@ -463,7 +460,7 @@ test('homepage downloads, licensing FAQ, and retired routes work', async ({
     'glibc 2.28',
   );
   await page.getByText('Is Prelimina free?', { exact: true }).click();
-  await expect(page.locator('#licensing details[open]')).toContainText(
+  await expect(page.locator('#faq details[open]')).toContainText(
     'lawful noncommercial use',
   );
   const commercial = page.getByText('Can I use it for commercial work?', {
@@ -471,14 +468,14 @@ test('homepage downloads, licensing FAQ, and retired routes work', async ({
   });
   await commercial.focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('#licensing details').nth(1)).toHaveAttribute(
+  await expect(page.locator('#faq details').nth(1)).toHaveAttribute(
     'open',
     '',
   );
-  await expect(page.locator('#licensing details').nth(1)).toContainText(
+  await expect(page.locator('#faq details').nth(1)).toContainText(
     'before the work begins',
   );
-  await expect(page.locator('#licensing details').nth(1)).toContainText(
+  await expect(page.locator('#faq details').nth(1)).toContainText(
     'business evaluation',
   );
   await page.getByRole('link', { name: 'Read the full agreement' }).click();

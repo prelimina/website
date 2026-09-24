@@ -179,7 +179,6 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   }
   const download = readFileSync(join(root, 'index.html'), 'utf8');
   assert.doesNotMatch(download, /href="[^"]+\.(exe|msi|dmg|zip|AppImage)/);
-  assert.match(download, /Downloads will be published on GitHub Releases/);
 });
 
 test('active pages remain available and retired pages are removed or redirected', () => {

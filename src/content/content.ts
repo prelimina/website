@@ -167,8 +167,8 @@ export const showcases = [
   },
 ] as const satisfies readonly Application[];
 
-// Build targets from the native packaging contract; public releases will supply
-// qualified requirements through the shared release manifest.
+// Provisional targets from the 24 September 2026 runtime assessment, with Linux
+// packaging requirements retained. These are not qualified release minimums.
 export const downloadPlatforms = [
   {
     id: 'windows',
@@ -176,9 +176,16 @@ export const downloadPlatforms = [
     icon: 'windows',
     status: 'In development',
     requirements: [
-      ['System', '64-bit Windows (x86-64). OS versions to be confirmed.'],
-      ['GPU', 'Vulkan-capable GPU with a vendor driver.'],
-      ['Memory', 'RAM and VRAM minimums to be confirmed.'],
+      ['System', 'Windows 10 22H2 (64-bit) or newer.'],
+      [
+        'GPU',
+        'GPUs from 2015 onward that support Vulkan 1.3, with recent drivers.',
+      ],
+      ['RAM', '8 GB minimum.'],
+      [
+        'VRAM',
+        '4 GB estimated small-scene floor; 6–8 GB preferred. Larger workloads: 8–12 GB or more.',
+      ],
     ],
   },
   {
@@ -187,9 +194,16 @@ export const downloadPlatforms = [
     icon: 'linux',
     status: 'In development',
     requirements: [
-      ['System', '64-bit Linux (x86-64), glibc 2.28 or newer.'],
-      ['GPU', 'Vulkan-capable GPU with a vendor driver.'],
-      ['Memory', 'RAM and VRAM minimums to be confirmed.'],
+      ['System', '64-bit Linux (x86-64), glibc 2.28 (2018) or newer.'],
+      [
+        'GPU',
+        'GPUs from 2015 onward that support Vulkan 1.3, with recent drivers.',
+      ],
+      ['RAM', '8 GB minimum.'],
+      [
+        'VRAM',
+        '4 GB estimated small-scene floor; 6–8 GB preferred. Larger workloads: 8–12 GB or more.',
+      ],
       ['Runtime', 'FUSE 2 for AppImage mounting.'],
     ],
   },
@@ -199,14 +213,14 @@ export const downloadPlatforms = [
     icon: 'apple',
     status: 'Not available yet',
     requirements: [
-      ['System', 'Supported macOS versions and processors to be announced.'],
+      ['System', 'Supported macOS versions to be announced.'],
       ['GPU', 'Graphics support to be confirmed.'],
       ['Memory', 'RAM minimum to be confirmed.'],
     ],
   },
 ] as const;
 
-export const licensingFaqs = [
+export const faqs = [
   {
     question: 'Is Prelimina free?',
     answer:
@@ -228,14 +242,6 @@ export const licensingFaqs = [
       'Yes. You retain your rights in your data, designs, and results. The agreement gives PLASMICA no permission to publish them or use them to train AI models. Commercial use of results requires the appropriate entitlement.',
   },
   {
-    question: 'Can I modify or share the software?',
-    answer:
-      'Yes, for noncommercial purposes. Include the agreement, retain the required notices, and identify your changes. Commercial redistribution needs express coverage in a separate agreement.',
-  },
-] as const;
-
-export const faqs = [
-  {
     question: 'What is Prelimina designed for?',
     answer:
       'Practical early-stage fluid-design work, initially focused on sloshing, baffle arrangements, and free-surface motion. It is being developed for engineering teams, equipment designers, consultants, laboratories, and educators who want to understand a response before the next design iteration.',
@@ -253,12 +259,12 @@ export const faqs = [
   {
     question: 'Which GPUs and operating systems are supported?',
     answer:
-      'The Download section lists the current Windows and Linux build targets. Final operating system, GPU, driver, and memory requirements will accompany a public release. A macOS package is not available yet.',
+      'The Download section lists provisional Windows and Linux requirements. Windows 11 has been exercised on an NVIDIA RTX 5070 Ti; Windows 10 22H2, entry-level GPUs, and Linux still need qualification. Vulkan 1.3 support alone does not guarantee compatibility with every solver. Final requirements will accompany a public release. A macOS package is not available yet.',
   },
   {
     question: 'Does it run in my browser?',
     answer:
-      'Prelimina is a native desktop product. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation. Browser execution is not offered here.',
+      'The browser version of Prelimina is currently in development and coming soon. It will run natively in your browser. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation.',
   },
   {
     question: 'Are these validated results?',

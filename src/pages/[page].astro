@@ -48,7 +48,7 @@ const { page } = Astro.params;
         <>
           <section
             id="early-access"
-            class="info-panel ambient amb-surface amb-chamfer"
+            class="info-panel ambient amb-surface-concave amb-chamfer"
           >
             <h2>Start with the decision.</h2>
             <p>
@@ -121,7 +121,7 @@ const { page } = Astro.params;
               To obtain a commercial entitlement or clarify the scope of an
               intended use,{' '}
               <a href={licensingAction.href}>contact {licence.email}</a>. Read
-              the <a href="/#licensing">licensing FAQ</a> and the{' '}
+              the <a href="/#faq">FAQ</a> and the{' '}
               <a href={licence.href}>full Licence Agreement</a>.
             </p>
             <h2>Product questions & issue reports</h2>
@@ -180,7 +180,7 @@ const { page } = Astro.params;
             {licence.version} dated{' '}
             <time datetime={licence.date}>{licence.dateLabel}</time>, grants
             free noncommercial use and requires a paid entitlement before
-            commercial use. The <a href="/#licensing">licensing FAQ</a> explains
+            commercial use. The <a href="/#faq">FAQ</a> explains
             these permissions; the full agreement governs.
           </p>
           <p>
@@ -207,7 +207,7 @@ const { page } = Astro.params;
         </div>
       )}
       {page === 'changelog' && (
-        <div class="info-panel ambient amb-surface amb-chamfer">
+        <div class="info-panel ambient amb-surface-concave amb-chamfer">
           <h2>Prelaunch</h2>
           <p>
             No public product version or installer is attached to this design
