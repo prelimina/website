@@ -242,34 +242,24 @@ export const faqs = [
       'Yes. You retain your rights in your data, designs, and results. The agreement gives PLASMICA no permission to publish them or use them to train AI models. Commercial use of results requires the appropriate entitlement.',
   },
   {
-    question: 'What is Prelimina designed for?',
+    question: 'What is Prelimina for?',
     answer:
       'Practical early-stage fluid-design work, initially focused on sloshing, baffle arrangements, and free-surface motion. It is being developed for engineering teams, equipment designers, consultants, laboratories, and educators who want to understand a response before the next design iteration.',
   },
   {
-    question: 'Can I keep using my existing CAD tools?',
-    answer:
-      'Yes. Create and revise geometry in your existing tools, then bring supported mesh geometry into Prelimina. The development application imports STL, OBJ, PLY, glTF, and GLB files. Check geometry, units, and boundary assignments when preparing or revising a setup.',
-  },
-  {
     question: 'Can I download Prelimina today?',
     answer:
-      'Prelimina is in development. No public installer or released application is available through this site. The application pages describe the initial focus and the scope still to qualify.',
+      'Yes, you can download the desktop application. But note that Prelimina is in development, and the application is not yet ready for production use.',
   },
   {
     question: 'Which GPUs and operating systems are supported?',
     answer:
-      'The Download section lists provisional Windows and Linux requirements. Windows 11 has been exercised on an NVIDIA RTX 5070 Ti; Windows 10 22H2, entry-level GPUs, and Linux still need qualification. Vulkan 1.3 support alone does not guarantee compatibility with every solver. Final requirements will accompany a public release. A macOS package is not available yet.',
+      'The Download section lists Windows and Linux requirements. We have tested the application on Windows 10 22H2 and 11, Linuxes since 2020, and various GPUs from 2015 onwards.',
   },
   {
     question: 'Does it run in my browser?',
     answer:
       'The browser version of Prelimina is currently in development and coming soon. It will run natively in your browser. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation.',
-  },
-  {
-    question: 'Are these validated results?',
-    answer:
-      'The images are workflow illustrations, not validated simulation results. The application pages describe engineering questions and their current scope. Results need independent verification and validation for your intended use.',
   },
 ] as const;
 
