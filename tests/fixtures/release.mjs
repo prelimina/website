@@ -8,4 +8,3 @@ export function releaseFixture(version = '0.1.0') {
       requirements: ['Vulkan-capable GPU and vendor driver'],
       installerUrl: `https://github.com/prelimina/desktop/releases/download/v${version}/Prelimina-${version}-${channel}${channel === 'win-x64' ? '-Setup.exe' : '.AppImage'}`})) } };
 }
-
