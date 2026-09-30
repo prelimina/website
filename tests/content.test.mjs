@@ -2,6 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { loadCatalogue } from '../src/data/releases.mjs';
+const catalogue = loadCatalogue();
+
 import { validateContent } from '../scripts/check-content.mjs';
 import {
   getInquiryState,
@@ -178,7 +181,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
     }
   }
   const download = readFileSync(join(root, 'index.html'), 'utf8');
-  assert.doesNotMatch(download, /href="[^"]+\.(exe|msi|dmg|zip|AppImage)/);
+  if (!catalogue.current) assert.doesNotMatch(download, /href="[^"]+\.(exe|msi|dmg|zip|AppImage)/);
 });
 
 test('active pages remain available and retired pages are removed or redirected', () => {
@@ -264,10 +267,10 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     file.endsWith('.html'),
   )) {
     const html = readFileSync(path, 'utf8');
-    assert.doesNotMatch(
-      html,
-      /href="[^"]+\.(?:exe|msi|dmg|zip|AppImage)(?:[?#"][^>]*)?/i,
-    );
+    for (const match of html.matchAll(/href="([^"]+\.(?:exe|msi|dmg|zip|AppImage)(?:[?#][^"]*)?)"/gi)) {
+      assert.ok(catalogue.current?.downloads.some(download => download.installerUrl === match[1]),
+        'Installer links must come from the verified catalogue');
+    }
     assert.doesNotMatch(
       html,
       /schema\.org\/Offer|"@type"\s*:\s*"Offer"|[€£$]\s*\d|\b\d+\s*(?:EUR|USD)\b|checkout|\bfree trial\b|\bearly.adopter offer\b/i,
@@ -299,8 +302,8 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.doesNotMatch(navigation, /Showcases|\/download\/|\/changelog\//);
   assert.doesNotMatch(navigation, /Evidence|Access &amp; licensing/);
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
-  assert.ok(home.includes(`v${site.downloadPreview.version}`));
-  assert.ok(home.includes(`datetime="${site.downloadPreview.date}"`));
+  assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
+  assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
   for (const slug of ['baffle-design', 'tank-motion', 'liquid-handling']) {
     const application = readFileSync(
       `dist/showcases/${slug}/index.html`,

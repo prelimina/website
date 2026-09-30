@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import CapabilityCatalog from '../components/CapabilityCatalog.astro';
+import ReleaseHistory from '../components/ReleaseHistory.astro';
+import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import { pages } from '../content/pages';
 import {
@@ -20,13 +22,16 @@ export function getStaticPaths() {
 }
 const { content } = Astro.props;
 const { page } = Astro.params;
+const { current } = loadCatalogue();
+const title = page === 'changelog' && current ? 'Release history.' : content.title;
+const description = page === 'changelog' && current ? 'Approved notes for published desktop releases.' : content.description;
 ---
 
-<Layout title={content.title} description={content.description}>
+<Layout title={title} description={description}>
   <div class="container">
     <header class="page-hero">
-      <h1>{content.title}</h1>
-      <p>{content.description}</p>
+      <h1>{title}</h1>
+      <p>{description}</p>
     </header>
     <div class="page-container">
       {page === 'showcases' && (
@@ -206,7 +211,8 @@ const { page } = Astro.params;
           </div>
         </div>
       )}
-      {page === 'changelog' && (
+      {page === 'changelog' && current && <ReleaseHistory />}
+      {page === 'changelog' && !current && (
         <div class="info-panel ambient amb-surface-concave amb-chamfer">
           <h2>Prelaunch</h2>
           <p>

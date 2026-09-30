@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { loadCatalogue } from '../src/data/releases.mjs';
 
 function isPlainEmail(value) {
   return (
@@ -10,8 +11,8 @@ function isPlainEmail(value) {
   );
 }
 
-export function validateContent(site, { publication = false } = {}) {
-  if (site.launchState !== 'prelaunch')
+export function validateContent(site, { publication = false, catalogue = null } = {}) {
+  if (site.launchState !== 'prelaunch' && !(site.launchState === 'alpha_open' && catalogue?.current))
     throw new Error(
       'This design iteration only supports prelaunch. Integrate the shared release manifest and approved release terms before opening downloads.',
     );
@@ -45,9 +46,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     );
     validateContent(site, {
       publication: process.argv.includes('--publication'),
+      catalogue: loadCatalogue(),
     });
     console.log(
-      `Content checked: prelaunch preview, no active installers, publication ${site.publicationApproved ? 'approved' : 'not approved'}.`,
+      `Content checked: ${loadCatalogue().current ? 'verified release catalogue' : 'prelaunch preview'}, website publication ${site.publicationApproved ? 'approved' : 'not approved'}.`,
     );
   } catch (error) {
     console.error(error.message);
