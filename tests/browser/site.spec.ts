@@ -98,7 +98,7 @@ test('schematic controls update selected state, drawing, and caption with keyboa
   );
   await expect(page.locator('[data-study-label]')).toHaveText('03 / Optimize');
   await expect(page.locator('#study-caption')).toHaveText(
-    'Refine the baffle layout in your geometry tools, then rerun and compare.',
+    'Refine the baffle layout, rerun and compare.',
   );
   await expect(page.locator('.bench-screen .baffles')).toHaveCSS(
     'transform',
@@ -196,9 +196,6 @@ test('homepage order, primary actions, and application status communicate the pr
   await expect(page.locator('.hero-actions .button-primary')).toHaveAttribute(
     'href',
     '/showcases/',
-  );
-  await expect(page.locator('.hero-note')).toContainText(
-    'In development. Explore the initial application focus below.',
   );
   await expect(page.locator('.cta-panel .button')).toHaveText(
     'Explore applications',

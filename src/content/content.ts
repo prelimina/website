@@ -36,7 +36,7 @@ export const workflowIllustration = [
     id: 'optimize',
     title: 'Optimize',
     illustration:
-      'Refine the baffle layout in your geometry tools, then rerun and compare.',
+      'Refine the baffle layout, rerun and compare.',
   },
 ] as const;
 
