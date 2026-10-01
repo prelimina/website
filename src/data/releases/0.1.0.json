@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "version": "0.1.0",
+  "releaseId": 389970497,
+  "publishedAt": "2026-10-01T17:28:31Z",
+  "notesSha256": "62f4ab4c5e8cd83c67b900c54336a1f1a5c124cc9f9094ab8c4fcdbef67a47a4",
+  "manifestSha256": "3c9ed9c5a8fc7f836ace133e6c287f7fbe890fc0437476d4215614598aa2a760",
+  "manifestUrl": "https://github.com/prelimina/desktop/releases/download/v0.1.0/download-manifest.json",
+  "downloads": [
+    {
+      "channel": "linux-x64",
+      "installerUrl": "https://github.com/prelimina/desktop/releases/download/v0.1.0/Prelimina-0.1.0-linux-x64.AppImage",
+      "sha256": "e1c330361efe22e3d3ed70014e8ac851dfb95a7344a2844fc9d2a7285a4ba85d",
+      "bytes": 52984312,
+      "requirements": [
+        "Vulkan-capable GPU and vendor driver",
+        "No CUDA backend",
+        "No .NET runtime required",
+        "Linux x64; glibc build target: 2.28 (see separate ABI validation report)",
+        "FUSE 2 for AppImage mounting",
+        "Executable AppImage in a user-writable directory for self-updates"
+      ],
+      "signing": "unsigned"
+    },
+    {
+      "channel": "win-x64",
+      "installerUrl": "https://github.com/prelimina/desktop/releases/download/v0.1.0/Prelimina-0.1.0-win-x64-Setup.exe",
+      "sha256": "61c935b4f2c9aae5dc76303a74177b7c87c31ec509d33f48f9ff26dbb2faffb6",
+      "bytes": 43354073,
+      "requirements": [
+        "Vulkan-capable GPU and vendor driver",
+        "No CUDA backend",
+        "No .NET runtime required",
+        "Windows x64; MSVC runtime bundled; supported Windows versions require qualification"
+      ],
+      "signing": "unsigned"
+    }
+  ]
+}
