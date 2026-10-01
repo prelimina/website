@@ -166,9 +166,9 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
   await expect(page).toHaveURL(/\/#applications$/);
   await expect(page.locator('#applications h2')).toBeInViewport();
   await page.goto('/');
-  await page.getByText('Are these validated results?', { exact: true }).click();
+  await page.getByText('Is Prelimina free?', { exact: true }).click();
   await expect(page.locator('details[open]')).toContainText(
-    'workflow illustrations',
+    'lawful noncommercial use',
   );
 });
 

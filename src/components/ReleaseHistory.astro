@@ -1,0 +1,15 @@
+---
+import { loadCatalogue } from '../data/releases.mjs';
+const { releases } = loadCatalogue();
+---
+{releases.map(release => (
+  <article class="info-panel ambient amb-surface-concave amb-chamfer">
+    <h2>Prelimina {release.version}</h2>
+    <time datetime={release.publishedAt}>{release.publishedAt.slice(0, 10)}</time>
+    <!-- Astro escapes the exact reviewed text. No MDX or raw HTML execution. -->
+    <div class="release-notes">{release.notes}</div>
+  </article>
+))}
+<style>
+  .release-notes { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 1rem; }
+</style>

@@ -118,7 +118,7 @@ npx wrangler login
 npm run deploy
 ```
 
-Use an approved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in an automated environment instead of interactive login. Never commit credentials. The deploy script verifies preview publication approval; switching to a released product state remains unsupported and fails the content check.
+Use an approved `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in an automated environment instead of interactive login. Never commit credentials. The deploy script verifies preview publication approval; opening an alpha product state requires a validated verified-release catalogue; preview approval alone is insufficient.
 
 If the repo is already connected through Cloudflare Workers Builds, use the repository root and the deployment command `npm run deploy`. Wrangler's custom build command runs `npm run build`; a separate dashboard build command is optional. GitHub Actions checks the source independently and does not deploy. No DNS changes or new Cloudflare account are part of this iteration.
 
@@ -140,3 +140,13 @@ No advertising, cookies, analytics, session replay, remote fonts, third-party em
 - [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/): matches the starter repository's provider setup.
 
 This iteration uses the supplied initial website brief as product context, with the requested skeuomorphic design taking precedence over its general visual suggestions.
+
+## Verified desktop releases
+
+Trusted source release automation validates the authoritative desktop download manifest (schemaVersion 2), public asset hashes and completed publication receipt before synchronizing a public projection into `src/data/releases/<version>.json`, the exact reviewed notes into `src/content/releases/<version>.md`, and `src/data/current-release.json`. It never copies private qualification evidence. The initial pointer is `null`, so the current preview remains unchanged until an approved software release is verified. No sample release is checked in.
+
+The data loader checks identities, hashes, approved GitHub download URLs, supported platforms, note safety and newest-version selection. Existing release identities are immutable. Verified data supplies real version/date/installer links and changelog history while retaining unsupported-platform labels, licensing and noindex. Notes render as escaped text, never executable Markdown/MDX. The `alpha_open` content state requires this catalogue; synchronization does not edit the site's launch or publication-approval settings.
+
+`/release-status.json` reports the selected public release ID, version and notes hash, or `null`. Source automation checks this actual deployed response after the existing Workers Builds connection deploys a synchronization commit. A successful push alone is not deployment verification. No new Cloudflare deployment integration is added.
+
+Run `npm run test:releases` for a disposable build with a synthetic verified alpha catalogue. It verifies actual download links, escaped reviewed notes, unchanged noindex, deployment status and content checks without modifying the real preview or publishing fixture packages. `npm run check`, `npm run build` and `npm test` cover the checked-in empty catalogue.

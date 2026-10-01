@@ -2,7 +2,13 @@
 import Icon from './Icon.astro';
 import site from '../content/site.json';
 import { downloadPlatforms } from '../content/content';
-const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
+import { loadCatalogue } from '../data/releases.mjs';
+const { current } = loadCatalogue();
+const version = current?.version ?? site.downloadPreview.version;
+const date = current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date;
+const downloadUrl = (platform: string) => current?.downloads.find((d: { channel: string; installerUrl: string }) =>
+  d.channel === (platform === 'windows' ? 'win-x64' : 'linux-x64'))?.installerUrl ?? site.downloadPreview.releasesUrl;
+const releaseDateLabel = new Date(date).toLocaleDateString(
   'en-GB',
   { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
 );
@@ -23,12 +29,12 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
     <dl>
       <div>
         <dt>Current version</dt>
-        <dd>v{site.downloadPreview.version}</dd>
+        <dd>v{version}</dd>
       </div>
       <div>
         <dt>Release date</dt>
         <dd>
-          <time datetime={site.downloadPreview.date}>{releaseDateLabel}</time>
+          <time datetime={date}>{releaseDateLabel}</time>
         </dd>
       </div>
       <div>
@@ -71,7 +77,7 @@ const releaseDateLabel = new Date(site.downloadPreview.date).toLocaleDateString(
           </button>
         ) : (
           <a
-            href={site.downloadPreview.releasesUrl}
+            href={downloadUrl(platform.id)}
             class="button platform-download ambient amb-surface-convex amb-mat-matte amb-fillet-2"
           >
             <Icon name="download" size={18} /> Download for {platform.name}
