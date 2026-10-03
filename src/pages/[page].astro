@@ -8,7 +8,7 @@ import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import { pages } from '../content/pages';
 import {
-  access,
+  inquiryAction,
   licence,
   licensingAction,
   showcases,
@@ -53,7 +53,7 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
         <>
           <section
             id="early-access"
-            class="info-panel ambient amb-surface-concave amb-chamfer"
+            class="info-panel"
           >
             <h2>Start with the decision.</h2>
             <p>
@@ -62,7 +62,7 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
               study inform? Please leave confidential geometry and project data
               out of an initial inquiry.
             </p>
-            {!access.open && (
+            {!inquiryAction.open && (
               <p class="notice">
                 Application inquiries are not open through this preview yet. You
                 can prepare an outline below; a public application contact
@@ -213,7 +213,7 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
       )}
       {page === 'changelog' && current && <ReleaseHistory />}
       {page === 'changelog' && !current && (
-        <div class="info-panel ambient amb-surface-concave amb-chamfer">
+        <div class="info-panel">
           <h2>Prelaunch</h2>
           <p>
             No public product version or installer is attached to this design

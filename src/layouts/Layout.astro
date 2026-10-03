@@ -2,7 +2,11 @@
 import '@ambientcss/css/ambient.css';
 import '../styles/global.css';
 import site from '../content/site.json';
-import { nav, access } from '../content/content';
+import {
+  nav,
+  productActionConfig,
+  inquiryAction,
+} from '../content/content';
 import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
@@ -27,17 +31,17 @@ const path = Astro.url.pathname;
     <link rel="icon" type="image/svg+xml" href="/assets/logo_black_white.svg" />
     <link
       rel="preload"
-      href="/assets/Quicksand-Variable.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin
-    />
-    <link
-      rel="preload"
       href="/assets/BacasimeAntique-Regular.ttf"
       as="font"
       type="font/ttf"
-      crossorigin
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/assets/Quicksand-Variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
     />
   </head>
   <body class="amb-light-tl">
@@ -66,20 +70,20 @@ const path = Astro.url.pathname;
         <nav id="main-navigation" aria-label="Main navigation">
           {nav.map((link) => (
             <a
-              class="ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+              class="nav-link"
               href={link.href}
               aria-current={path === link.href ? 'page' : undefined}
             >
               {link.label}
             </a>
           ))}
+          <a
+            class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+            href={productActionConfig.href}
+          >
+            {productActionConfig.label} <Icon name="diagonal" size={15} />
+          </a>
         </nav>
-        <a
-          class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-          href={access.primary.href}
-        >
-          {access.primary.label} <Icon name="diagonal" size={15} />
-        </a>
       </div>
     </header>
     <main id="main">
@@ -104,7 +108,7 @@ const path = Astro.url.pathname;
           <a href="/#faq">FAQ</a>
           <a href="/capabilities/">All capabilities</a>
           <a href="/support/">
-            {access.open ? 'Discuss your case' : 'Prepare a case outline'}
+            {inquiryAction.open ? 'Discuss your case' : 'Prepare a case outline'}
           </a>
           <a href="/changelog/">Release status</a>
           <a href="/legal/">Website information</a>

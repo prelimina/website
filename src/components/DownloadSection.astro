@@ -25,7 +25,7 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
       </p>
     </div>
   </div>
-  <div class="release-summary ambient amb-surface-concave amb-chamfer-2 amb-elevation-0">
+  <div class="release-summary">
     <dl>
       <div>
         <dt>Current version</dt>
@@ -52,9 +52,11 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
   </div>
   <div class="platform-grid">
     {downloadPlatforms.map((platform) => (
-      <article class="platform-card ambient amb-surface-concave amb-chamfer amb-elevation-0">
+      <article class="platform-card">
         <div class="platform-heading">
-          <Icon name={platform.icon} size={36} />
+          <span class="capability-icon platform-icon ambient amb-mat-glass">
+            <Icon name={platform.icon} size={32} />
+          </span>
           <div>
             <h3>{platform.name}</h3>
           </div>

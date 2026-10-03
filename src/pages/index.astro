@@ -5,14 +5,16 @@ import Workbench from '../components/Workbench.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import DownloadSection from '../components/DownloadSection.astro';
 import CapabilitySummary from '../components/CapabilitySummary.astro';
+import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import {
-  access,
+  createProductAction,
   showcases,
   faqs,
   licence,
   licensingAction,
 } from '../content/content';
+const productAction = createProductAction(loadCatalogue().current);
 ---
 
 <Layout>
@@ -27,21 +29,18 @@ import {
       <p class="hero-description">{site.hero.description}</p>
       <div class="hero-actions">
         <a
-          href={access.primary.href}
+          href={productAction.href}
           class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
         >
-          {access.primary.label} <Icon name="diagonal" size={18} />
+          {productAction.label} <Icon name="diagonal" size={18} />
         </a>
         <a
-          href="#capabilities"
+          href="#applications"
           class="button button-quiet ambient amb-surface-convex amb-mat-matte amb-fillet-2"
         >
-          Explore capabilities <Icon size={18} />
+          Explore applications <Icon size={18} />
         </a>
       </div>
-      <p class="hero-note">
-        <span class="small-status"></span> {access.status}
-      </p>
     </div>
     <div class="hero-object">
       <Workbench />
@@ -53,72 +52,24 @@ import {
         <h2>
           Start with an <em>engineering question.</em>
         </h2>
-        <a href="/showcases/" class="text-link">
-          Explore all applications <Icon />
-        </a>
       </div>
       <div class="showcase-grid">
         {showcases.map((item) => (
           <ShowcaseCard item={item} />
         ))}
       </div>
-      <p class="section-note">
-        Initial application focus. These candidates use illustrations; they are
-        not released applications or simulation results.
-      </p>
+      <div class="section-action">
+        <a
+          class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+          href="/showcases/"
+        >
+          Explore all applications <Icon size={18} />
+        </a>
+        <p>Review each application’s question, inputs, and scope.</p>
+      </div>
     </div>
   </section>
   <CapabilitySummary />
-  <section class="section product-section" id="product">
-    <div class="container">
-      <div class="section-heading">
-        <h2>
-          A place beside
-          <br />
-          <em>your existing tools.</em>
-        </h2>
-        <p>
-          For small engineering teams, equipment designers, consultants,
-          laboratories, and educators working toward the next design decision.
-        </p>
-      </div>
-      <div class="benefit-grid">
-        <article>
-          <div class="icon-tile ambient amb-surface-concave amb-chamfer amb-elevation-0">
-            <Icon name="layers" size={25} />
-          </div>
-          <h3>Add fluid insight to your CAD.</h3>
-          <p>
-            Create and revise geometry in the tools you know. Bring supported
-            mesh geometry into Prelimina for simulation, then take your findings
-            back to the next design revision.
-          </p>
-        </article>
-        <article>
-          <div class="icon-tile ambient amb-surface-concave amb-chamfer amb-elevation-0">
-            <Icon name="chip" size={25} />
-          </div>
-          <h3>Use the GPU on your desktop.</h3>
-          <p>
-            Prelimina is built around GPU-native simulation. It's faster than
-            the fastest competitors.
-          </p>
-        </article>
-        <article>
-          <div class="icon-tile ambient amb-surface-concave amb-chamfer amb-elevation-0">
-            <Icon name="diagonal" size={25} />
-          </div>
-          <h3>Inspect more than a picture.</h3>
-          <p>
-            The development application includes live diagnostics, pressure and
-            velocity probes, CSV measurements, and simulation-field exports.
-            Availability depends on the method; qualify measurements for the
-            decision they will support.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
   <DownloadSection />
   <section class="section container faq-section" id="faq">
     <div class="faq-intro" id="licensing">
@@ -144,22 +95,22 @@ import {
     </div>
   </section>
   <section class="container cta-wrap">
-    <div class="cta-panel ambient amb-surface-concave amb-chamfer-2 amb-elevation-0">
+    <div class="cta-panel">
       <div>
         <h2>
           What would you <em>change next?</em>
         </h2>
         <p>
-          {access.open
-            ? 'Start with your design question, the comparison you need, and the decision it would inform.'
-            : 'Explore the initial applications and the questions each one could help investigate.'}
+          {productAction.available
+            ? 'Review the current desktop release and platform requirements.'
+            : 'Check release status and platform availability for the desktop app.'}
         </p>
       </div>
       <a
-        href={access.primary.href}
+        href={productAction.href}
         class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
       >
-        {access.primary.label} <Icon name="diagonal" size={18} />
+        {productAction.label} <Icon name="diagonal" size={18} />
       </a>
     </div>
   </section>

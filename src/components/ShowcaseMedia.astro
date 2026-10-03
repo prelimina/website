@@ -1,0 +1,59 @@
+---
+import Study from './Study.astro';
+import type {
+  ShowcaseIllustrationType,
+  ShowcaseMediaConfig,
+} from '../content/content';
+
+interface Props {
+  illustration: ShowcaseIllustrationType;
+  large?: boolean;
+  media?: ShowcaseMediaConfig;
+  aspectRatio?: string;
+}
+
+const { illustration, large = false, media, aspectRatio } = Astro.props;
+const activeMedia = media?.src ? media : undefined;
+const frameAspectRatio = aspectRatio ?? activeMedia?.aspectRatio;
+const frameStyle = frameAspectRatio
+  ? `aspect-ratio: ${frameAspectRatio};`
+  : undefined;
+---
+
+<figure class="showcase-media">
+  <div
+    class:list={[
+      'showcase-media-frame',
+      {
+        'has-aspect-ratio': Boolean(frameAspectRatio),
+        'fit-cover': activeMedia?.fit === 'cover',
+      },
+    ]}
+    style={frameStyle}
+  >
+    {activeMedia ? (
+      activeMedia.kind === 'image' ? (
+        <img
+          class="showcase-media-asset"
+          src={activeMedia.src}
+          alt={activeMedia.alt ?? ''}
+          loading={large ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      ) : (
+        <video
+          class="showcase-media-asset"
+          src={activeMedia.src}
+          poster={activeMedia.poster}
+          controls={activeMedia.controls ?? true}
+          playsinline
+          preload="metadata"
+          aria-label={activeMedia.alt ?? activeMedia.caption ?? 'Video'}
+        />
+      )
+    ) : (
+      <Study type={illustration} large={large} />
+    )}
+  </div>
+  {activeMedia?.caption && <figcaption>{activeMedia.caption}</figcaption>}
+</figure>

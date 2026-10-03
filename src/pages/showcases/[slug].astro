@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Study from '../../components/Study.astro';
 import Icon from '../../components/Icon.astro';
 import {
-  access,
+  inquiryAction,
   showcases,
   availabilityLabels,
   evidenceLabels,
@@ -15,7 +15,7 @@ export function getStaticPaths() {
   }));
 }
 const { item } = Astro.props;
-const action = access.open ? access.primary : item.nextAction;
+const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
 ---
 
 <Layout title={item.title} description={item.description}>
@@ -53,7 +53,7 @@ const action = access.open ? access.primary : item.nextAction;
           <dd>{item.limitation}</dd>
         </dl>
         <div>
-          <div class="showcase-visual ambient amb-surface-concave amb-chamfer amb-elevation-0">
+          <div class="showcase-visual">
             <div class="showcase-meta">
               <span>APPLICATION / {item.number}</span>
               <span>Illustration</span>

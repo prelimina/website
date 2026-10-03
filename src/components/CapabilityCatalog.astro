@@ -3,33 +3,6 @@ import Icon from './Icon.astro';
 import { capabilityGroups, maturity } from '../content/capabilities';
 ---
 
-<div class="capabilities-overview">
-  <h2>What the labels mean</h2>
-  <p>
-    Maturity describes the current development build. Solver-specific scope is
-    noted with each feature.
-  </p>
-  <dl class="maturity-guide">
-    {Object.entries(maturity).map(([status, item]) => (
-      <div>
-        <dt>
-          <span class="maturity-badge" data-maturity={status}>
-            {item.label}
-          </span>
-        </dt>
-        <dd>{item.description}</dd>
-      </div>
-    ))}
-  </dl>
-</div>
-<nav class="capability-jump-links" aria-label="Capability groups">
-  {capabilityGroups.map((group) => (
-    <a href={`#${group.id}`}>
-      <Icon name={group.icon} size={18} />
-      {group.title}
-    </a>
-  ))}
-</nav>
 <div class="capability-catalog">
   {capabilityGroups.map((group) => (
     <section
@@ -38,7 +11,7 @@ import { capabilityGroups, maturity } from '../content/capabilities';
       aria-labelledby={`${group.id}-title`}
     >
       <div class="capability-group-heading">
-        <span class="capability-icon">
+        <span class="capability-icon ambient amb-mat-glass">
           <Icon name={group.icon} size={26} />
         </span>
         <h2 id={`${group.id}-title`}>{group.title}</h2>
@@ -60,6 +33,25 @@ import { capabilityGroups, maturity } from '../content/capabilities';
     </section>
   ))}
 </div>
+<div class="capabilities-overview">
+  <h2>What the labels mean</h2>
+  <p>
+    Maturity describes the current development build. Solver-specific scope is
+    noted with each feature.
+  </p>
+  <dl class="maturity-guide">
+    {Object.entries(maturity).map(([status, item]) => (
+      <div>
+        <dt>
+          <span class="maturity-badge" data-maturity={status}>
+            {item.label}
+          </span>
+        </dt>
+        <dd>{item.description}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
 <div class="capabilities-next">
   <h2>
     Choose your next <em>study.</em>
@@ -75,6 +67,6 @@ import { capabilityGroups, maturity } from '../content/capabilities';
     Explore applications <Icon size={18} />
   </a>
   <a class="text-link" href="/#download">
-    Download Prelimina <Icon size={16} />
+    Download now <Icon size={16} />
   </a>
 </div>

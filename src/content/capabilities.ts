@@ -54,7 +54,19 @@ export const capabilityGroups = [
         name: 'Newtonian viscosity',
         status: 'implemented',
         description:
-          'Set liquid density and viscosity for laminar flow, with implicit viscosity in supported configurations.',
+          'Set liquid density and viscosity across low- and high-viscosity Newtonian flow regimes, with implicit viscosity in supported configurations.',
+      },
+      {
+        name: 'Non-Newtonian fluid models',
+        status: 'planned',
+        description:
+          'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
+      },
+      {
+        name: 'Viscoelasticity',
+        status: 'planned',
+        description:
+          'Represent fluids with both viscous and elastic response through planned constitutive models.',
       },
       {
         name: 'Surface tension',

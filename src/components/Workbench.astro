@@ -1,29 +1,21 @@
 ---
-import Study from './Study.astro';
+import ShowcaseMedia from './ShowcaseMedia.astro';
+import type { ShowcaseMediaConfig } from '../content/content';
 import { workflowIllustration } from '../content/content';
+
+interface Props {
+  media?: ShowcaseMediaConfig;
+}
+const { media } = Astro.props;
 ---
 
-<div
-  class="workbench ambient amb-surface-concave amb-chamfer-2 amb-elevation-0"
-  data-workbench
->
-  <span class="screw screw-tl" aria-hidden="true"></span>
-  <span class="screw screw-tr" aria-hidden="true"></span>
-  <span class="screw screw-bl" aria-hidden="true"></span>
-  <span class="screw screw-br" aria-hidden="true"></span>
-  <div class="bench-heading">
-    <span class="bench-wordmark">
-      prelimina<span class="tiny-plus">+</span>
-    </span>
-    <span class="instrument-label">
-      <i></i> Workflow illustration
-    </span>
-  </div>
+<div class="workbench" data-workbench>
   <div class="bench-screen" data-stage={workflowIllustration[0].id}>
     <div class="screen-top">
+      <span class="workflow-label">Workflow illustration</span>
       <span data-study-label>01 / {workflowIllustration[0].title}</span>
     </div>
-    <Study large />
+    <ShowcaseMedia illustration="baffle" large media={media} />
   </div>
   <div
     class="bench-controls"
@@ -32,7 +24,7 @@ import { workflowIllustration } from '../content/content';
   >
     {workflowIllustration.map((step, index) => (
       <button
-        class="bench-key ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
+        class="bench-key"
         type="button"
         data-step-button={index}
         aria-pressed={index === 0}
@@ -40,7 +32,6 @@ import { workflowIllustration } from '../content/content';
       >
         <span class="key-number">0{index + 1}</span>
         {step.title}
-        <span class="key-light" aria-hidden="true"></span>
       </button>
     ))}
   </div>
@@ -48,7 +39,6 @@ import { workflowIllustration } from '../content/content';
     <p id="study-caption" aria-live="polite">
       {workflowIllustration[0].illustration}
     </p>
-    <span class="bench-grille" aria-hidden="true"></span>
   </div>
 </div>
 <script>

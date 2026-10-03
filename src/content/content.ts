@@ -1,7 +1,20 @@
 import site from './site.json';
 import { getInquiryState, inquiryHref } from './inquiry.mjs';
 
-export const access = getInquiryState(site.contactEmail);
+export const productActionConfig = {
+  label: 'Download now',
+  href: '/#download',
+};
+export function createProductAction(
+  currentRelease: { downloads?: readonly unknown[] } | null,
+) {
+  const available = Boolean(currentRelease?.downloads?.length);
+  return {
+    ...productActionConfig,
+    available,
+  };
+}
+export const inquiryAction = getInquiryState(site.contactEmail);
 export const licence = {
   ...site.licence,
   dateLabel: new Date(site.licence.date).toLocaleDateString('en-GB', {
@@ -22,8 +35,8 @@ export const licensingAction = {
 
 export const workflowIllustration = [
   {
-    id: 'setup',
-    title: 'Setup',
+    id: 'set-up',
+    title: 'Set up',
     illustration: 'Define a tank, its fill level, and the baffle geometry.',
   },
   {
@@ -33,8 +46,8 @@ export const workflowIllustration = [
       'Inspect liquid motion and choose where to sample the response.',
   },
   {
-    id: 'optimize',
-    title: 'Optimize',
+    id: 'iterate',
+    title: 'Iterate',
     illustration:
       'Refine the baffle layout, rerun and compare.',
   },
@@ -52,15 +65,29 @@ export const evidenceLabels = {
   physical_validation: 'Physical validation',
 } as const;
 
+export interface ShowcaseMediaConfig {
+  kind: 'image' | 'video';
+  src: string;
+  alt?: string;
+  caption?: string;
+  aspectRatio?: string;
+  fit?: 'contain' | 'cover';
+  poster?: string;
+  controls?: boolean;
+}
+
+export type ShowcaseIllustrationType = 'baffle' | 'tank' | 'pipe';
+
 interface Application {
   slug: string;
   number: string;
   title: string;
   category: string;
-  type: 'baffle' | 'tank' | 'pipe';
+  type: ShowcaseIllustrationType;
   availability: keyof typeof availabilityLabels;
   evidence: keyof typeof evidenceLabels;
   description: string;
+  media?: ShowcaseMediaConfig;
   question: string;
   inputs: string;
   variables: string;
@@ -72,7 +99,7 @@ interface Application {
   nextAction: { label: string; href: string };
 }
 
-export const showcases = [
+export const showcases: Application[] = [
   {
     slug: 'baffle-design',
     number: '01',
@@ -224,7 +251,7 @@ export const faqs = [
   {
     question: 'Is Prelimina free?',
     answer:
-      'Yes, for lawful noncommercial use: personal projects, learning, teaching, and research without a commercial purpose. No purchase, subscription, academic affiliation, or separate permission is required.',
+      'Yes, during the development phase; for lawful noncommercial use: personal projects, learning, teaching, and research without a commercial purpose. No purchase, subscription, academic affiliation, or separate permission is required.',
   },
   {
     question: 'Can I use it for commercial work?',
@@ -264,7 +291,6 @@ export const faqs = [
 ] as const;
 
 export const nav = [
-  { label: 'Applications', href: '/#applications' },
-  { label: 'Capabilities', href: '/#capabilities' },
-  { label: 'Download', href: '/#download' },
+  { label: 'Applications', href: '/showcases/' },
+  { label: 'Capabilities', href: '/capabilities/' },
 ];

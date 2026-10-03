@@ -10,21 +10,19 @@ import { capabilityGroups } from '../content/capabilities';
       <br />
       to <em>better decisions.</em>
     </h2>
-    <p>
-      Bring your geometry, explore the flow, and turn what you learn into your
-      next design.
-    </p>
   </div>
   <div class="capability-summary-grid">
     {capabilityGroups.map((group) => (
       <a
-        class="capability-card ambient amb-surface-concave amb-chamfer amb-elevation-0"
+        class="capability-card"
         href={`/capabilities/#${group.id}`}
       >
-        <span class="capability-icon">
-          <Icon name={group.icon} size={28} />
-        </span>
-        <h3>{group.summaryTitle}</h3>
+        <div class="capability-card-heading">
+          <span class="capability-icon ambient amb-mat-glass">
+            <Icon name={group.icon} size={28} />
+          </span>
+          <h3>{group.summaryTitle}</h3>
+        </div>
         <p>{group.summary}</p>
         <span class="capability-card-link">
           {group.title}
@@ -33,7 +31,7 @@ import { capabilityGroups } from '../content/capabilities';
       </a>
     ))}
   </div>
-  <div class="capability-summary-action">
+  <div class="section-action">
     <a
       class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
       href="/capabilities/"
