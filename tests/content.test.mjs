@@ -138,7 +138,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 14);
+  assert.equal(htmlFiles.length, 15);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -310,6 +310,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     'tank-motion': /Evidence: Software demonstration/,
     'liquid-handling': /Evidence: Software demonstration/,
     'spillway-gates': /Evidence: Software demonstration/,
+    'reduced-gravity': /Evidence: Software demonstration/,
   };
   for (const [slug, expected] of Object.entries(evidence)) {
     const application = readFileSync(

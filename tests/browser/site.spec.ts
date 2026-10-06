@@ -237,12 +237,13 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(4);
+  await expect(page.locator('.showcase-card')).toHaveCount(5);
   const evidence: Record<string, string> = {
     'baffle-design': 'Illustration',
     'tank-motion': 'Software demonstration',
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
+    'reduced-gravity': 'Software demonstration',
   };
   for (const slug of Object.keys(evidence)) {
     await page.goto(`/showcases/${slug}/`);
