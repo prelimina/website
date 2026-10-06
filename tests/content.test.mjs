@@ -138,7 +138,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 14);
+  assert.equal(htmlFiles.length, 12);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -194,11 +194,13 @@ test('active pages remain available and retired pages are removed or redirected'
     'legal',
     'download',
     'changelog',
-    'showcases/baffle-design',
-    'showcases/tank-motion',
     'showcases/liquid-handling',
+    'showcases/spillway-gates',
   ]) {
     assert.ok(existsSync(join('dist', route, 'index.html')), route);
+  }
+  for (const route of ['showcases/baffle-design', 'showcases/tank-motion']) {
+    assert.equal(existsSync(join('dist', route, 'index.html')), false, route);
   }
   assert.equal(existsSync('dist/validation/index.html'), false);
   for (const route of ['pricing', 'download']) {
@@ -304,10 +306,8 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
-  // Applications backed by a real run are software demonstrations; the others remain illustrations.
+  // Both current applications have software demonstration evidence.
   const evidence = {
-    'baffle-design': /Evidence: Illustration/,
-    'tank-motion': /Evidence: Illustration/,
     'liquid-handling': /Evidence: Software demonstration/,
     'spillway-gates': /Evidence: Software demonstration/,
   };

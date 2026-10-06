@@ -10,9 +10,8 @@ const routes = [
   '/support/',
   '/legal/',
   '/changelog/',
-  '/showcases/baffle-design/',
-  '/showcases/tank-motion/',
   '/showcases/liquid-handling/',
+  '/showcases/spillway-gates/',
 ];
 
 test('all pages render without script errors, missing assets, or horizontal overflow', async ({
@@ -53,12 +52,13 @@ test('all pages render without script errors, missing assets, or horizontal over
   expect(errors).toEqual([]);
 });
 
-test('schematic controls update selected state, drawing, and caption with keyboard support', async ({
+test('schematic controls update selected state, drawing, and description with keyboard support', async ({
   page,
 }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const controls = page.getByRole('group', {
-    name: 'Explore the workflow illustration',
+    name: 'Select a workflow stage',
   });
   await expect(controls.getByRole('button')).toHaveText(
     ['01 Set up', '02 Simulate', '03 Iterate'],
@@ -85,8 +85,8 @@ test('schematic controls update selected state, drawing, and caption with keyboa
   );
   await expect(page.locator('[data-frame="simulate"]')).toBeVisible();
   await expect(page.locator('[data-frame="set-up"]')).toBeHidden();
-  await expect(page.locator('#study-caption')).toHaveText(
-    'Inspect liquid motion and choose where to sample the response.',
+  await expect(page.locator('[data-workflow-label]')).toHaveText(
+    'Inspect fluid motion.',
   );
   await page.keyboard.press('Tab');
   const iterate = controls.getByRole('button', { name: '03 Iterate' });
@@ -98,7 +98,7 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'iterate',
   );
   await expect(page.locator('[data-study-label]')).toHaveText('03 / Iterate');
-  await expect(page.locator('#study-caption')).toHaveText(
+  await expect(page.locator('[data-workflow-label]')).toHaveText(
     'Add a baffle, rerun, and compare.',
   );
   await expect(page.locator('[data-frame="iterate"]')).toBeVisible();
@@ -123,39 +123,35 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'set-up',
   );
   await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
-  await expect(page.locator('#study-caption')).toHaveText(
+  await expect(page.locator('[data-workflow-label]')).toHaveText(
     'Define a tank, its fill level, and the motion.',
   );
   await expect(page.locator('[data-frame="set-up"]')).toBeVisible();
   await expect(page.locator('[data-frame="iterate"]')).toBeHidden();
 });
 
-test('workflow actions run the simulation and add the baffle in order', async ({
+test('workflow stages advance automatically every two seconds', async ({
   page,
 }) => {
   await page.goto('/');
-  const run = page.getByRole('button', { name: 'Run simulation' });
-  await expect(run).toBeVisible();
-  await run.focus();
-  await page.keyboard.press('Enter');
+  await expect(
+    page.getByRole('button', { name: /Run simulation|Add baffle and rerun/ }),
+  ).toHaveCount(0);
   await expect(page.locator('.bench-screen')).toHaveAttribute(
     'data-stage',
     'simulate',
+    { timeout: 3000 },
   );
-  const baffle = page.getByRole('button', { name: 'Add baffle and rerun' });
-  await expect(baffle).toBeFocused();
-  await expect(run).toBeHidden();
-  await page.keyboard.press('Enter');
   await expect(page.locator('.bench-screen')).toHaveAttribute(
     'data-stage',
     'iterate',
+    { timeout: 3000 },
   );
-  await expect(page.locator('[data-step-action]:visible')).toHaveCount(0);
-  const iterate = page.getByRole('button', { name: '03 Iterate' });
-  await expect(iterate).toBeFocused();
-  await expect(iterate).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('button', { name: '01 Set up' }).click();
-  await expect(run).toBeVisible();
+  await expect(page.locator('.bench-screen')).toHaveAttribute(
+    'data-stage',
+    'set-up',
+    { timeout: 3000 },
+  );
 });
 
 test('mobile menu, page navigation, FAQ, and skip link work', async ({
@@ -180,8 +176,10 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
     .click();
   await expect(page).toHaveURL(/\/showcases\/$/);
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
-  await page.getByRole('link', { name: /Compare baffle arrangements/ }).click();
-  await expect(page).toHaveURL(/\/showcases\/baffle-design\//);
+  await page
+    .getByRole('link', { name: /Follow water through two outlets/ })
+    .click();
+  await expect(page).toHaveURL(/\/showcases\/liquid-handling\//);
   await menu.click();
   await page
     .getByRole('navigation')
@@ -237,10 +235,8 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(4);
+  await expect(page.locator('.showcase-card')).toHaveCount(2);
   const evidence: Record<string, string> = {
-    'baffle-design': 'Illustration',
-    'tank-motion': 'Illustration',
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
   };
@@ -407,7 +403,7 @@ test('an approved configured contact enables real draft links with the edited ou
     await expect(page.locator('main')).not.toContainText(
       'inquiries are not open',
     );
-    await page.goto('/showcases/baffle-design/');
+    await page.goto('/showcases/liquid-handling/');
     await expect(page.locator('.page-container > .button')).toHaveText(
       'Discuss your case',
     );
@@ -566,8 +562,8 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/showcases/',
     '/support/',
     '/capabilities/',
-    '/showcases/baffle-design/',
     '/showcases/liquid-handling/',
+    '/showcases/spillway-gates/',
     '/legal/',
   ]) {
     await page.goto(route);
@@ -631,7 +627,7 @@ test('capture desktop and mobile views and measure initial local resource weight
   });
   for (const [route, width] of [
     ['/showcases/', 1440],
-    ['/showcases/baffle-design/', 1440],
+    ['/showcases/liquid-handling/', 1440],
     ['/capabilities/', 1440],
     ['/capabilities/', 390],
     ['/legal/', 390],

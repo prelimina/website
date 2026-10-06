@@ -2,7 +2,7 @@ export const pages = {
   showcases: {
     title: 'Start with an engineering question.',
     description:
-      'Explore the initial applications for GPU-native CFD: sloshing, baffle arrangements, and moving liquids. These candidate applications state the question, inputs, and scope still to qualify.',
+      'Explore tank drainage and gated spillways with GPU-native CFD. These candidate applications state the question, inputs, and scope still to qualify.',
   },
   capabilities: {
     title: 'Capabilities',

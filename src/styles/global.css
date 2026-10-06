@@ -350,6 +350,7 @@ em {
 }
 .screen-top {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
   font-family: inherit;
@@ -361,10 +362,15 @@ em {
 }
 .screen-top > span:last-child {
   color: #6e6079;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .screen-top .workflow-label {
   color: var(--muted);
   font-size: var(--font-meta);
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.4;
 }
 .study-art {
   width: 100%;
@@ -422,7 +428,10 @@ em {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
   padding: 8px 6px;
 }
 .key-number {
@@ -438,31 +447,6 @@ em {
 }
 .bench-key:active {
   background-color: #e5e0e9;
-}
-.bench-caption {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px 16px;
-}
-.bench-caption p {
-  flex: 1 1 220px;
-}
-.bench-action {
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 16px;
-  font-size: var(--font-meta);
-}
-.bench-action[hidden] {
-  display: none;
-}
-.bench-caption p {
-  font-size: var(--font-meta);
-  color: #6f6377;
-  line-height: 1.4;
 }
 .bench-media {
   aspect-ratio: 48 / 29;
@@ -784,7 +768,6 @@ em {
 .showcase-copy {
   padding: 16px 0 0;
 }
-.showcase-category,
 .case-label {
   color: var(--muted);
   font-size: var(--font-meta);
@@ -798,7 +781,7 @@ em {
   font-size: var(--font-card-heading);
   line-height: 1.15;
   letter-spacing: normal;
-  margin: 7px 0 10px;
+  margin: 0 0 10px;
 }
 .showcase-copy p {
   color: var(--muted);
@@ -1636,10 +1619,6 @@ em {
 
 /* Media labels carry real context; keep them readable on small screens. */
 .screen-top {
-  color: #66576f;
-}
-.bench-caption p {
-  line-height: 1.6;
   color: #66576f;
 }
 .principles > a {

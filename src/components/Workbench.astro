@@ -1,14 +1,17 @@
 ---
-import Icon from './Icon.astro';
 import { workflowIllustration } from '../content/content';
-// The action button moves to the next step, as running the app would; the step keys stay for revisiting.
-const firstAction = workflowIllustration[0].action;
 ---
 
 <div class="workbench" data-workbench>
-  <div class="bench-screen" data-stage={workflowIllustration[0].id}>
+  <div
+    class="bench-screen"
+    id="workflow-visual"
+    data-stage={workflowIllustration[0].id}
+  >
     <div class="screen-top">
-      <span class="workflow-label">Workflow illustration</span>
+      <span class="workflow-label" data-workflow-label>
+        {workflowIllustration[0].illustration}
+      </span>
       <span data-study-label>01 / {workflowIllustration[0].title}</span>
     </div>
     <div class="bench-media">
@@ -30,69 +33,74 @@ const firstAction = workflowIllustration[0].action;
       ))}
     </div>
   </div>
-  <div
-    class="bench-controls"
-    role="group"
-    aria-label="Explore the workflow illustration"
-  >
+  <div class="bench-controls" role="group" aria-label="Select a workflow stage">
     {workflowIllustration.map((step, index) => (
       <button
         class="bench-key"
         type="button"
         data-step-button={index}
         aria-pressed={index === 0}
-        aria-controls="study-caption"
+        aria-controls="workflow-visual"
       >
         <span class="key-number">0{index + 1}</span>
         {step.title}
       </button>
     ))}
   </div>
-  <div class="bench-caption">
-    <p id="study-caption" aria-live="polite">
-      {workflowIllustration[0].illustration}
-    </p>
-    {workflowIllustration.map((step, index) =>
-      'action' in step ? (
-        <button
-          class="button button-quiet bench-action ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-          type="button"
-          data-step-action={index}
-          hidden={index !== 0}
-        >
-          <Icon name={step.action.icon} size={16} />
-          {step.action.label}
-        </button>
-      ) : null,
-    )}
-  </div>
 </div>
 <script>
   import { workflowIllustration } from '../content/content';
   const workbench = document.querySelector<HTMLElement>('[data-workbench]');
+  let activeIndex = 0;
+  let autoplayTimer: number | undefined;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
   const select = (index: number) => {
     if (!workbench) return;
+    activeIndex =
+      (index + workflowIllustration.length) % workflowIllustration.length;
     workbench
       .querySelectorAll<HTMLButtonElement>('[data-step-button]')
       .forEach((key) =>
         key.setAttribute(
           'aria-pressed',
-          String(Number(key.dataset.stepButton) === index),
+          String(Number(key.dataset.stepButton) === activeIndex),
         ),
       );
-    workbench
-      .querySelectorAll<HTMLButtonElement>('[data-step-action]')
-      .forEach((action) => {
-        action.hidden = Number(action.dataset.stepAction) !== index;
-      });
     const screen = workbench.querySelector<HTMLElement>('.bench-screen');
-    const caption = workbench.querySelector('#study-caption');
+    const description = workbench.querySelector('[data-workflow-label]');
     const label = workbench.querySelector('[data-study-label]');
-    if (screen) screen.dataset.stage = workflowIllustration[index].id;
-    if (caption) caption.textContent = workflowIllustration[index].illustration;
-    if (label)
-      label.textContent = `0${index + 1} / ${workflowIllustration[index].title}`;
+    if (screen) screen.dataset.stage = workflowIllustration[activeIndex].id;
+    if (description)
+      description.textContent = workflowIllustration[activeIndex].illustration;
+    if (label) {
+      label.textContent = `0${activeIndex + 1} / ${workflowIllustration[activeIndex].title}`;
+    }
   };
+
+  const stopAutoplay = () => {
+    if (autoplayTimer !== undefined) {
+      window.clearInterval(autoplayTimer);
+      autoplayTimer = undefined;
+    }
+  };
+  const startAutoplay = () => {
+    if (
+      !workbench ||
+      autoplayTimer !== undefined ||
+      reducedMotion.matches ||
+      document.hidden ||
+      workbench.matches(':hover') ||
+      workbench.contains(document.activeElement)
+    ) {
+      return;
+    }
+    autoplayTimer = window.setInterval(
+      () => select((activeIndex + 1) % workflowIllustration.length),
+      2000,
+    );
+  };
+
   workbench
     ?.querySelectorAll<HTMLButtonElement>('[data-step-button]')
     .forEach((button) =>
@@ -100,21 +108,21 @@ const firstAction = workflowIllustration[0].action;
         select(Number(button.dataset.stepButton)),
       ),
     );
-  workbench
-    ?.querySelectorAll<HTMLButtonElement>('[data-step-action]')
-    .forEach((button) =>
-      button.addEventListener('click', () => {
-        const next = Number(button.dataset.stepAction) + 1;
-        select(next);
-        // The pressed button is now hidden: keep focus on the next action, or on the step key if there is none.
-        (
-          workbench.querySelector<HTMLButtonElement>(
-            `[data-step-action="${next}"]`,
-          ) ??
-          workbench.querySelector<HTMLButtonElement>(
-            `[data-step-button="${next}"]`,
-          )
-        )?.focus();
-      }),
-    );
+  workbench?.addEventListener('pointerenter', stopAutoplay);
+  workbench?.addEventListener('pointerleave', startAutoplay);
+  workbench?.addEventListener('focusin', stopAutoplay);
+  workbench?.addEventListener('focusout', (event) => {
+    const nextTarget = event.relatedTarget;
+    if (nextTarget instanceof Node && workbench?.contains(nextTarget)) return;
+    startAutoplay();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+  reducedMotion.addEventListener('change', (event) => {
+    if (event.matches) stopAutoplay();
+    else startAutoplay();
+  });
+  startAutoplay();
 </script>

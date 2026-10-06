@@ -40,7 +40,6 @@ export const workflowIllustration = [
     id: 'set-up',
     title: 'Set up',
     illustration: 'Define a tank, its fill level, and the motion.',
-    action: { label: 'Run simulation', icon: 'play' },
     media: {
       src: '/assets/workflow/set-up.webp',
       still: '/assets/workflow/set-up.webp',
@@ -51,8 +50,7 @@ export const workflowIllustration = [
     id: 'simulate',
     title: 'Simulate',
     illustration:
-      'Inspect liquid motion and choose where to sample the response.',
-    action: { label: 'Add baffle and rerun', icon: 'plus' },
+      'Inspect fluid motion.',
     media: {
       src: '/assets/workflow/simulate.webp',
       still: '/assets/workflow/simulate-still.webp',
@@ -119,69 +117,8 @@ interface Application {
 
 export const showcases: readonly Application[] = [
   {
-    slug: 'baffle-design',
-    number: '01',
-    title: 'Compare baffle arrangements.',
-    category: 'Baffles & internal geometry',
-    type: 'baffle',
-    availability: 'in_development',
-    evidence: 'illustration',
-    description:
-      'Investigate how baffle position and geometry influence liquid motion in a tank.',
-    question:
-      'Which arrangement is worth taking into the next design iteration?',
-    inputs:
-      'Tank and baffle geometry, initial fill level, liquid properties, gravity, and a prescribed motion history.',
-    variables:
-      'Baffle position, height, shape, and spacing. Change one variable at a time to understand its influence.',
-    controls:
-      'Keep fill level, liquid properties, prescribed motion, numerical settings, and comparison interval consistent between arrangements.',
-    outputs:
-      'The development application provides a fluid view, diagnostics, and pressure or velocity probe histories with CSV output in supported configurations. Whole-body forces and moments depend on the selected method.',
-    metrics:
-      'Free-surface excursion and resultant tank or baffle loads are candidate comparison quantities. Their extraction, resolution sensitivity, and relevance to the design decision need qualification for the case; no reduction is established here.',
-    assumptions:
-      'A prescribed tank motion and rigid baffles, with the liquid model and treatment of the surrounding gas stated explicitly. The study isolates fluid response to the chosen geometry and forcing.',
-    limitation:
-      'Thin baffles, breaking surfaces, and local impacts can be sensitive to resolution and time step. A regional pressure probe samples fluid around it; it is not a wall-pressure tap. This candidate has no approved public comparison results.',
-    nextAction: {
-      label: 'Explore measurement capabilities',
-      href: '/capabilities/#measurements',
-    },
-  },
-  {
-    slug: 'tank-motion',
-    number: '02',
-    title: 'Explore liquid response to tank motion.',
-    category: 'Tanks & prescribed motion',
-    type: 'tank',
-    availability: 'in_development',
-    evidence: 'illustration',
-    description:
-      'Study how fill level and prescribed motion change the free-surface response.',
-    question: 'How does the liquid respond when the tank’s motion changes?',
-    inputs:
-      'Vessel geometry, liquid properties, gravity, initial fill, and a motion history with a defined direction, amplitude, frequency, and duration.',
-    variables:
-      'Fill level or prescribed motion. For example, hold the tank and liquid fixed while changing the motion amplitude.',
-    controls:
-      'Use the same geometry, liquid model, numerical settings, initial conditions other than the chosen variable, and observation interval.',
-    outputs:
-      'Live fluid views and supported probe histories can help inspect the response. Body motion and load measurements are available only where the selected method supports them.',
-    metrics:
-      'A case could compare free-surface excursion and response timing over the same motion cycles. Load histories require a method with quantitative pressure and a separate check of their suitability.',
-    assumptions:
-      'The tank follows an imposed motion, as in a controlled moving-vessel experiment. Specify the motion frame and the gas treatment. Predicting a freely responding tank requires a different coupling setup.',
-    limitation:
-      'This scope does not qualify all translations, rotations, gas effects, or rigid-body coupling. Impact pressures and breaking waves need dedicated resolution, time-step, and reference checks. No approved public result is attached.',
-    nextAction: {
-      label: 'Explore motion capabilities',
-      href: '/capabilities/#motion',
-    },
-  },
-  {
     slug: 'liquid-handling',
-    number: '03',
+    number: '01',
     title: 'Follow water through two outlets.',
     category: 'Liquid handling',
     type: 'pipe',
@@ -221,7 +158,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'spillway-gates',
-    number: '04',
+    number: '02',
     title: 'Watch a gated spillway release.',
     category: 'Hydraulic structures',
     type: 'pipe',
