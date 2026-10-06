@@ -298,7 +298,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   const navigation = home.match(/<nav\b[^>]*>(.*?)<\/nav>/s)?.[1];
   assert.ok(navigation);
   assert.match(navigation, /Applications/);
-  assert.match(navigation, /href="\/#download"[^>]*>\s*Download\s*</);
+  assert.match(navigation, /href="\/#download"[^>]*>\s*Download now\s*</);
   assert.doesNotMatch(navigation, /Showcases|\/download\/|\/changelog\//);
   assert.doesNotMatch(navigation, /Evidence|Access &amp; licensing/);
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));

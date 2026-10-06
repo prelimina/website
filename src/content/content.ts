@@ -99,7 +99,7 @@ interface Application {
   nextAction: { label: string; href: string };
 }
 
-export const showcases: Application[] = [
+export const showcases: readonly Application[] = [
   {
     slug: 'baffle-design',
     number: '01',

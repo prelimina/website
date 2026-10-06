@@ -61,18 +61,18 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     name: 'Explore the workflow illustration',
   });
   await expect(controls.getByRole('button')).toHaveText(
-    ['01 Setup', '02 Simulate', '03 Optimize'],
+    ['01 Set up', '02 Simulate', '03 Iterate'],
     { useInnerText: true },
   );
-  const setup = controls.getByRole('button', { name: '01 Setup' });
+  const setup = controls.getByRole('button', { name: '01 Set up' });
   await setup.focus();
   await page.keyboard.press('Enter');
   await expect(setup).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.bench-screen')).toHaveAttribute(
     'data-stage',
-    'setup',
+    'set-up',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('01 / Setup');
+  await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
   await expect(page.locator('.probe-marker')).toBeHidden();
   await page.keyboard.press('Tab');
   await expect(
@@ -88,15 +88,15 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'Inspect liquid motion and choose where to sample the response.',
   );
   await page.keyboard.press('Tab');
-  const optimize = controls.getByRole('button', { name: '03 Optimize' });
-  await expect(optimize).toBeFocused();
+  const iterate = controls.getByRole('button', { name: '03 Iterate' });
+  await expect(iterate).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(optimize).toHaveAttribute('aria-pressed', 'true');
+  await expect(iterate).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.bench-screen')).toHaveAttribute(
     'data-stage',
-    'optimize',
+    'iterate',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('03 / Optimize');
+  await expect(page.locator('[data-study-label]')).toHaveText('03 / Iterate');
   await expect(page.locator('#study-caption')).toHaveText(
     'Refine the baffle layout, rerun and compare.',
   );
@@ -110,17 +110,17 @@ test('schematic controls update selected state, drawing, and caption with keyboa
   await expect(page.locator('.probe-marker')).toBeHidden();
   await page
     .locator('[data-workbench]')
-    .screenshot({ path: testInfo.outputPath('workflow-optimize-desktop.png') });
+    .screenshot({ path: testInfo.outputPath('workflow-iterate-desktop.png') });
   await page.setViewportSize({ width: 390, height: 844 });
   await page
     .locator('[data-workbench]')
-    .screenshot({ path: testInfo.outputPath('workflow-optimize-mobile.png') });
+    .screenshot({ path: testInfo.outputPath('workflow-iterate-mobile.png') });
   await setup.click();
   await expect(page.locator('.bench-screen')).toHaveAttribute(
     'data-stage',
-    'setup',
+    'set-up',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('01 / Setup');
+  await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
   await expect(page.locator('.bench-screen .baffles')).toHaveCSS(
     'transform',
     'none',
@@ -151,20 +151,16 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
     .getByRole('navigation')
     .getByRole('link', { name: 'Applications' })
     .click();
-  await expect(page).toHaveURL(/\/#applications$/);
+  await expect(page).toHaveURL(/\/showcases\/$/);
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.locator('#applications h2')).toBeInViewport();
-  await page.getByRole('link', { name: 'Explore all applications' }).click();
-  await expect(page).toHaveURL(/\/showcases\//);
-  await page.getByRole('link', { name: /APPLICATION \/ 01/ }).click();
+  await page.getByRole('link', { name: /Compare baffle arrangements/ }).click();
   await expect(page).toHaveURL(/\/showcases\/baffle-design\//);
   await menu.click();
   await page
     .getByRole('navigation')
     .getByRole('link', { name: 'Applications' })
     .click();
-  await expect(page).toHaveURL(/\/#applications$/);
-  await expect(page.locator('#applications h2')).toBeInViewport();
+  await expect(page).toHaveURL(/\/showcases\/$/);
   await page.goto('/');
   await page.getByText('Is Prelimina free?', { exact: true }).click();
   await expect(page.locator('details[open]')).toContainText(
@@ -185,37 +181,43 @@ test('homepage order, primary actions, and application status communicate the pr
     'hero container',
     'applications',
     'capabilities',
-    'product',
     'download',
     'faq',
     'container cta-wrap',
   ]);
   await expect(page.locator('.hero-actions .button-primary')).toHaveText(
-    'Explore applications',
+    'Download now',
   );
   await expect(page.locator('.hero-actions .button-primary')).toHaveAttribute(
     'href',
-    '/showcases/',
+    '/#download',
   );
-  await expect(page.locator('.cta-panel .button')).toHaveText(
-    'Explore applications',
+  await expect(page.locator('.hero-actions .button-quiet')).toHaveAttribute(
+    'href',
+    '#applications',
   );
+  await expect(page.locator('.cta-panel .button')).toHaveText('Download now');
   await expect(page.locator('a[href^="mailto:"]')).toHaveCount(1);
   await expect(
     page.locator('a').filter({ hasText: 'Discuss your case' }),
   ).toHaveCount(0);
-  await expect(
-    page
-      .getByRole('navigation')
-      .getByRole('link', { name: 'Download', exact: true }),
-  ).toHaveAttribute('href', '/#download');
+  await expect(page.locator('.header-cta')).toHaveAttribute(
+    'href',
+    '/#download',
+  );
   await expect(
     page
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.application-status')).toHaveCount(3);
-  for (const slug of ['baffle-design', 'tank-motion', 'liquid-handling']) {
+  await expect(page.locator('.showcase-card')).toHaveCount(4);
+  const evidence: Record<string, string> = {
+    'baffle-design': 'Illustration',
+    'tank-motion': 'Illustration',
+    'liquid-handling': 'Illustration',
+    'spillway-gates': 'Software demonstration',
+  };
+  for (const slug of Object.keys(evidence)) {
     await page.goto(`/showcases/${slug}/`);
     await expect(page.locator('.application-status')).toContainText(
       slug === 'liquid-handling'
@@ -223,7 +225,7 @@ test('homepage order, primary actions, and application status communicate the pr
         : 'Availability: In development',
     );
     await expect(page.locator('.application-status')).toContainText(
-      'Evidence: Illustration',
+      `Evidence: ${evidence[slug]}`,
     );
     await expect(page.locator('.page-container > .button')).toHaveAttribute(
       'href',
@@ -247,12 +249,6 @@ test('capability panels lead to grouped features with a maturity label on every 
   page,
 }) => {
   await page.goto('/');
-  await page
-    .getByRole('navigation')
-    .getByRole('link', { name: 'Capabilities', exact: true })
-    .click();
-  await expect(page).toHaveURL(/\/#capabilities$/);
-  await expect(page.locator('#capabilities h2')).toBeInViewport();
   const cards = page.locator('.capability-card');
   await expect(cards).toHaveCount(6);
   const destinations = await cards.evaluateAll((links) =>
@@ -297,15 +293,17 @@ test('capability panels lead to grouped features with a maturity label on every 
       expect(labels).toContain(feature.labels[0]);
     }
   }
-  await page
-    .getByRole('navigation', { name: 'Capability groups' })
-    .getByRole('link', { name: 'Measurements & output' })
-    .click();
+  await page.goto('/capabilities/#measurements');
   await expect(page.locator('#measurements h2')).toBeInViewport();
   await page.goto('/');
   await page.getByRole('link', { name: /Start with your geometry/ }).click();
   await expect(page).toHaveURL(/\/capabilities\/#geometry$/);
   await expect(page.locator('#geometry h2')).toBeInViewport();
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Capabilities', exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/capabilities\/$/);
   await page.goto('/docs/');
   await expect(page).toHaveURL(/\/capabilities\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -329,17 +327,14 @@ test('an approved configured contact enables real draft links with the edited ou
     });
     await page.goto('/');
     await expect(page.locator('.hero-actions .button-primary')).toHaveText(
-      'Discuss your case',
+      'Download now',
     );
-    await expect(page.locator('.hero-note')).toContainText(
-      'In development. Discuss suitability for your application.',
-    );
-    await expect(page.locator('.header-cta')).toHaveText('Discuss your case');
-    await expect(page.locator('.cta-panel .button')).toHaveText(
-      'Discuss your case',
-    );
-    await page.locator('.hero-actions .button-primary').click();
-    await expect(page).toHaveURL(/\/support\/#early-access$/);
+    await expect(page.locator('.header-cta')).toHaveText('Download now');
+    await page
+      .locator('.footer-links')
+      .getByRole('link', { name: 'Discuss your case' })
+      .click();
+    await expect(page).toHaveURL(/\/support\/$/);
     await expect(page.locator('.contact-email')).toHaveText(
       'Email: inquiries@example.test',
     );
@@ -431,7 +426,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await page.goto('/');
   await page
     .getByRole('navigation')
-    .getByRole('link', { name: 'Download', exact: true })
+    .getByRole('link', { name: 'Download now' })
     .click();
   await expect(page).toHaveURL(/\/#download$/);
   await expect(page.locator('#download h2')).toBeInViewport();
@@ -443,12 +438,15 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await expect(page.locator('.release-summary')).toContainText('v0.1');
   await expect(page.locator('.release-summary time')).toHaveAttribute(
     'datetime',
-    '2026-09-23',
+    /^\d{4}-\d{2}-\d{2}$/,
   );
   for (const platform of ['Windows', 'Linux']) {
     await expect(
       page.getByRole('link', { name: `Download for ${platform}`, exact: true }),
-    ).toHaveAttribute('href', 'https://github.com/prelimina/desktop/releases');
+    ).toHaveAttribute(
+      'href',
+      /^https:\/\/github\.com\/prelimina\/desktop\/releases\/download\/v[\d.]+\//,
+    );
   }
   await expect(
     page.getByRole('button', { name: 'Coming soon' }),
@@ -465,10 +463,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   });
   await commercial.focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('#faq details').nth(1)).toHaveAttribute(
-    'open',
-    '',
-  );
+  await expect(page.locator('#faq details').nth(1)).toHaveAttribute('open', '');
   await expect(page.locator('#faq details').nth(1)).toContainText(
     'before the work begins',
   );
@@ -505,7 +500,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await menu.click();
   await page
     .getByRole('navigation')
-    .getByRole('link', { name: 'Download', exact: true })
+    .getByRole('link', { name: 'Download now' })
     .click();
   await expect(page).toHaveURL(/\/#download$/);
   await expect(page.locator('#download h2')).toBeInViewport();
