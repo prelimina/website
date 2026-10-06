@@ -249,7 +249,7 @@ export const showcases: readonly Application[] = [
       src: '/assets/showcases/reduced-gravity.webp',
       alt: 'Two identical tanks shaken side to side. At 1 g a single wave travels the tank; at 0.01 g the liquid is thrown up the walls in thin sheets that arc slowly back down.',
       caption:
-        'Prelimina FLIP runs of the same 0.6 m tank and motion at 1 g (top) and 0.01 g (bottom); surface tension off. Side view coloured by speed (0–1 m/s). Development build 482769ac.',
+        'Prelimina FLIP runs of the same 0.6 m tank and motion at 1 g (top) and 0.01 g (bottom); surface tension off. Side view coloured by speed (0–0.8 m/s). Development build 482769ac.',
       aspectRatio: '960 / 1160',
       fit: 'contain',
     },
