@@ -34,7 +34,7 @@ export const licensingAction = {
 };
 
 // Frames from Prelimina FLIP runs of the Hu, Kashiwagi & Kishev (2004) tank (T = 1.3 s, 6 cm fill,
-// amplitude reduced from 0.06 to 0.01 m), side view over two forcing periods; the source cases live in prelimina-cases/showcase/kishev_workflow.
+// amplitude reduced from 0.06 to 0.015 m), side view over two forcing periods (3T-5T); the source cases live in prelimina-cases/showcase/kishev_workflow.
 export const workflowIllustration = [
   {
     id: 'set-up',
