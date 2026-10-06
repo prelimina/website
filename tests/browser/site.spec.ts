@@ -207,6 +207,7 @@ test('homepage order, primary actions, and application status communicate the pr
   expect(sections).toEqual([
     'hero container',
     'applications',
+    'desktop-app',
     'capabilities',
     'download',
     'faq',

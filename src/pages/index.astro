@@ -5,6 +5,7 @@ import Workbench from '../components/Workbench.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import DownloadSection from '../components/DownloadSection.astro';
 import CapabilitySummary from '../components/CapabilitySummary.astro';
+import AppScreenshot from '../components/AppScreenshot.astro';
 import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import {
@@ -69,6 +70,7 @@ const productAction = createProductAction(loadCatalogue().current);
       </div>
     </div>
   </section>
+  <AppScreenshot />
   <CapabilitySummary />
   <DownloadSection />
   <section class="section container faq-section" id="faq">
