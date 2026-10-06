@@ -192,6 +192,46 @@ export const showcases: Application[] = [
       href: '/capabilities/#geometry',
     },
   },
+  {
+    slug: 'spillway-gates',
+    number: '04',
+    title: 'Watch a gated spillway release.',
+    category: 'Hydraulic structures',
+    type: 'pipe',
+    availability: 'in_development',
+    evidence: 'software_demonstration',
+    description:
+      'Lift the gates on a labyrinth spillway and follow the released water over the crest and down the chute.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/labyrinth-spillway.webp',
+      alt: 'The labyrinth spillway set up in the Prelimina interface, followed by an orbit around the exported flow: water released through two gates runs down the chute, coloured by speed.',
+      caption:
+        'Set-up and run in the Prelimina interface, then the exported particles rendered in ParaView. Development build 482769ac.',
+      aspectRatio: '16 / 9',
+      fit: 'contain',
+    },
+    question:
+      'How does the released water spread over the crest and through the chute as the gates open?',
+    inputs:
+      'Spillway and gate geometry, an initial upstream store, liquid properties, gravity, and a prescribed gate motion.',
+    variables:
+      'Gate opening history, upstream level, and crest or chute geometry. Change one at a time.',
+    controls:
+      'Keep the grid, numerical settings, initial store, and observation interval the same between variants.',
+    outputs:
+      'A live fluid view coloured by speed and particle exports for offline rendering. Discharge and pressure extraction for this case are not yet set up.',
+    metrics:
+      'Time for the front to reach the chute, wetted extent, and discharge over the crest are candidate comparison quantities. None has been extracted or checked here.',
+    assumptions:
+      'A finite upstream store with no inflow, rigid gates on a prescribed lift, and a single liquid without air entrainment.',
+    limitation:
+      'The run becomes unstable at about 17 s, as the falling store level reaches the crest. Moving gates need flush contact with the structure and walls at least three cells thick. The case is a look-alike of a real structure, not a model of it, and no comparison with measurements is attached.',
+    nextAction: {
+      label: 'Explore geometry and boundaries',
+      href: '/capabilities/#geometry',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux

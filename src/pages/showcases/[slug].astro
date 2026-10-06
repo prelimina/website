@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Study from '../../components/Study.astro';
+import ShowcaseMedia from '../../components/ShowcaseMedia.astro';
 import Icon from '../../components/Icon.astro';
 import {
   inquiryAction,
@@ -56,16 +56,19 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
           <div class="showcase-visual">
             <div class="showcase-meta">
               <span>APPLICATION / {item.number}</span>
-              <span>Illustration</span>
+              <span>{item.media ? evidenceLabels[item.evidence] : 'Illustration'}</span>
             </div>
-            <Study type={item.type} />
-            <span class="study-stamp">
-              Illustration — not simulation results
-            </span>
+            <ShowcaseMedia illustration={item.type} media={item.media} />
+            {!item.media && (
+              <span class="study-stamp">
+                Illustration — not simulation results
+              </span>
+            )}
           </div>
           <p class="section-note">
-            No public release, reproducible result set, or hardware
-            qualification is attached to this candidate application.
+            {item.media
+              ? 'Recorded from a development build. It shows the workflow, not a validated result.'
+              : 'No public release, reproducible result set, or hardware qualification is attached to this candidate application.'}
           </p>
         </div>
       </div>

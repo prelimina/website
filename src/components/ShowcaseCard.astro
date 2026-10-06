@@ -12,7 +12,7 @@ const { item } = Astro.props;
   <div class="showcase-visual">
     <ShowcaseMedia
       illustration={item.type}
-      media={item.media}
+      media={item.media && { ...item.media, caption: undefined }}
       aspectRatio="48 / 29"
     />
   </div>
