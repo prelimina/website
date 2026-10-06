@@ -196,6 +196,45 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#geometry',
     },
   },
+  {
+    slug: 'reduced-gravity',
+    number: '03',
+    title: 'Compare sloshing at reduced gravity.',
+    category: 'Reduced gravity',
+    type: 'tank',
+    availability: 'in_development',
+    evidence: 'software_demonstration',
+    description:
+      'Shake the same tank the same way at 1 g and at 0.01 g and compare how the liquid moves.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/reduced-gravity.webp',
+      alt: 'Two identical tanks shaken side to side. At 1 g a single wave travels the tank; at 0.01 g the liquid is thrown up the walls in thin sheets that arc slowly back down.',
+      caption:
+        'Prelimina FLIP runs of the same 0.6 m tank and motion at 1 g (top) and 0.01 g (bottom); surface tension off. Side view coloured by speed (0–1 m/s). Development build 482769ac.',
+      aspectRatio: '960 / 1160',
+      fit: 'contain',
+    },
+    question: 'How does the liquid’s motion change when gravity is reduced?',
+    inputs:
+      'Tank geometry, fill level, liquid properties, a gravity value, and a prescribed motion history.',
+    variables:
+      'Gravity level, or the amplitude and period of the motion. Change one at a time.',
+    controls:
+      'Use the same geometry, fill, motion, numerical settings, and observation interval for every gravity level.',
+    outputs:
+      'Live fluid views and particle exports for offline rendering. No loads or probe histories are extracted for this comparison.',
+    metrics:
+      'Wall run-up and how long liquid stays off the floor are candidate comparison quantities. Neither has been extracted or checked here.',
+    assumptions:
+      'A single liquid in a passive void, constant reduced gravity, and an imposed tank motion. Surface tension and wetting are switched off.',
+    limitation:
+      'Software demonstration, not validated. At very low gravity surface tension and wetting dominate real liquid behaviour; they are not included here, so this is reduced-gravity sloshing, not capillary microgravity behaviour. Gas, thermal, and propellant effects are not represented.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux

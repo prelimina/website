@@ -1,0 +1,42 @@
+---
+// A real capture of the desktop app, so visitors see what they would actually use.
+const files = [
+  ['640', 640],
+  ['1280', 1280],
+  ['full', 2538],
+] as const;
+const src = (name: string) => `/assets/app/prelimina-simulate-${name}.webp`;
+---
+
+<section class="section container app-section" id="desktop-app">
+  <div class="section-heading">
+    <h2>
+      See it in the <em>desktop app.</em>
+    </h2>
+    <p>
+      Set up the case, run it on your GPU, and watch the flow and the probe
+      readings update together.
+    </p>
+  </div>
+  <figure class="app-shot">
+    <a href={src('full')} class="app-shot-frame">
+      <img
+        src={src('1280')}
+        srcset={files.map(([name, w]) => `${src(name)} ${w}w`).join(', ')}
+        sizes="(min-width: 1280px) 1216px, calc(100vw - 32px)"
+        width="2538"
+        height="1427"
+        loading="lazy"
+        decoding="async"
+        alt="The Prelimina window in the Simulate tab: a rectangular tank seen from the side with a sloshing wave coloured by speed running up the right wall, display settings on the left, and below it a graph of pressure at probe P1 peaking as the wave arrives."
+      />
+    </a>
+    <figcaption>
+      Actual Prelimina desktop interface, development build 482769ac, captured 6
+      October 2026 on an RTX 5080. Sloshing tank after Hu, Kashiwagi and Kishev
+      (2004) at a reduced amplitude; the graph shows the simulated pressure at a
+      regional probe near the right wall, not a measured wall pressure.{' '}
+      <a href={src('full')}>View full-size screenshot</a>
+    </figcaption>
+  </figure>
+</section>

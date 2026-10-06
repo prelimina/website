@@ -12,6 +12,7 @@ const routes = [
   '/changelog/',
   '/showcases/liquid-handling/',
   '/showcases/spillway-gates/',
+  '/showcases/reduced-gravity/',
 ];
 
 test('all pages render without script errors, missing assets, or horizontal overflow', async ({
@@ -205,6 +206,7 @@ test('homepage order, primary actions, and application status communicate the pr
   expect(sections).toEqual([
     'hero container',
     'applications',
+    'desktop-app',
     'capabilities',
     'download',
     'faq',
@@ -235,10 +237,11 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(2);
+  await expect(page.locator('.showcase-card')).toHaveCount(3);
   const evidence: Record<string, string> = {
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
+    'reduced-gravity': 'Software demonstration',
   };
   for (const slug of Object.keys(evidence)) {
     await page.goto(`/showcases/${slug}/`);
