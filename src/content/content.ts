@@ -33,23 +33,39 @@ export const licensingAction = {
   ),
 };
 
+// Frames from Prelimina FLIP runs of the Hu, Kashiwagi & Kishev (2004) tank (T = 1.3 s, 6 cm fill),
+// side view over two forcing periods; the source cases live in prelimina-cases/showcase/kishev_workflow.
 export const workflowIllustration = [
   {
     id: 'set-up',
     title: 'Set up',
-    illustration: 'Define a tank, its fill level, and the baffle geometry.',
+    illustration: 'Define a tank, its fill level, and the motion.',
+    media: {
+      src: '/assets/workflow/set-up.webp',
+      still: '/assets/workflow/set-up.webp',
+      alt: 'Side view of a rectangular tank with a shallow layer of water at rest.',
+    },
   },
   {
     id: 'simulate',
     title: 'Simulate',
     illustration:
       'Inspect liquid motion and choose where to sample the response.',
+    media: {
+      src: '/assets/workflow/simulate.webp',
+      still: '/assets/workflow/simulate-still.webp',
+      alt: 'Prelimina simulation of the tank shaken side to side: the water runs up each end wall to the lid and breaks.',
+    },
   },
   {
     id: 'iterate',
     title: 'Iterate',
-    illustration:
-      'Refine the baffle layout, rerun and compare.',
+    illustration: 'Add a baffle, rerun, and compare.',
+    media: {
+      src: '/assets/workflow/iterate.webp',
+      still: '/assets/workflow/iterate-still.webp',
+      alt: 'The same tank and motion with a floor baffle at mid-length.',
+    },
   },
 ] as const;
 

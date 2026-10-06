@@ -73,7 +73,7 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'set-up',
   );
   await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
-  await expect(page.locator('.probe-marker')).toBeHidden();
+  await expect(page.locator('[data-frame="set-up"]')).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(
     controls.getByRole('button', { name: '02 Simulate' }),
@@ -83,7 +83,8 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'data-stage',
     'simulate',
   );
-  await expect(page.locator('.probe-marker')).toBeVisible();
+  await expect(page.locator('[data-frame="simulate"]')).toBeVisible();
+  await expect(page.locator('[data-frame="set-up"]')).toBeHidden();
   await expect(page.locator('#study-caption')).toHaveText(
     'Inspect liquid motion and choose where to sample the response.',
   );
@@ -98,16 +99,17 @@ test('schematic controls update selected state, drawing, and caption with keyboa
   );
   await expect(page.locator('[data-study-label]')).toHaveText('03 / Iterate');
   await expect(page.locator('#study-caption')).toHaveText(
-    'Refine the baffle layout, rerun and compare.',
+    'Add a baffle, rerun, and compare.',
   );
-  await expect(page.locator('.bench-screen .baffles')).toHaveCSS(
-    'transform',
-    'matrix(1, 0, 0, 1, 22, 0)',
+  await expect(page.locator('[data-frame="iterate"]')).toBeVisible();
+  await expect(page.locator('[data-frame="iterate"] img')).toHaveJSProperty(
+    'complete',
+    true,
   );
   await expect(
     page.locator('[data-step-button][aria-pressed="true"]'),
   ).toHaveCount(1);
-  await expect(page.locator('.probe-marker')).toBeHidden();
+  await expect(page.locator('[data-frame="simulate"]')).toBeHidden();
   await page
     .locator('[data-workbench]')
     .screenshot({ path: testInfo.outputPath('workflow-iterate-desktop.png') });
@@ -121,14 +123,11 @@ test('schematic controls update selected state, drawing, and caption with keyboa
     'set-up',
   );
   await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
-  await expect(page.locator('.bench-screen .baffles')).toHaveCSS(
-    'transform',
-    'none',
-  );
   await expect(page.locator('#study-caption')).toHaveText(
-    'Define a tank, its fill level, and the baffle geometry.',
+    'Define a tank, its fill level, and the motion.',
   );
-  await expect(page.locator('.probe-marker')).toBeHidden();
+  await expect(page.locator('[data-frame="set-up"]')).toBeVisible();
+  await expect(page.locator('[data-frame="iterate"]')).toBeHidden();
 });
 
 test('mobile menu, page navigation, FAQ, and skip link work', async ({
@@ -520,11 +519,14 @@ test('reduced motion and compact zoom layout remain readable', async ({
       () => getComputedStyle(document.documentElement).scrollBehavior,
     ),
   ).toBe('auto');
-  expect(
-    await page
-      .locator('.bench-screen .baffles')
-      .evaluate((element) => getComputedStyle(element).transitionDuration),
-  ).toBe('0s');
+  await page.locator('[data-step-button]').nth(1).click();
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-frame="simulate"] img')
+        .evaluate((image: HTMLImageElement) => image.currentSrc),
+    )
+    .toMatch(/\/assets\/workflow\/simulate-still\.webp$/);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,

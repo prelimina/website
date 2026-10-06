@@ -1,12 +1,5 @@
 ---
-import ShowcaseMedia from './ShowcaseMedia.astro';
-import type { ShowcaseMediaConfig } from '../content/content';
 import { workflowIllustration } from '../content/content';
-
-interface Props {
-  media?: ShowcaseMediaConfig;
-}
-const { media } = Astro.props;
 ---
 
 <div class="workbench" data-workbench>
@@ -15,7 +8,24 @@ const { media } = Astro.props;
       <span class="workflow-label">Workflow illustration</span>
       <span data-study-label>01 / {workflowIllustration[0].title}</span>
     </div>
-    <ShowcaseMedia illustration="baffle" large media={media} />
+    <div class="bench-media">
+      {workflowIllustration.map((step, index) => (
+        <picture class="bench-frame" data-frame={step.id}>
+          <source
+            media="(prefers-reduced-motion: reduce)"
+            srcset={step.media.still}
+          />
+          <img
+            src={step.media.src}
+            alt={step.media.alt}
+            width="960"
+            height="580"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </picture>
+      ))}
+    </div>
   </div>
   <div
     class="bench-controls"
@@ -44,12 +54,6 @@ const { media } = Astro.props;
 <script>
   import { workflowIllustration } from '../content/content';
   const workbench = document.querySelector<HTMLElement>('[data-workbench]');
-  // SMIL ignores the stylesheet's reduced-motion rule, so stop the flow pulses here.
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    workbench
-      ?.querySelectorAll<SVGSVGElement>('svg.study-art')
-      .forEach((svg) => svg.pauseAnimations());
-  }
   workbench
     ?.querySelectorAll<HTMLButtonElement>('[data-step-button]')
     .forEach((button) => {
