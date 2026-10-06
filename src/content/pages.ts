@@ -9,11 +9,6 @@ export const pages = {
     description:
       'Explore Prelimina’s features and where each stands today. Have a feature in mind? We welcome your suggestions—tell us what would help in your work.',
   },
-  support: {
-    title: 'Start with your design question.',
-    description:
-      'Outline what you want to understand, what you want to compare, and the decision your fluid study would inform. Confidential geometry is unnecessary for the first conversation.',
-  },
   legal: {
     title: 'The details, clearly stated.',
     description:

@@ -372,6 +372,6 @@ export const faqs = [
 ] as const;
 
 export const nav = [
-  { label: 'Applications', href: '/showcases/' },
+  { label: 'Applications', href: '/#applications' },
   { label: 'Capabilities', href: '/capabilities/' },
 ];

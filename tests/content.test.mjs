@@ -101,7 +101,7 @@ test('the primary action and status follow inquiry availability', () => {
   assert.equal(open.open, true);
   assert.deepEqual(open.primary, {
     label: 'Discuss your case',
-    href: '/support/#early-access',
+    href: inquiryHref('inquiries@example.test', inquiryOutline),
   });
   assert.match(open.status, /Discuss suitability/);
 });

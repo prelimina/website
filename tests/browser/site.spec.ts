@@ -7,7 +7,6 @@ const routes = [
   '/',
   '/showcases/',
   '/capabilities/',
-  '/support/',
   '/legal/',
   '/changelog/',
   '/showcases/tank-motion/',
@@ -32,7 +31,9 @@ test('all pages render without script errors, missing assets, or horizontal over
     await page.setViewportSize({ width, height: 960 });
     for (const route of routes) {
       await page.goto(route);
-      await expect(page.locator('h1')).toHaveCount(1);
+      await expect(page.locator('h1')).toHaveCount(
+        route === '/capabilities/' ? 2 : 1,
+      );
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth > window.innerWidth,
       );
@@ -258,13 +259,6 @@ test('homepage order, primary actions, and application status communicate the pr
       /\/capabilities\/#/,
     );
   }
-  await page.goto('/support/#early-access');
-  await expect(page.locator('main')).toContainText(
-    'Application inquiries are not open',
-  );
-  await expect(
-    page.getByRole('link', { name: 'Open an email draft' }),
-  ).toHaveCount(0);
   await page.goto('/#licensing');
   await expect(
     page.getByRole('link', { name: 'Ask about licensing' }),
@@ -337,7 +331,7 @@ test('capability panels lead to grouped features with a maturity label on every 
   );
 });
 
-test('an approved configured contact enables real draft links with the edited outline', async ({
+test('an approved configured contact enables direct draft links on application pages', async ({
   page,
 }, testInfo) => {
   const fixture = buildContactFixture();
@@ -351,47 +345,15 @@ test('an approved configured contact enables real draft links with the edited ou
         ),
       });
     });
-    await page.goto('/');
-    await expect(page.locator('.hero-actions .button-primary')).toHaveText(
-      'Download now',
-    );
-    await expect(page.locator('.header-cta')).toHaveText('Download now');
-    await page
-      .locator('.footer-links')
-      .getByRole('link', { name: 'Discuss your case' })
-      .click();
-    await expect(page).toHaveURL(/\/support\/$/);
-    await expect(page.locator('.contact-email')).toHaveText(
-      'Email: inquiries@example.test',
-    );
-    await expect(page.locator('main')).not.toContainText(
-      'inquiries are not open',
-    );
-    const draft = page.getByRole('link', { name: 'Open an email draft' });
-    const outline =
-      'Sloshing A & B? #fill = 50%\nΔ motion / μ liquid\n\nBcc: text stays in the body';
-    await page.getByLabel('Your case outline').fill(outline);
+    await page.goto('/showcases/liquid-handling/');
+    const draft = page.getByRole('link', { name: 'Discuss your case' });
     const href = await draft.getAttribute('href');
     expect(href).not.toBeNull();
     const url = new URL(href!);
     expect(url.pathname).toBe('inquiries@example.test');
     expect([...url.searchParams.keys()]).toEqual(['subject', 'body']);
-    expect(url.searchParams.get('body')).toBe(outline);
+    expect(url.searchParams.get('body')).toMatch(/My design question/);
     expect(url.hash).toBe('');
-    // Prevent launching a mail client; check the destination at activation.
-    await draft.evaluate((element) =>
-      element.addEventListener('click', (event) => event.preventDefault()),
-    );
-    await draft.focus();
-    await page.keyboard.press('Enter');
-    expect(
-      new URL((await draft.getAttribute('href'))!).searchParams.get('body'),
-    ).toBe(outline);
-    await expect(page.getByRole('status')).toBeEmpty();
-    await page.getByLabel('Your case outline').fill('');
-    expect(
-      new URL((await draft.getAttribute('href'))!).searchParams.get('body'),
-    ).toBe('');
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({
       path: testInfo.outputPath('configured-contact-mobile.png'),
@@ -405,45 +367,10 @@ test('an approved configured contact enables real draft links with the edited ou
     await expect(
       page.getByRole('link', { name: 'Ask about licensing' }),
     ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
-    await expect(page.locator('main')).not.toContainText(
-      'inquiries are not open',
-    );
-    await page.goto('/showcases/liquid-handling/');
-    await expect(page.locator('.page-container > .button')).toHaveText(
-      'Discuss your case',
-    );
   } finally {
     await page.unrouteAll({ behavior: 'wait' });
     fixture.remove();
   }
-});
-
-test('contact copying is honest and the unavailable clipboard has a usable fallback', async ({
-  page,
-  context,
-}) => {
-  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-  await page.goto('/support/');
-  await page
-    .getByLabel('Your case outline')
-    .fill('Compare two baffle arrangements.');
-  await page.getByRole('button', { name: 'Copy your outline' }).click();
-  await expect(page.getByRole('status')).toHaveText(
-    'Outline copied. Nothing has been sent.',
-  );
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
-    'Compare two baffle arrangements.',
-  );
-  await page.evaluate(() => {
-    Object.defineProperty(navigator.clipboard, 'writeText', {
-      value: () => Promise.reject(new Error('Unavailable')),
-    });
-  });
-  await page.getByRole('button', { name: 'Copy your outline' }).click();
-  await expect(page.getByRole('status')).toContainText(
-    'Your outline is selected',
-  );
-  await expect(page.getByLabel('Your case outline')).toBeFocused();
 });
 
 test('homepage downloads, combined FAQ, and retired routes work', async ({
@@ -565,7 +492,6 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
   for (const route of [
     '/',
     '/showcases/',
-    '/support/',
     '/capabilities/',
     '/showcases/tank-motion/',
     '/showcases/liquid-handling/',
@@ -638,7 +564,6 @@ test('capture desktop and mobile views and measure initial local resource weight
     ['/capabilities/', 1440],
     ['/capabilities/', 390],
     ['/legal/', 390],
-    ['/support/', 390],
   ] as const) {
     await page.setViewportSize({ width, height: 960 });
     await page.goto(route);

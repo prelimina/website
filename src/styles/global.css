@@ -599,6 +599,48 @@ em {
 .capability-group h2 {
   font-size: 32px;
 }
+.solver-section {
+  padding-top: 74px;
+  padding-bottom: 45px;
+}
+.solver-section > h1 {
+  margin: 23px 0 14px;
+}
+.solver-section > p {
+  max-width: 670px;
+  margin-bottom: 28px;
+  color: var(--muted);
+}
+.solver-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+.solver-card {
+  padding: 26px 30px;
+  background: #f8f8f8;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.solver-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.solver-card h2 {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+.solver-card p {
+  color: var(--muted);
+  font-size: var(--font-ui);
+  line-height: 1.6;
+}
 .maturity-guide {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -964,6 +1006,12 @@ em {
   padding-bottom: 52px;
   max-width: 900px;
 }
+.capabilities-page-hero {
+  padding-top: 0;
+}
+.capabilities-page-hero h1 {
+  margin-top: 0;
+}
 .page-hero h1 {
   font-size: var(--font-display);
   margin: 23px 0;
@@ -1140,42 +1188,6 @@ em {
   line-height: 1.6;
   color: var(--muted);
 }
-.contact-summary {
-  width: 100%;
-  max-width: 740px;
-  border: 1px solid #cdc4d4;
-  border-radius: 5px;
-  padding: 18px;
-  min-height: 180px;
-  background: #fafafa;
-  color: #5e5269;
-  font-family: inherit;
-  font-size: var(--font-ui);
-  line-height: 1.6;
-  resize: vertical;
-}
-.copy-status {
-  min-height: 26px;
-  margin-top: 10px;
-  color: var(--purple);
-  font-size: var(--font-meta);
-}
-.copy-row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.copy-row .button {
-  margin-top: 16px;
-}
-.contact-label {
-  display: block;
-  margin: 24px 0 10px;
-}
-.contact-email {
-  overflow-wrap: anywhere;
-}
 .legal-list {
   margin: 30px 0;
 }
@@ -1239,6 +1251,9 @@ em {
 @media (max-width: 850px) {
   .capability-summary-grid,
   .maturity-guide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .solver-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .capability-catalog {
@@ -1346,7 +1361,8 @@ em {
   .footer-bottom {
     flex-wrap: wrap;
   }
-  .page-hero h1 {
+  .page-hero h1,
+  .solver-section > h1 {
     font-size: clamp(44px, 7vw, 60px);
   }
   .case-layout {
@@ -1361,6 +1377,13 @@ em {
   .maturity-guide {
     grid-template-columns: 1fr;
     gap: 22px;
+  }
+  .solver-card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .solver-card {
+    padding: 24px;
   }
   .capability-card,
   .capability-group {

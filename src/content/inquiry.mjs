@@ -4,8 +4,11 @@ export function getInquiryState(contactEmail) {
   const open = Boolean(contactEmail);
   return {
     open,
-    primary: open
-      ? { label: 'Discuss your case', href: '/support/#early-access' }
+    primary: contactEmail
+      ? {
+          label: 'Discuss your case',
+          href: inquiryHref(contactEmail, inquiryOutline),
+        }
       : { label: 'Explore applications', href: '/showcases/' },
     status: open
       ? 'In development. Discuss suitability for your application.'

@@ -2,11 +2,7 @@
 import '@ambientcss/css/ambient.css';
 import '../styles/global.css';
 import site from '../content/site.json';
-import {
-  nav,
-  productActionConfig,
-  inquiryAction,
-} from '../content/content';
+import { nav, productActionConfig } from '../content/content';
 import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
@@ -107,9 +103,6 @@ const path = Astro.url.pathname;
           <a href="/#download">Download</a>
           <a href="/#faq">FAQ</a>
           <a href="/capabilities/">All capabilities</a>
-          <a href="/support/">
-            {inquiryAction.open ? 'Discuss your case' : 'Prepare a case outline'}
-          </a>
           <a href="/changelog/">Release status</a>
           <a href="/legal/">Website information</a>
         </div>

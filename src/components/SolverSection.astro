@@ -1,0 +1,24 @@
+---
+import { maturity, solverCards } from '../content/capabilities';
+---
+
+<section class="solver-section" aria-labelledby="solvers-title">
+  <h1 id="solvers-title">Solvers</h1>
+  <p>
+    Prelimina brings the complete fluid simulation workflow into one suite,
+    ready to put every design assumption to the test.
+  </p>
+  <div class="solver-card-grid">
+    {solverCards.map((solver) => (
+      <article class="solver-card">
+        <div class="solver-card-heading">
+          <h2>{solver.name}</h2>
+          <span class="maturity-badge" data-maturity={solver.status}>
+            {maturity[solver.status].label}
+          </span>
+        </div>
+        <p>{solver.description}</p>
+      </article>
+    ))}
+  </div>
+</section>

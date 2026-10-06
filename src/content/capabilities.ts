@@ -20,6 +20,27 @@ export const maturity = {
   },
 } as const;
 
+export const solverCards = [
+  {
+    name: 'FLIP',
+    status: 'implemented',
+    description:
+      'The fastest ever, industry accurate Eulerian–Lagrangian hybrid for quick prototyping.',
+  },
+  {
+    name: 'FVM',
+    status: 'experimental',
+    description:
+      'The most flexible cut-cell finite-volume solver ever, with Eulerian conservation for cases where that is important.',
+  },
+  {
+    name: 'FIRM',
+    status: 'planned',
+    description:
+      'The most robust and accurate implicit pure Lagrangian method in the world, where everything easily moves and deforms.',
+  },
+] as const;
+
 interface CapabilityGroup {
   id: string;
   title: string;
@@ -48,7 +69,7 @@ export const capabilityGroups = [
         name: 'Incompressible free-surface flow',
         status: 'implemented',
         description:
-          'Single-liquid FLIP/APIC simulation with particles tracking the moving liquid and a grid solving pressure.',
+          'Single-liquid simulation with particles tracking the moving liquid and a grid solving pressure.',
       },
       {
         name: 'Newtonian viscosity',
@@ -58,7 +79,7 @@ export const capabilityGroups = [
       },
       {
         name: 'Non-Newtonian fluid models',
-        status: 'planned',
+        status: 'development',
         description:
           'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
       },
@@ -70,7 +91,7 @@ export const capabilityGroups = [
       },
       {
         name: 'Surface tension',
-        status: 'implemented',
+        status: 'experimental',
         description:
           'Include capillary forces in the supported free-surface formulations.',
       },
@@ -90,13 +111,13 @@ export const capabilityGroups = [
         name: 'Resolved liquid–gas flow',
         status: 'experimental',
         description:
-          'Two-phase FLIP and finite-volume formulations, with configuration-specific density-ratio and interface behaviour.',
+          'Two-phase formulations, with configuration-specific density-ratio and interface behaviour.',
       },
       {
         name: 'Contact angles and wetting',
         status: 'experimental',
         description:
-          'Static wetting and selected dynamic or hysteretic models in FLIP/FVM; meshless wetting currently covers a static angle.',
+          'Static wetting, and selected dynamic or hysteretic models.',
       },
       {
         name: 'Turbulence and wall treatment',
@@ -192,19 +213,19 @@ export const capabilityGroups = [
         name: 'Fluid-driven rigid bodies',
         status: 'experimental',
         description:
-          'Six-degree-of-freedom response and pressure–body coupling for selected solver and phase configurations.',
+          'Six-degree-of-freedom (6-DOF) either imposed or reactive body coupling.',
       },
       {
         name: 'External structural coupling',
         status: 'experimental',
         description:
-          'Native Linux coupling through preCICE, including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces.',
+          'Native coupling (through preCICE on Linux), including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces.',
       },
       {
         name: 'Wave-generation boundaries',
         status: 'development',
         description:
-          'Analytical Airy-wave targets are implemented; direct and relaxation-zone wave generation are still in development.',
+          'Analytical wave targets with direct and relaxation-zone wave generation.',
       },
     ],
   },

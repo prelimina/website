@@ -3,17 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import CapabilityCatalog from '../components/CapabilityCatalog.astro';
+import SolverSection from '../components/SolverSection.astro';
 import ReleaseHistory from '../components/ReleaseHistory.astro';
 import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import { pages } from '../content/pages';
 import {
-  inquiryAction,
   licence,
   licensingAction,
   showcases,
 } from '../content/content';
-import { inquiryOutline, inquiryHref } from '../content/inquiry.mjs';
 export function getStaticPaths() {
   return Object.entries(pages).map(([page, content]) => ({
     params: { page },
@@ -29,7 +28,12 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
 
 <Layout title={title} description={description}>
   <div class="container">
-    <header class="page-hero">
+    {page === 'capabilities' && <SolverSection />}
+    <header
+      class={
+        page === 'capabilities' ? 'page-hero capabilities-page-hero' : 'page-hero'
+      }
+    >
       <h1>{title}</h1>
       <p>{description}</p>
     </header>
@@ -49,103 +53,6 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
         </>
       )}
       {page === 'capabilities' && <CapabilityCatalog />}
-      {page === 'support' && (
-        <>
-          <section
-            id="early-access"
-            class="info-panel"
-          >
-            <h2>Start with the decision.</h2>
-            <p>
-              A short outline of your use case is enough. What are you
-              comparing, what behaviour matters, and what decision will the
-              study inform? Please leave confidential geometry and project data
-              out of an initial inquiry.
-            </p>
-            {!inquiryAction.open && (
-              <p class="notice">
-                Application inquiries are not open through this preview yet. You
-                can prepare an outline below; a public application contact
-                address will be added when it is confirmed.
-              </p>
-            )}
-            <label for="inquiry" class="contact-label">
-              Your case outline — kept in this page only
-            </label>
-            <textarea
-              id="inquiry"
-              rows={8}
-              class="contact-summary"
-              spellcheck="true"
-            >{inquiryOutline}</textarea>
-            <div class="copy-row">
-              {site.contactEmail && (
-                <a
-                  id="email-inquiry"
-                  data-inquiry-email={site.contactEmail}
-                  href={inquiryHref(site.contactEmail, inquiryOutline)}
-                  class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-                >
-                  Open an email draft <Icon name="diagonal" size={18} />
-                </a>
-              )}
-              <button
-                id="copy-inquiry"
-                type="button"
-                class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"
-              >
-                Copy your outline <Icon size={17} />
-              </button>
-            </div>
-            {site.contactEmail && (
-              <>
-                <p class="contact-email section-note">
-                  Email: {site.contactEmail}
-                </p>
-                <p class="section-note">
-                  Opens your email application. Review and send the message
-                  there.
-                </p>
-                <noscript>
-                  <p>
-                    To include an edited outline, copy it into a message to the
-                    address above.
-                  </p>
-                </noscript>
-              </>
-            )}
-            <p id="copy-status" class="copy-status" role="status"></p>
-            <p class="section-note">
-              Nothing is submitted or saved by this website. Refreshing the page
-              clears your outline.
-            </p>
-          </section>
-          <div class="article">
-            <h2>Licensing questions</h2>
-            <p>
-              To obtain a commercial entitlement or clarify the scope of an
-              intended use,{' '}
-              <a href={licensingAction.href}>contact {licence.email}</a>. Read
-              the <a href="/#faq">FAQ</a> and the{' '}
-              <a href={licence.href}>full Licence Agreement</a>.
-            </p>
-            <h2>Product questions & issue reports</h2>
-            <p>
-              Include your application version, operating system, GPU and
-              driver, the steps you took, and the behaviour you expected. Only
-              share logs or a minimal example after checking that they contain
-              no confidential information.
-            </p>
-            <h2>Private project support</h2>
-            <p>
-              Project-specific help and commercial pilots are scoped by
-              agreement. A private support and security-reporting route will be
-              published before public release.
-            </p>
-            <p>No public issue tracker is linked during this preview.</p>
-          </div>
-        </>
-      )}
       {page === 'legal' && (
         <div class="article">
           <h2>About this preview</h2>
@@ -227,29 +134,3 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
     </div>
   </div>
 </Layout>
-<script>
-  import { inquiryHref } from '../content/inquiry.mjs';
-  const emailLink = document.querySelector<HTMLAnchorElement>('#email-inquiry');
-  const outline = document.querySelector<HTMLTextAreaElement>('#inquiry');
-  const updateDraft = () => {
-    const address = emailLink?.dataset.inquiryEmail;
-    if (emailLink && address && outline)
-      emailLink.href = inquiryHref(address, outline.value);
-  };
-  outline?.addEventListener('input', updateDraft);
-  emailLink?.addEventListener('click', updateDraft);
-  const copy = document.querySelector<HTMLButtonElement>('#copy-inquiry');
-  copy?.addEventListener('click', async () => {
-    const status = document.querySelector<HTMLElement>('#copy-status');
-    if (!outline || !status) return;
-    try {
-      await navigator.clipboard.writeText(outline.value);
-      status.textContent = 'Outline copied. Nothing has been sent.';
-    } catch {
-      outline.focus();
-      outline.select();
-      status.textContent =
-        'Clipboard access is unavailable. Your outline is selected; copy it with your usual keyboard command.';
-    }
-  });
-</script>
