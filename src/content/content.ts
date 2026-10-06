@@ -182,29 +182,38 @@ export const showcases: readonly Application[] = [
   {
     slug: 'liquid-handling',
     number: '03',
-    title: 'Investigate filling and overflow.',
-    category: 'Liquid handling · candidate application',
+    title: 'Follow water through two outlets.',
+    category: 'Liquid handling',
     type: 'pipe',
-    availability: 'planned',
-    evidence: 'illustration',
+    availability: 'in_development',
+    evidence: 'software_demonstration',
     description:
-      'Frame a study around where liquid enters, how it travels, and when it reaches an outlet or overflow.',
+      'Watch a tank drain through two pipes at different heights as the water level falls.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/two-outlet-tank.webp',
+      alt: 'Side cutaway of a tank draining through two horizontal pipes. Both jets run at first; the upper jet thins and stops once the level falls below its pipe, while the lower jet keeps flowing.',
+      caption:
+        'Prelimina FLIP run of a 4 m tank draining through two 0.75 m square pipes, side cutaway coloured by speed (0–10 m/s). Development build 482769ac.',
+      aspectRatio: '960 / 764',
+      fit: 'contain',
+    },
     question:
-      'Which inlet condition or geometry should a filling experiment investigate next?',
+      'How does the discharge pattern change as the water level falls past each outlet?',
     inputs:
-      'A defined vessel, initial liquid, material properties, inlet location and flow history, and an outlet or overflow condition that the chosen method can represent.',
+      'Tank and pipe geometry, an initial water level, liquid properties, gravity, and open outlets at the domain boundary.',
     variables:
-      'Inlet location, prescribed flow, initial fill, and the flow path. Begin with a simple stationary configuration whose boundaries can be checked.',
+      'Outlet heights, pipe size, and the initial level. Change one at a time.',
     controls:
-      'Keep fluid properties, geometry outside the chosen change, numerical settings, and the observation interval consistent. Account for liquid entering, remaining, and leaving.',
+      'Keep the grid, numerical settings, initial level, and observation interval the same between variants.',
     outputs:
-      'Selected development configurations implement prescribed inflow, inlet accounting, and domain pressure outlets. These components do not establish a complete filling-and-overflow workflow.',
+      'A live fluid view coloured by speed and particle exports for offline rendering. Outflow through each pipe is not yet extracted for this case.',
     metrics:
-      'Time to reach an overflow, retained volume, and independently measured discharge are candidate study quantities. General outlet measurements and a qualified extraction procedure remain prerequisites.',
+      'Time until the upper jet stops and the remaining level are candidate comparison quantities. Neither has been extracted or checked here.',
     assumptions:
-      'Start with a specified single liquid and fixed geometry. Inlet and outlet placement, orientation, and pressure treatment must fit the selected method’s supported boundary conditions.',
+      'A finite store with no inflow, fixed geometry, and a single liquid without air entrainment. The jets leave through open boundaries.',
     limitation:
-      'General inlet/outlet combinations, moving inlet surfaces, and finite outlet surfaces still have implementation or qualification gaps. This is a planned application, with no filling wizard or approved public validation record.',
+      'This is a demonstration of the workflow, not a validated discharge model. Pipe friction, entrance losses, and air effects are not assessed. Pressure outlets are applied at the domain faces; general finite outlet surfaces are not yet supported.',
     nextAction: {
       label: 'Explore geometry and boundaries',
       href: '/capabilities/#geometry',

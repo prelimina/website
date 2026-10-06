@@ -304,19 +304,21 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
-  for (const slug of ['baffle-design', 'tank-motion', 'liquid-handling']) {
+  // Applications backed by a real run are software demonstrations; the others remain illustrations.
+  const evidence = {
+    'baffle-design': /Evidence: Illustration/,
+    'tank-motion': /Evidence: Illustration/,
+    'liquid-handling': /Evidence: Software demonstration/,
+    'spillway-gates': /Evidence: Software demonstration/,
+  };
+  for (const [slug, expected] of Object.entries(evidence)) {
     const application = readFileSync(
       `dist/showcases/${slug}/index.html`,
       'utf8',
     );
     assert.match(application, /Candidate application/);
-    assert.match(application, /Evidence: Illustration/);
-    assert.match(
-      application,
-      slug === 'liquid-handling'
-        ? /Availability: Planned/
-        : /Availability: In development/,
-    );
+    assert.match(application, expected);
+    assert.match(application, /Availability: In development/);
     assert.match(application, /Candidate comparison quantities/);
     assert.match(application, /Physical assumptions/);
     assert.match(application, /Numerical limitations/);

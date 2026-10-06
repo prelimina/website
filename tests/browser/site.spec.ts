@@ -241,15 +241,13 @@ test('homepage order, primary actions, and application status communicate the pr
   const evidence: Record<string, string> = {
     'baffle-design': 'Illustration',
     'tank-motion': 'Illustration',
-    'liquid-handling': 'Illustration',
+    'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
   };
   for (const slug of Object.keys(evidence)) {
     await page.goto(`/showcases/${slug}/`);
     await expect(page.locator('.application-status')).toContainText(
-      slug === 'liquid-handling'
-        ? 'Availability: Planned'
-        : 'Availability: In development',
+      'Availability: In development',
     );
     await expect(page.locator('.application-status')).toContainText(
       `Evidence: ${evidence[slug]}`,
