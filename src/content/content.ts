@@ -33,8 +33,8 @@ export const licensingAction = {
   ),
 };
 
-// Frames from Prelimina FLIP runs of the Hu, Kashiwagi & Kishev (2004) tank (T = 1.3 s, 6 cm fill),
-// side view over two forcing periods; the source cases live in prelimina-cases/showcase/kishev_workflow.
+// Frames from Prelimina FLIP runs of the Hu, Kashiwagi & Kishev (2004) tank (T = 1.3 s, 6 cm fill,
+// amplitude reduced from 0.06 to 0.01 m), side view over two forcing periods; the source cases live in prelimina-cases/showcase/kishev_workflow.
 export const workflowIllustration = [
   {
     id: 'set-up',
@@ -54,7 +54,7 @@ export const workflowIllustration = [
     media: {
       src: '/assets/workflow/simulate.webp',
       still: '/assets/workflow/simulate-still.webp',
-      alt: 'Prelimina simulation of the tank shaken side to side: the water runs up each end wall to the lid and breaks.',
+      alt: 'Prelimina simulation of the tank shaken side to side: a wave travels back and forth and runs up each end wall.',
     },
   },
   {
