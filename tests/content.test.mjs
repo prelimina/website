@@ -307,7 +307,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   // Applications backed by a real run are software demonstrations; the others remain illustrations.
   const evidence = {
     'baffle-design': /Evidence: Illustration/,
-    'tank-motion': /Evidence: Illustration/,
+    'tank-motion': /Evidence: Software demonstration/,
     'liquid-handling': /Evidence: Software demonstration/,
     'spillway-gates': /Evidence: Software demonstration/,
   };

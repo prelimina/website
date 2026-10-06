@@ -240,7 +240,7 @@ test('homepage order, primary actions, and application status communicate the pr
   await expect(page.locator('.showcase-card')).toHaveCount(4);
   const evidence: Record<string, string> = {
     'baffle-design': 'Illustration',
-    'tank-motion': 'Illustration',
+    'tank-motion': 'Software demonstration',
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
   };

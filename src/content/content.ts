@@ -152,28 +152,37 @@ export const showcases: readonly Application[] = [
   {
     slug: 'tank-motion',
     number: '02',
-    title: 'Explore liquid response to tank motion.',
+    title: 'Watch water respond to prescribed roll.',
     category: 'Tanks & prescribed motion',
     type: 'tank',
     availability: 'in_development',
-    evidence: 'illustration',
+    evidence: 'software_demonstration',
     description:
-      'Study how fill level and prescribed motion change the free-surface response.',
-    question: 'How does the liquid respond when the tank’s motion changes?',
+      'Roll a partially filled tank near its sloshing period and watch the response build.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/roll-tank.webp',
+      alt: 'Side cutaway of a rectangular tank rolling two degrees each way. The water lags the roll and its swing grows with each period until it runs high up the end walls.',
+      caption:
+        'Prelimina FLIP run of a 2 m tank with 0.4 m of water rolling ±2° at 2.15 s, near its first sloshing period. Side cutaway coloured by speed (0–1.6 m/s). Development build 482769ac.',
+      aspectRatio: '960 / 652',
+      fit: 'contain',
+    },
+    question: 'How does the water’s timing change through successive rolls?',
     inputs:
-      'Vessel geometry, liquid properties, gravity, initial fill, and a motion history with a defined direction, amplitude, frequency, and duration.',
+      'Tank geometry, water depth, liquid properties, gravity, and a prescribed roll history with a defined axis, amplitude, period, and ramp.',
     variables:
-      'Fill level or prescribed motion. For example, hold the tank and liquid fixed while changing the motion amplitude.',
+      'Roll amplitude or period, and the water depth. Hold the others fixed while changing one.',
     controls:
-      'Use the same geometry, liquid model, numerical settings, initial conditions other than the chosen variable, and observation interval.',
+      'Use the same geometry, numerical settings, initial level, ramp, and observation interval.',
     outputs:
-      'Live fluid views and supported probe histories can help inspect the response. Body motion and load measurements are available only where the selected method supports them.',
+      'A live fluid view and particle exports for offline rendering. Forces and moments on the tank are not extracted for this case.',
     metrics:
-      'A case could compare free-surface excursion and response timing over the same motion cycles. Load histories require a method with quantitative pressure and a separate check of their suitability.',
+      'Free-surface run-up at the end walls and the phase between roll and water motion are candidate comparison quantities. Neither has been extracted or checked here.',
     assumptions:
-      'The tank follows an imposed motion, as in a controlled moving-vessel experiment. Specify the motion frame and the gas treatment. Predicting a freely responding tank requires a different coupling setup.',
+      'The tank follows an imposed roll about a fixed axis; the ship does not respond to the water. A single liquid without air entrainment.',
     limitation:
-      'This scope does not qualify all translations, rotations, gas effects, or rigid-body coupling. Impact pressures and breaking waves need dedicated resolution, time-step, and reference checks. No approved public result is attached.',
+      'Software demonstration, not validated. Roll is imposed; ship stabilisation, damping effectiveness, and reaction moments are not established. Near resonance the response keeps growing, and the clip stops before the water spills over the walls.',
     nextAction: {
       label: 'Explore motion capabilities',
       href: '/capabilities/#motion',
