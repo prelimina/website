@@ -49,8 +49,7 @@ export const workflowIllustration = [
   {
     id: 'simulate',
     title: 'Simulate',
-    illustration:
-      'Inspect fluid motion.',
+    illustration: 'Inspect fluid motion.',
     media: {
       src: '/assets/workflow/simulate.webp',
       still: '/assets/workflow/simulate-still.webp',
@@ -117,8 +116,47 @@ interface Application {
 
 export const showcases: readonly Application[] = [
   {
-    slug: 'liquid-handling',
+    slug: 'tank-motion',
     number: '01',
+    title: 'Watch water respond to prescribed roll.',
+    category: 'Tanks & prescribed motion',
+    type: 'tank',
+    availability: 'in_development',
+    evidence: 'software_demonstration',
+    description:
+      'Roll a partially filled tank near its sloshing period and watch the response build.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/roll-tank.webp',
+      alt: 'Side cutaway of a rectangular tank rolling two degrees each way. The water lags the roll and its swing grows with each period until it runs high up the end walls.',
+      caption:
+        'Prelimina FLIP run of a 2 m tank with 0.4 m of water rolling ±2° at 2.15 s, near its first sloshing period. Side cutaway coloured by speed (0–1.6 m/s). Development build 482769ac.',
+      aspectRatio: '960 / 652',
+      fit: 'contain',
+    },
+    question: 'How does the water’s timing change through successive rolls?',
+    inputs:
+      'Tank geometry, water depth, liquid properties, gravity, and a prescribed roll history with a defined axis, amplitude, period, and ramp.',
+    variables:
+      'Roll amplitude or period, and the water depth. Hold the others fixed while changing one.',
+    controls:
+      'Use the same geometry, numerical settings, initial level, ramp, and observation interval.',
+    outputs:
+      'A live fluid view and particle exports for offline rendering. Forces and moments on the tank are not extracted for this case.',
+    metrics:
+      'Free-surface run-up at the end walls and the phase between roll and water motion are candidate comparison quantities. Neither has been extracted or checked here.',
+    assumptions:
+      'The tank follows an imposed roll about a fixed axis; the ship does not respond to the water. A single liquid without air entrainment.',
+    limitation:
+      'Software demonstration, not validated. Roll is imposed; ship stabilisation, damping effectiveness, and reaction moments are not established. Near resonance the response keeps growing, and the clip stops before the water spills over the walls.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
+  {
+    slug: 'liquid-handling',
+    number: '02',
     title: 'Follow water through two outlets.',
     category: 'Liquid handling',
     type: 'pipe',
@@ -158,7 +196,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'spillway-gates',
-    number: '02',
+    number: '03',
     title: 'Watch a gated spillway release.',
     category: 'Hydraulic structures',
     type: 'pipe',
@@ -198,7 +236,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'reduced-gravity',
-    number: '03',
+    number: '04',
     title: 'Compare sloshing at reduced gravity.',
     category: 'Reduced gravity',
     type: 'tank',

@@ -138,7 +138,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 13);
+  assert.equal(htmlFiles.length, 14);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -194,13 +194,14 @@ test('active pages remain available and retired pages are removed or redirected'
     'legal',
     'download',
     'changelog',
+    'showcases/tank-motion',
     'showcases/liquid-handling',
     'showcases/spillway-gates',
     'showcases/reduced-gravity',
   ]) {
     assert.ok(existsSync(join('dist', route, 'index.html')), route);
   }
-  for (const route of ['showcases/baffle-design', 'showcases/tank-motion']) {
+  for (const route of ['showcases/baffle-design']) {
     assert.equal(existsSync(join('dist', route, 'index.html')), false, route);
   }
   assert.equal(existsSync('dist/validation/index.html'), false);
@@ -309,6 +310,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
   // Current application pages with run media use software demonstration evidence.
   const evidence = {
+    'tank-motion': /Evidence: Software demonstration/,
     'liquid-handling': /Evidence: Software demonstration/,
     'spillway-gates': /Evidence: Software demonstration/,
     'reduced-gravity': /Evidence: Software demonstration/,

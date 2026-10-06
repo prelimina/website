@@ -10,6 +10,7 @@ const routes = [
   '/support/',
   '/legal/',
   '/changelog/',
+  '/showcases/tank-motion/',
   '/showcases/liquid-handling/',
   '/showcases/spillway-gates/',
   '/showcases/reduced-gravity/',
@@ -237,8 +238,9 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(3);
+  await expect(page.locator('.showcase-card')).toHaveCount(4);
   const evidence: Record<string, string> = {
+    'tank-motion': 'Software demonstration',
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
     'reduced-gravity': 'Software demonstration',
@@ -565,6 +567,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/showcases/',
     '/support/',
     '/capabilities/',
+    '/showcases/tank-motion/',
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',
     '/legal/',
@@ -630,6 +633,7 @@ test('capture desktop and mobile views and measure initial local resource weight
   });
   for (const [route, width] of [
     ['/showcases/', 1440],
+    ['/showcases/tank-motion/', 1440],
     ['/showcases/liquid-handling/', 1440],
     ['/capabilities/', 1440],
     ['/capabilities/', 390],
