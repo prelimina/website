@@ -441,6 +441,23 @@ em {
 }
 .bench-caption {
   margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.bench-caption p {
+  flex: 1 1 220px;
+}
+.bench-action {
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: var(--font-meta);
+}
+.bench-action[hidden] {
+  display: none;
 }
 .bench-caption p {
   font-size: var(--font-meta);

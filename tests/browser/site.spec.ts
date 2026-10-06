@@ -130,6 +130,34 @@ test('schematic controls update selected state, drawing, and caption with keyboa
   await expect(page.locator('[data-frame="iterate"]')).toBeHidden();
 });
 
+test('workflow actions run the simulation and add the baffle in order', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const run = page.getByRole('button', { name: 'Run simulation' });
+  await expect(run).toBeVisible();
+  await run.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.bench-screen')).toHaveAttribute(
+    'data-stage',
+    'simulate',
+  );
+  const baffle = page.getByRole('button', { name: 'Add baffle and rerun' });
+  await expect(baffle).toBeFocused();
+  await expect(run).toBeHidden();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.bench-screen')).toHaveAttribute(
+    'data-stage',
+    'iterate',
+  );
+  await expect(page.locator('[data-step-action]:visible')).toHaveCount(0);
+  const iterate = page.getByRole('button', { name: '03 Iterate' });
+  await expect(iterate).toBeFocused();
+  await expect(iterate).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: '01 Set up' }).click();
+  await expect(run).toBeVisible();
+});
+
 test('mobile menu, page navigation, FAQ, and skip link work', async ({
   page,
 }) => {

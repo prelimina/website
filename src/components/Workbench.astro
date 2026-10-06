@@ -1,5 +1,8 @@
 ---
+import Icon from './Icon.astro';
 import { workflowIllustration } from '../content/content';
+// The action button moves to the next step, as running the app would; the step keys stay for revisiting.
+const firstAction = workflowIllustration[0].action;
 ---
 
 <div class="workbench" data-workbench>
@@ -49,29 +52,69 @@ import { workflowIllustration } from '../content/content';
     <p id="study-caption" aria-live="polite">
       {workflowIllustration[0].illustration}
     </p>
+    {workflowIllustration.map((step, index) =>
+      'action' in step ? (
+        <button
+          class="button button-quiet bench-action ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+          type="button"
+          data-step-action={index}
+          hidden={index !== 0}
+        >
+          <Icon name={step.action.icon} size={16} />
+          {step.action.label}
+        </button>
+      ) : null,
+    )}
   </div>
 </div>
 <script>
   import { workflowIllustration } from '../content/content';
   const workbench = document.querySelector<HTMLElement>('[data-workbench]');
+  const select = (index: number) => {
+    if (!workbench) return;
+    workbench
+      .querySelectorAll<HTMLButtonElement>('[data-step-button]')
+      .forEach((key) =>
+        key.setAttribute(
+          'aria-pressed',
+          String(Number(key.dataset.stepButton) === index),
+        ),
+      );
+    workbench
+      .querySelectorAll<HTMLButtonElement>('[data-step-action]')
+      .forEach((action) => {
+        action.hidden = Number(action.dataset.stepAction) !== index;
+      });
+    const screen = workbench.querySelector<HTMLElement>('.bench-screen');
+    const caption = workbench.querySelector('#study-caption');
+    const label = workbench.querySelector('[data-study-label]');
+    if (screen) screen.dataset.stage = workflowIllustration[index].id;
+    if (caption) caption.textContent = workflowIllustration[index].illustration;
+    if (label)
+      label.textContent = `0${index + 1} / ${workflowIllustration[index].title}`;
+  };
   workbench
     ?.querySelectorAll<HTMLButtonElement>('[data-step-button]')
-    .forEach((button) => {
+    .forEach((button) =>
+      button.addEventListener('click', () =>
+        select(Number(button.dataset.stepButton)),
+      ),
+    );
+  workbench
+    ?.querySelectorAll<HTMLButtonElement>('[data-step-action]')
+    .forEach((button) =>
       button.addEventListener('click', () => {
-        const index = Number(button.dataset.stepButton);
-        workbench
-          .querySelectorAll('[data-step-button]')
-          .forEach((key) =>
-            key.setAttribute('aria-pressed', String(key === button)),
-          );
-        const screen = workbench.querySelector<HTMLElement>('.bench-screen');
-        const caption = workbench.querySelector('#study-caption');
-        const label = workbench.querySelector('[data-study-label]');
-        if (screen) screen.dataset.stage = workflowIllustration[index].id;
-        if (caption)
-          caption.textContent = workflowIllustration[index].illustration;
-        if (label)
-          label.textContent = `0${index + 1} / ${workflowIllustration[index].title}`;
-      });
-    });
+        const next = Number(button.dataset.stepAction) + 1;
+        select(next);
+        // The pressed button is now hidden: keep focus on the next action, or on the step key if there is none.
+        (
+          workbench.querySelector<HTMLButtonElement>(
+            `[data-step-action="${next}"]`,
+          ) ??
+          workbench.querySelector<HTMLButtonElement>(
+            `[data-step-button="${next}"]`,
+          )
+        )?.focus();
+      }),
+    );
 </script>

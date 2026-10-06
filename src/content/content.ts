@@ -40,6 +40,7 @@ export const workflowIllustration = [
     id: 'set-up',
     title: 'Set up',
     illustration: 'Define a tank, its fill level, and the motion.',
+    action: { label: 'Run simulation', icon: 'play' },
     media: {
       src: '/assets/workflow/set-up.webp',
       still: '/assets/workflow/set-up.webp',
@@ -51,6 +52,7 @@ export const workflowIllustration = [
     title: 'Simulate',
     illustration:
       'Inspect liquid motion and choose where to sample the response.',
+    action: { label: 'Add baffle and rerun', icon: 'plus' },
     media: {
       src: '/assets/workflow/simulate.webp',
       still: '/assets/workflow/simulate-still.webp',
