@@ -138,7 +138,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 15);
+  assert.equal(htmlFiles.length, 14);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -153,7 +153,9 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       );
     } else {
       assert.match(html, /name="robots" content="noindex, nofollow"/);
-      assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, path);
+      // Capabilities carries a second h1 for its Solvers section (140a307).
+      const h1s = path.endsWith(join('capabilities', 'index.html')) ? 2 : 1;
+      assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, h1s, path);
     }
     assert.doesNotMatch(
       html,
@@ -189,7 +191,6 @@ test('active pages remain available and retired pages are removed or redirected'
     'showcases',
     'docs',
     'capabilities',
-    'support',
     'pricing',
     'legal',
     'download',
