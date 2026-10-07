@@ -9,6 +9,7 @@ const routes = [
   '/capabilities/',
   '/legal/',
   '/changelog/',
+  '/showcases/sloshing-validation/',
   '/showcases/tank-motion/',
   '/showcases/liquid-handling/',
   '/showcases/spillway-gates/',
@@ -239,8 +240,9 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(4);
+  await expect(page.locator('.showcase-card')).toHaveCount(5);
   const evidence: Record<string, string> = {
+    'sloshing-validation': 'Physical validation',
     'tank-motion': 'Software demonstration',
     'liquid-handling': 'Software demonstration',
     'spillway-gates': 'Software demonstration',
@@ -493,6 +495,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/',
     '/showcases/',
     '/capabilities/',
+    '/showcases/sloshing-validation/',
     '/showcases/tank-motion/',
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',

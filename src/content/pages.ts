@@ -2,7 +2,7 @@ export const pages = {
   showcases: {
     title: 'Start with an engineering question.',
     description:
-      'Explore prescribed tank roll, tank drainage, gated spillways, and reduced-gravity sloshing with GPU-native CFD. These candidate applications state the question, inputs, and scope still to qualify.',
+      'Check sloshing wall pressure against measurements, then explore prescribed tank roll, tank drainage, gated spillways, and reduced-gravity sloshing with GPU-native CFD. Each application states its question, inputs, evidence level, and the scope still to qualify.',
   },
   capabilities: {
     title: 'Capabilities',

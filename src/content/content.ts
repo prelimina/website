@@ -103,6 +103,7 @@ interface Application {
   evidence: keyof typeof evidenceLabels;
   description: string;
   media?: ShowcaseMediaConfig;
+  chart?: ShowcaseMediaConfig;
   question: string;
   inputs: string;
   variables: string;
@@ -116,8 +117,57 @@ interface Application {
 
 export const showcases: readonly Application[] = [
   {
-    slug: 'tank-motion',
+    slug: 'sloshing-validation',
     number: '01',
+    title: 'Check sloshing wall pressure against experiment.',
+    category: 'Tanks & prescribed motion',
+    type: 'tank',
+    availability: 'in_development',
+    evidence: 'physical_validation',
+    description:
+      'Shake a shallow tank side to side and compare the wall-pressure history with published measurements.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/sloshing-validation.webp',
+      alt: 'Side view of the tank as the water sloshes and slams into the end wall, coloured by speed. Below it, the simulated pressure at the wall probe P1 draws in step with the motion over the measured trace; each impact spike lines up with a measured one.',
+      caption:
+        'A repeat Prelimina run of the same set-up over the last five forcing periods (its impulse: −0.3 %). The P1 trace draws in step with the tank-fixed view, coloured by speed (0–2 m/s). The measured trace is placed by the same cross-correlation phase shift; simulated impact spikes above 3500 Pa run off the top. Development build 80e942f6.',
+      aspectRatio: '960 / 900',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/sloshing-validation-chart.svg',
+      alt: 'Line chart of phase-averaged wall pressure over one forcing period. The Prelimina curve follows the measured double-humped impact peak; the published CIP-CSL3 simulation reaches a lower peak.',
+      caption:
+        'Pressure at P1, 5 cm above the floor on the end wall, averaged over five forcing periods once the motion is steady. Experiment and CIP-CSL3 from Hu, Kashiwagi and Kishev (2004), Fig. 3; impulse is integrated over the plotted range, clipped at 2500 Pa where the printed figure ends. Prelimina FLIP with density projection and two PBD iterations, 3 mm grid, CFL 0.4. Development build 80e942f6.',
+      aspectRatio: '460.8 / 280.8',
+      fit: 'contain',
+    },
+    question:
+      'Does the simulated pressure on the tank wall match what was measured?',
+    inputs:
+      'A 0.6 m long tank with 6 cm of water, moved sideways with a 6 cm amplitude at a 1.3 s period, close to the first sloshing mode. Water properties and gravity.',
+    variables:
+      'Forcing period and amplitude, fill depth, and grid spacing. The published experiment also covers 0.8 s and 1.7 s periods.',
+    controls:
+      'The same tank, fill, motion, and probe position as the experiment. The motion is ramped in over the first three periods and the comparison uses periods 13 to 18.',
+    outputs:
+      'A pressure history at the wall probe, exported as CSV, and the live fluid view.',
+    metrics:
+      'Pressure impulse per period: −2.4 % against the experiment (the published CIP-CSL3 simulation: −28 %). RMS difference of the phase-averaged curves: 121 Pa (CIP-CSL3: 165 Pa). A repeat run of the same set-up gave −0.3 % and 130 Pa, so run-to-run spread is about 2 %. A 4, 3 and 2 mm grid study on an earlier build stayed within ±3 % in impulse.',
+    assumptions:
+      'The tank motion is imposed, applied as an acceleration of the tank frame. The water is a single liquid; the air above it is not simulated. The model is a 6 cm wide slice between walls, 20 cells across, so the flow is close to two-dimensional.',
+    limitation:
+      'One forcing period and one probe from a single published experiment. The experiment does not state its time origin, so the curves are aligned in phase by cross-correlation before comparison; peaks above 2500 Pa are clipped, so impact maxima are not compared. Individual simulated impact peaks vary from period to period and reach well above the printed range.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
+  {
+    slug: 'tank-motion',
+    number: '02',
     title: 'Watch water respond to prescribed roll.',
     category: 'Tanks & prescribed motion',
     type: 'tank',
@@ -156,7 +206,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'liquid-handling',
-    number: '02',
+    number: '03',
     title: 'Follow water through two outlets.',
     category: 'Liquid handling',
     type: 'pipe',
@@ -196,7 +246,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'spillway-gates',
-    number: '03',
+    number: '04',
     title: 'Watch a gated spillway release.',
     category: 'Hydraulic structures',
     type: 'pipe',
@@ -236,7 +286,7 @@ export const showcases: readonly Application[] = [
   },
   {
     slug: 'reduced-gravity',
-    number: '04',
+    number: '05',
     title: 'Compare sloshing at reduced gravity.',
     category: 'Reduced gravity',
     type: 'tank',

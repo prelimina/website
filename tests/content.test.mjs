@@ -138,7 +138,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 14);
+  assert.equal(htmlFiles.length, 15);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -194,6 +194,7 @@ test('active pages remain available and retired pages are removed or redirected'
     'legal',
     'download',
     'changelog',
+    'showcases/sloshing-validation',
     'showcases/tank-motion',
     'showcases/liquid-handling',
     'showcases/spillway-gates',
@@ -308,8 +309,9 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
-  // Current application pages with run media use software demonstration evidence.
+  // Application pages with run media state their evidence level.
   const evidence = {
+    'sloshing-validation': /Evidence: Physical validation/,
     'tank-motion': /Evidence: Software demonstration/,
     'liquid-handling': /Evidence: Software demonstration/,
     'spillway-gates': /Evidence: Software demonstration/,
@@ -323,7 +325,12 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     assert.match(application, /Candidate application/);
     assert.match(application, expected);
     assert.match(application, /Availability: In development/);
-    assert.match(application, /Candidate comparison quantities/);
+    assert.match(
+      application,
+      slug === 'sloshing-validation'
+        ? /Comparison with measurements/
+        : /Candidate comparison quantities/,
+    );
     assert.match(application, /Physical assumptions/);
     assert.match(application, /Numerical limitations/);
   }

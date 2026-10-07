@@ -45,7 +45,11 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
           <dd>{item.controls}</dd>
           <dt>Outputs in the development application</dt>
           <dd>{item.outputs}</dd>
-          <dt>Candidate comparison quantities</dt>
+          <dt>
+            {item.evidence === 'physical_validation'
+              ? 'Comparison with measurements'
+              : 'Candidate comparison quantities'}
+          </dt>
           <dd>{item.metrics}</dd>
           <dt>Physical assumptions</dt>
           <dd>{item.assumptions}</dd>
@@ -59,6 +63,9 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
               <span>{item.media ? evidenceLabels[item.evidence] : 'Illustration'}</span>
             </div>
             <ShowcaseMedia illustration={item.type} media={item.media} />
+            {item.chart && (
+              <ShowcaseMedia illustration={item.type} media={item.chart} />
+            )}
             {!item.media && (
               <span class="study-stamp">
                 Illustration — not simulation results
@@ -66,9 +73,11 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
             )}
           </div>
           <p class="section-note">
-            {item.media
-              ? 'Recorded from a development build. It shows the workflow, not a validated result.'
-              : 'No public release, reproducible result set, or hardware qualification is attached to this candidate application.'}
+            {!item.media
+              ? 'No public release, reproducible result set, or hardware qualification is attached to this candidate application.'
+              : item.evidence === 'physical_validation'
+                ? 'Computed with a development build and compared with published measurements. The agreement holds for this case only.'
+                : 'Recorded from a development build. It shows the workflow, not a validated result.'}
           </p>
         </div>
       </div>
