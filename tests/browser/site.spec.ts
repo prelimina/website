@@ -286,12 +286,12 @@ test('capability panels lead to grouped features with a maturity label on every 
   const labels = ['Implemented', 'Experimental', 'In development', 'Planned'];
   await expect(page.locator('.maturity-guide dt')).toHaveText(labels);
   await expect(page.locator('.capability-group h2')).toHaveText([
-    'Fluid flow',
-    'Geometry & boundaries',
-    'Motion & coupling',
+    'Geometry without meshing',
+    'Motion & free surfaces',
     'GPU computing',
-    'Desktop workspace',
-    'Measurements & output',
+    'Multiphysics',
+    'Automation & optimisation',
+    'AI-ready setups',
   ]);
   const featureGroups = await page
     .locator('.capability-group')
@@ -317,10 +317,15 @@ test('capability panels lead to grouped features with a maturity label on every 
       expect(labels).toContain(feature.labels[0]);
     }
   }
-  await page.goto('/capabilities/#measurements');
-  await expect(page.locator('#measurements h2')).toBeInViewport();
+  await expect(
+    page.locator('.capabilities-download').getByRole('link', {
+      name: 'Download now',
+    }),
+  ).toHaveAttribute('href', '/#download');
+  await page.goto('/capabilities/#optimisation');
+  await expect(page.locator('#optimisation h2')).toBeInViewport();
   await page.goto('/');
-  await page.getByRole('link', { name: /Start with your geometry/ }).click();
+  await page.getByRole('link', { name: /No meshing/ }).click();
   await expect(page).toHaveURL(/\/capabilities\/#geometry$/);
   await expect(page.locator('#geometry h2')).toBeInViewport();
   await page

@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import FlowBackdrop from './FlowBackdrop.astro';
-import { capabilityGroups } from '../content/capabilities';
+import { capabilityGroups, maturity } from '../content/capabilities';
 ---
 
 <section class="section container capability-summary band" id="capabilities">
@@ -25,9 +25,14 @@ import { capabilityGroups } from '../content/capabilities';
           </span>
           <h3>{group.summaryTitle}</h3>
         </div>
+        {'summaryStatus' in group && (
+          <span class="maturity-badge" data-maturity={group.summaryStatus}>
+            {maturity[group.summaryStatus].label}
+          </span>
+        )}
         <p>{group.summary}</p>
         <span class="capability-card-link">
-          {group.title}
+          See features
           <Icon size={16} />
         </span>
       </a>

@@ -47,6 +47,7 @@ interface CapabilityGroup {
   icon: string;
   summaryTitle: string;
   summary: string;
+  summaryStatus?: keyof typeof maturity;
   description: string;
   features: readonly {
     name: string;
@@ -57,83 +58,12 @@ interface CapabilityGroup {
 
 export const capabilityGroups = [
   {
-    id: 'fluid-flow',
-    title: 'Fluid flow',
-    icon: 'waves',
-    summaryTitle: 'Follow the liquid.',
-    summary:
-      'Explore sloshing, splashing, and free-surface motion. See how the liquid responds when you change a tank, a baffle, or the way it moves.',
-    description: 'From a single moving liquid to more specialised flow models.',
-    features: [
-      {
-        name: 'Incompressible free-surface flow',
-        status: 'implemented',
-        description:
-          'Single-liquid simulation with particles tracking the moving liquid and a grid solving pressure.',
-      },
-      {
-        name: 'Newtonian viscosity',
-        status: 'implemented',
-        description:
-          'Set liquid density and viscosity across low- and high-viscosity Newtonian flow regimes, with implicit viscosity in supported configurations.',
-      },
-      {
-        name: 'Non-Newtonian fluid models',
-        status: 'development',
-        description:
-          'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
-      },
-      {
-        name: 'Viscoelasticity',
-        status: 'planned',
-        description:
-          'Represent fluids with both viscous and elastic response through planned constitutive models.',
-      },
-      {
-        name: 'Surface tension',
-        status: 'experimental',
-        description:
-          'Include capillary forces in the supported free-surface formulations.',
-      },
-      {
-        name: 'Adaptive time stepping',
-        status: 'implemented',
-        description:
-          'Use CFL-based time-step control with a maximum step, or select a fixed step for a controlled study.',
-      },
-      {
-        name: 'Finite-volume and meshless methods',
-        status: 'experimental',
-        description:
-          'Explore Cartesian finite volumes with cut cells, or a fully Lagrangian meshless particle formulation.',
-      },
-      {
-        name: 'Resolved liquid–gas flow',
-        status: 'experimental',
-        description:
-          'Two-phase formulations, with configuration-specific density-ratio and interface behaviour.',
-      },
-      {
-        name: 'Contact angles and wetting',
-        status: 'experimental',
-        description:
-          'Static wetting, and selected dynamic or hysteretic models.',
-      },
-      {
-        name: 'Turbulence and wall treatment',
-        status: 'experimental',
-        description:
-          'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment.',
-      },
-    ],
-  },
-  {
     id: 'geometry',
-    title: 'Geometry & boundaries',
+    title: 'Geometry without meshing',
     icon: 'layers',
-    summaryTitle: 'Start with your geometry.',
+    summaryTitle: 'No meshing',
     summary:
-      'Bring surfaces from your existing CAD tools. Define the liquid and choose a resolution, without building a body-fitted volume mesh.',
+      'Bring triangulated surfaces straight from your CAD tools. Complex vessels, baffles, and internal parts work as they are, with no volume mesh to build.',
     description:
       'Turn surfaces, liquid regions, and boundary conditions into a simulation setup.',
     features: [
@@ -144,16 +74,22 @@ export const capabilityGroups = [
           'Load STL, OBJ, PLY, glTF, and GLB geometry from your modelling tools.',
       },
       {
+        name: 'Immersed geometry',
+        status: 'implemented',
+        description:
+          'Represent vessel walls and internal surfaces within the solver’s particle or Cartesian-grid discretisation.',
+      },
+      {
         name: 'Initial liquid regions',
         status: 'implemented',
         description:
           'Define the initial liquid with surfaces and fluid seeds, and inspect the fill preview in the scene.',
       },
       {
-        name: 'Immersed geometry',
+        name: 'Visual scene authoring',
         status: 'implemented',
         description:
-          'Represent vessel walls and internal surfaces within the solver’s particle or Cartesian-grid discretisation.',
+          'Edit geometry, materials, initial liquid, prescribed motion, and measurement regions in contextual inspectors.',
       },
       {
         name: 'Periodic boundaries',
@@ -183,14 +119,20 @@ export const capabilityGroups = [
   },
   {
     id: 'motion',
-    title: 'Motion & coupling',
+    title: 'Motion & free surfaces',
     icon: 'motion',
-    summaryTitle: 'Put motion into the model.',
+    summaryTitle: 'Unconstrained motion',
     summary:
-      'Translate a vessel, rotate a component, or prescribe an oscillation. Use motion as a design input and examine the fluid response.',
+      'Rotate, oscillate, shake, or accelerate the geometry. The liquid splashes, breaks up, and reconnects, keeping a sharp surface through impacts, with surface tension and wetting acting at the interface.',
     description:
-      'Prescribe the experiment’s motion or explore coupled response.',
+      'Prescribe how the geometry moves and follow the free surface it drives.',
     features: [
+      {
+        name: 'Incompressible free-surface flow',
+        status: 'implemented',
+        description:
+          'Single-liquid simulation with particles tracking the moving liquid and a grid solving pressure.',
+      },
       {
         name: 'Prescribed rigid-body motion',
         status: 'implemented',
@@ -210,16 +152,22 @@ export const capabilityGroups = [
           'Model prescribed domain translation; rotating-frame forces are available in compatible FLIP and meshless configurations.',
       },
       {
-        name: 'Fluid-driven rigid bodies',
-        status: 'experimental',
+        name: 'Adaptive time stepping',
+        status: 'implemented',
         description:
-          'Six-degree-of-freedom (6-DOF) either imposed or reactive body coupling.',
+          'Use CFL-based time-step control with a maximum step, or select a fixed step for a controlled study.',
       },
       {
-        name: 'External structural coupling',
+        name: 'Surface tension',
         status: 'experimental',
         description:
-          'Native coupling (through preCICE on Linux), including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces.',
+          'Include capillary forces in the supported free-surface formulations.',
+      },
+      {
+        name: 'Contact angles and wetting',
+        status: 'experimental',
+        description:
+          'Static wetting, and selected dynamic or hysteretic models.',
       },
       {
         name: 'Wave-generation boundaries',
@@ -233,10 +181,11 @@ export const capabilityGroups = [
     id: 'compute',
     title: 'GPU computing',
     icon: 'chip',
-    summaryTitle: 'Put your GPU to work.',
+    summaryTitle: 'Runs on your GPU',
     summary:
-      'Run fluid studies on your desktop GPU. Sparse grids allocate simulation data around the active liquid, helping you make use of available GPU memory.',
-    description: 'A native compute pipeline built around GPU execution.',
+      'Every simulation step runs on the graphics card in your workstation, and memory follows the liquid rather than the empty space around it. Watch the result take shape while it runs.',
+    description:
+      'A native compute pipeline built around GPU execution, with a live view of the run.',
     features: [
       {
         name: 'GPU-native simulation',
@@ -257,36 +206,6 @@ export const capabilityGroups = [
           'Use sparse tiled grids around the active liquid for the particle/grid solver.',
       },
       {
-        name: 'CUDA backend',
-        status: 'experimental',
-        description:
-          'An optional NVIDIA compute path in development builds, separate from the Vulkan download configuration.',
-      },
-    ],
-  },
-  {
-    id: 'workspace',
-    title: 'Desktop workspace',
-    icon: 'desktop',
-    summaryTitle: 'Build, run, and inspect.',
-    summary:
-      'Keep geometry, physical setup, numerical controls, and the live fluid view in one native workspace. Change an input and explore the next design.',
-    description:
-      'A visual workspace with direct access to the simulation setup.',
-    features: [
-      {
-        name: 'Visual scene authoring',
-        status: 'implemented',
-        description:
-          'Edit geometry, materials, initial liquid, prescribed motion, and measurement regions in contextual inspectors.',
-      },
-      {
-        name: 'Numerical controls',
-        status: 'implemented',
-        description:
-          'Choose resolution, time stepping, and solver settings. FLIP offers Basic, Advanced, Expert, and Search views.',
-      },
-      {
         name: 'Live 3D visualisation',
         status: 'implemented',
         description:
@@ -305,23 +224,107 @@ export const capabilityGroups = [
           'Start, pause, step, or reset a simulation and follow numerical diagnostics, measurement graphs, and logs.',
       },
       {
+        name: 'CUDA backend',
+        status: 'experimental',
+        description:
+          'An optional NVIDIA compute path in development builds, separate from the Vulkan download configuration.',
+      },
+    ],
+  },
+  {
+    id: 'multiphysics',
+    title: 'Multiphysics',
+    icon: 'nodes',
+    summaryTitle: 'Multiphysics',
+    summary:
+      'Couple the liquid to free-moving bodies and structural solvers, add a resolved gas phase, and choose viscous or shear-dependent fluids. Heat transfer and viscoelasticity are on the roadmap.',
+    description:
+      'Fluid models, method choices, and coupling to bodies and other solvers.',
+    features: [
+      {
+        name: 'Newtonian viscosity',
+        status: 'implemented',
+        description:
+          'Set liquid density and viscosity across low- and high-viscosity Newtonian flow regimes, with implicit viscosity in supported configurations.',
+      },
+      {
+        name: 'Fluid-driven rigid bodies',
+        status: 'experimental',
+        description:
+          'Six-degree-of-freedom (6-DOF) either imposed or reactive body coupling.',
+      },
+      {
+        name: 'External structural coupling',
+        status: 'experimental',
+        description:
+          'Native coupling (through preCICE on Linux), including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces.',
+      },
+      {
+        name: 'Resolved liquid–gas flow',
+        status: 'experimental',
+        description:
+          'Two-phase formulations, with configuration-specific density-ratio and interface behaviour.',
+      },
+      {
+        name: 'Turbulence and wall treatment',
+        status: 'experimental',
+        description:
+          'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment.',
+      },
+      {
+        name: 'Finite-volume and meshless methods',
+        status: 'experimental',
+        description:
+          'Explore Cartesian finite volumes with cut cells, or a fully Lagrangian meshless particle formulation.',
+      },
+      {
+        name: 'Non-Newtonian fluid models',
+        status: 'development',
+        description:
+          'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
+      },
+      {
+        name: 'Viscoelasticity',
+        status: 'planned',
+        description:
+          'Represent fluids with both viscous and elastic response through planned constitutive models.',
+      },
+      {
+        name: 'Heat transfer',
+        status: 'planned',
+        description:
+          'Transport temperature through the liquid and exchange heat with walls and bodies.',
+      },
+    ],
+  },
+  {
+    id: 'optimisation',
+    title: 'Automation & optimisation',
+    icon: 'chart',
+    summaryTitle: 'Built for optimisation',
+    summary:
+      'Dimensions, fill levels, motion, and fluid properties are all plain setup inputs. Run batches of variants from the command line, compare the results automatically, or drive the solver from your own optimisation loop.',
+    description:
+      'Run many variants, capture the quantities behind a design decision, and take them into your analysis tools.',
+    features: [
+      {
         name: 'Editable setup files',
         status: 'implemented',
         description:
           'Save and reload JSON setups, share common inputs through inheritance, and run the same setup from the command line.',
       },
-    ],
-  },
-  {
-    id: 'measurements',
-    title: 'Measurements & output',
-    icon: 'chart',
-    summaryTitle: 'Take insight beyond the image.',
-    summary:
-      'Follow pressure and velocity probes, review supported body loads, and export CSV measurements and VTK fields for your next comparison.',
-    description:
-      'Capture the quantities behind a design decision and take them into your analysis tools.',
-    features: [
+      {
+        name: 'Study comparisons and automation',
+        status: 'implemented',
+        description:
+          'Run multi-case studies from the command line and write comparisons as JSON, CSV, and Markdown.',
+      },
+      {
+        name: 'Numerical controls',
+        status: 'implemented',
+        description:
+          'Choose resolution, time stepping, and solver settings. FLIP offers Basic, Advanced, Expert, and Search views.',
+      },
       {
         name: 'Pressure and velocity probes',
         status: 'implemented',
@@ -347,16 +350,47 @@ export const capabilityGroups = [
           'Export supported particle fields, finite-volume grids, and reconstructed free surfaces for external post-processing.',
       },
       {
-        name: 'Study comparisons and automation',
-        status: 'implemented',
-        description:
-          'Run multi-case studies from the command line and write comparisons as JSON, CSV, and Markdown.',
-      },
-      {
         name: 'Checkpoint and restart',
         status: 'implemented',
         description:
           'Save and resume supported FLIP and meshless configurations. Persistent finite-volume restart is not yet available.',
+      },
+      {
+        name: 'Python runtime',
+        status: 'experimental',
+        description:
+          'Configure, validate, and step simulations in-process from Python, for example inside an external optimisation loop. The initial package targets Linux x86_64 with Vulkan.',
+      },
+    ],
+  },
+  {
+    id: 'ai',
+    title: 'AI-ready setups',
+    icon: 'sparkle',
+    summaryTitle: 'AI-ready',
+    summary:
+      'Setups are plain, schema-validated files that AI agents can read, write, and check before a run. Next: an assistant that sets up a case, runs it, and summarises the results with you.',
+    summaryStatus: 'development',
+    description:
+      'Setup documents that software can author and check, and the assistant being built on them.',
+    features: [
+      {
+        name: 'Machine-readable setup schema',
+        status: 'implemented',
+        description:
+          'A generated JSON schema describes the setup document, and setups and studies can be validated from the command line without starting a simulation.',
+      },
+      {
+        name: 'Local setup assistant',
+        status: 'experimental',
+        description:
+          'A prototype that runs locally and turns a short English description of a partially filled tank under sinusoidal motion into a reviewable setup. Running the simulation stays a separate step.',
+      },
+      {
+        name: 'Assistant-guided studies',
+        status: 'planned',
+        description:
+          'Set up, run, and summarise a study together with an assistant inside the workspace.',
       },
     ],
   },
