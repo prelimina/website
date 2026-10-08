@@ -16,8 +16,11 @@ try {
   const { data, notes } = releaseFixture();
   const text = notes + '\nCorrects A & B.\n';
   data.notesSha256 = createHash('sha256').update(text).digest('hex');
-  mkdirSync(join(fixture, 'src/data/releases'), { recursive: true });
-  mkdirSync(join(fixture, 'src/content/releases'), { recursive: true });
+  // Start from an empty catalogue: synchronized real releases would outrank the fixture version.
+  for (const dir of ['src/data/releases', 'src/content/releases']) {
+    rmSync(join(fixture, dir), { recursive: true, force: true });
+    mkdirSync(join(fixture, dir), { recursive: true });
+  }
   writeFileSync(join(fixture, `src/data/releases/${data.version}.json`), JSON.stringify(data));
   writeFileSync(join(fixture, `src/content/releases/${data.version}.md`), text);
   const current = { version: data.version, releaseId: data.releaseId, notesSha256: data.notesSha256 };
