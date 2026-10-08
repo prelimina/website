@@ -242,9 +242,10 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(5);
+  await expect(page.locator('.showcase-card')).toHaveCount(6);
   for (const slug of [
     'sloshing-validation',
+    'dam-break-validation',
     'tank-motion',
     'liquid-handling',
     'spillway-gates',
