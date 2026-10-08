@@ -1050,13 +1050,6 @@ em {
   line-height: 1.6;
   max-width: 330px;
 }
-.showcase-copy .text-link {
-  margin-top: 16px;
-  gap: 14px;
-}
-.showcase-copy .text-link svg {
-  width: 16px;
-}
 .application-status {
   margin-top: 12px;
   font-size: var(--font-meta);
@@ -1740,9 +1733,6 @@ em {
   }
   .showcase-copy p {
     max-width: 400px;
-  }
-  .showcase-copy .text-link {
-    margin-top: 15px;
   }
   .faq-section {
     grid-template-columns: 1fr;

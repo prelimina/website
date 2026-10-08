@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro';
 import ShowcaseMedia from './ShowcaseMedia.astro';
 import { showcases } from '../content/content';
 interface Props {
@@ -19,8 +18,5 @@ const { item } = Astro.props;
   <div class="showcase-copy">
     <h3>{item.title}</h3>
     <p>{item.description}</p>
-    <span class="text-link">
-      View application <Icon />
-    </span>
   </div>
 </a>

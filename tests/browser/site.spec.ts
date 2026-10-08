@@ -9,6 +9,7 @@ const routes = [
   '/capabilities/',
   '/legal/',
   '/changelog/',
+  '/showcases/sloshing-validation/',
   '/showcases/tank-motion/',
   '/showcases/liquid-handling/',
   '/showcases/spillway-gates/',
@@ -177,7 +178,7 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
     .getByRole('navigation')
     .getByRole('link', { name: 'Applications' })
     .click();
-  await expect(page).toHaveURL(/\/showcases\/$/);
+  await expect(page).toHaveURL(/\/#applications$/);
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
   await page
     .getByRole('link', { name: /Follow water through two outlets/ })
@@ -188,7 +189,7 @@ test('mobile menu, page navigation, FAQ, and skip link work', async ({
     .getByRole('navigation')
     .getByRole('link', { name: 'Applications' })
     .click();
-  await expect(page).toHaveURL(/\/showcases\/$/);
+  await expect(page).toHaveURL(/\/#applications$/);
   await page.goto('/');
   await page.getByText('Is Prelimina free?', { exact: true }).click();
   await expect(page.locator('details[open]')).toContainText(
@@ -241,8 +242,9 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(4);
+  await expect(page.locator('.showcase-card')).toHaveCount(5);
   for (const slug of [
+    'sloshing-validation',
     'tank-motion',
     'liquid-handling',
     'spillway-gates',
@@ -277,9 +279,10 @@ test('capability panels lead to grouped features with a maturity label on every 
   );
   await page.getByRole('link', { name: 'Explore all capabilities' }).click();
   await expect(page).toHaveURL(/\/capabilities\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Capabilities',
-  );
+  // The Solvers section adds a second h1 on this page.
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Capabilities', exact: true }),
+  ).toBeVisible();
   const labels = ['Implemented', 'Experimental', 'In development', 'Planned'];
   await expect(page.locator('.maturity-guide dt')).toHaveText(labels);
   await expect(page.locator('.capability-group h2')).toHaveText([
@@ -327,9 +330,10 @@ test('capability panels lead to grouped features with a maturity label on every 
   await expect(page).toHaveURL(/\/capabilities\/$/);
   await page.goto('/docs/');
   await expect(page).toHaveURL(/\/capabilities\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Capabilities',
-  );
+  // The Solvers section adds a second h1 on this page.
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Capabilities', exact: true }),
+  ).toBeVisible();
 });
 
 test('an approved configured contact enables direct draft links on application pages', async ({
@@ -494,6 +498,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/',
     '/showcases/',
     '/capabilities/',
+    '/showcases/sloshing-validation/',
     '/showcases/tank-motion/',
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',

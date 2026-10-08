@@ -157,7 +157,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 14);
+  assert.equal(htmlFiles.length, 15);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -172,12 +172,14 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       );
     } else {
       assert.match(html, /name="robots" content="noindex, nofollow"/);
-      assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1, path);
+      // Capabilities carries a second h1 for its Solvers section (140a307).
+      const h1s = path.endsWith(join('capabilities', 'index.html')) ? 2 : 1;
+      assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, h1s, path);
     }
-    assert.doesNotMatch(
-      html,
-      /<iframe|action="https?:|src="https?:|href="javascript:/,
-    );
+    assert.doesNotMatch(html, /<iframe|src="https?:|href="javascript:/);
+    // The only external form target is the configured Brevo signup endpoint.
+    for (const [, action] of html.matchAll(/action="(https?:[^"]*)"/g))
+      assert.equal(action.replaceAll('&amp;', '&'), site.newsletter.action, path);
     for (const match of html.matchAll(
       /(?:href|src)="(\/[^"?#]*)(?:[?#][^"]*)?"/g,
     )) {
@@ -208,11 +210,11 @@ test('active pages remain available and retired pages are removed or redirected'
     'showcases',
     'docs',
     'capabilities',
-    'support',
     'pricing',
     'legal',
     'download',
     'changelog',
+    'showcases/sloshing-validation',
     'showcases/tank-motion',
     'showcases/liquid-handling',
     'showcases/spillway-gates',
@@ -328,6 +330,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
   for (const slug of [
+    'sloshing-validation',
     'tank-motion',
     'liquid-handling',
     'spillway-gates',
@@ -339,7 +342,12 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     );
     assert.match(application, /Application \/ \d+/);
     assert.match(application, /Availability: In development/);
-    assert.match(application, /Comparison quantities/);
+    assert.match(
+      application,
+      slug === 'sloshing-validation'
+        ? /Comparison with measurements/
+        : /Comparison quantities/,
+    );
     assert.match(application, /Physical assumptions/);
     assert.match(application, /<dt>Scope<\/dt>/);
     assert.doesNotMatch(application, /not validated|Evidence:|Candidate/i);

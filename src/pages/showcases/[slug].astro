@@ -43,7 +43,7 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
           <dd>{item.controls}</dd>
           <dt>Outputs</dt>
           <dd>{item.outputs}</dd>
-          <dt>Comparison quantities</dt>
+          <dt>{item.metricsHeading ?? 'Comparison quantities'}</dt>
           <dd>{item.metrics}</dd>
           <dt>Physical assumptions</dt>
           <dd>{item.assumptions}</dd>
@@ -57,6 +57,9 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
               <span>{item.media ? 'Simulation' : 'Illustration'}</span>
             </div>
             <ShowcaseMedia illustration={item.type} media={item.media} />
+            {item.chart && (
+              <ShowcaseMedia illustration={item.type} media={item.chart} />
+            )}
             {!item.media && (
               <span class="study-stamp">
                 Illustration — not simulation results
