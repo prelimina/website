@@ -40,3 +40,23 @@ test('stale current pointers and duplicate versions cannot build', () => {
 test('checked-in catalogue loads through the same validator used by the build', () => {
   assert.doesNotThrow(() => loadCatalogue());
 });
+
+test('release notes render as structured Markdown blocks, not raw text or HTML', async () => {
+  const { parseReleaseNotes } = await import('../src/data/release-notes.mjs');
+  const blocks = parseReleaseNotes(
+    '\n## Changes\n\n- First **bold** item\n  continued\n- Uses `code` and *emphasis*\n\nA paragraph\nthat wraps.\n\n1. One\n2. Two\n',
+  );
+  assert.deepEqual(blocks.map((b) => b.type), ['heading', 'list', 'p', 'list']);
+  assert.equal(blocks[0].level, 3);
+  assert.deepEqual(blocks[1].items[0], [
+    { type: 'text', text: 'First ' },
+    { type: 'strong', text: 'bold' },
+    { type: 'text', text: ' item' },
+    { type: 'text', text: ' ' },
+    { type: 'text', text: 'continued' },
+  ]);
+  assert.deepEqual(blocks[1].items[1].map((p) => p.type), ['text', 'code', 'text', 'em']);
+  assert.deepEqual(blocks[2].inline, [{ type: 'text', text: 'A paragraph that wraps.' }]);
+  assert.equal(blocks[3].ordered, true);
+  assert.equal(blocks[3].items.length, 2);
+});

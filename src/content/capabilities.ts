@@ -8,7 +8,7 @@ export const maturity = {
   experimental: {
     label: 'Experimental',
     description:
-      'Working functionality that needs broader testing and qualification.',
+      'Working functionality whose interface and defaults may still change.',
   },
   development: {
     label: 'In development',

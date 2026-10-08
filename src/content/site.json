@@ -8,7 +8,10 @@
     "releasesUrl": "https://github.com/prelimina/desktop/releases"
   },
   "publicationApproved": true,
-  "contactEmail": null,
+  "contactEmail": "hello@prelimina.com",
+  "newsletter": {
+    "action": "https://bc7457dd.sibforms.com/serve/MUIFAFQALcsTEY2l2hgXWtYAvn0bf5bbCYHOTN1KuO6NiSETM_btoA6PgxeRWvaVocvviWUW7UkgTq4Ly7Hfj15p1HP1dMuLRPLGnpYPMID4rjKZsa58EmMvN3SYaywM2z285tfddZu2Zs4Li19fNjMNSh38_0TGAVu3Hz21rrpIZ0lq_jXl108EA_5CZjUsHZ_RAGI2O0OGk3IgeA=="
+  },
   "licence": {
     "version": "1.0",
     "date": "2026-09-23",

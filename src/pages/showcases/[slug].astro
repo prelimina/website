@@ -6,7 +6,6 @@ import {
   inquiryAction,
   showcases,
   availabilityLabels,
-  evidenceLabels,
 } from '../../content/content';
 export function getStaticPaths() {
   return showcases.map((item) => ({
@@ -25,13 +24,12 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
         <Icon size={15} /> All applications
       </a>
       <div class="case-label">
-        Candidate application / {item.number} · {item.category}
+        Application / {item.number} · {item.category}
       </div>
       <h1>{item.title}</h1>
       <p>{item.question}</p>
       <p class="application-status">
         <span>Availability: {availabilityLabels[item.availability]}</span>
-        <span>Evidence: {evidenceLabels[item.evidence]}</span>
       </p>
     </header>
     <div class="page-container">
@@ -43,20 +41,20 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
           <dd>{item.variables}</dd>
           <dt>Keep the comparison consistent</dt>
           <dd>{item.controls}</dd>
-          <dt>Outputs in the development application</dt>
+          <dt>Outputs</dt>
           <dd>{item.outputs}</dd>
-          <dt>Candidate comparison quantities</dt>
+          <dt>Comparison quantities</dt>
           <dd>{item.metrics}</dd>
           <dt>Physical assumptions</dt>
           <dd>{item.assumptions}</dd>
-          <dt>Numerical limitations and evidence scope</dt>
+          <dt>Scope</dt>
           <dd>{item.limitation}</dd>
         </dl>
         <div>
           <div class="showcase-visual">
             <div class="showcase-meta">
               <span>APPLICATION / {item.number}</span>
-              <span>{item.media ? evidenceLabels[item.evidence] : 'Illustration'}</span>
+              <span>{item.media ? 'Simulation' : 'Illustration'}</span>
             </div>
             <ShowcaseMedia illustration={item.type} media={item.media} />
             {!item.media && (
@@ -65,17 +63,8 @@ const action = inquiryAction.open ? inquiryAction.primary : item.nextAction;
               </span>
             )}
           </div>
-          <p class="section-note">
-            {item.media
-              ? 'Recorded from a development build. It shows the workflow, not a validated result.'
-              : 'No public release, reproducible result set, or hardware qualification is attached to this candidate application.'}
-          </p>
         </div>
       </div>
-      <p class="notice">
-        Use this question to frame a study. Establish the method, measurements,
-        and evidence needed for your decision before relying on a result.
-      </p>
       <a
         href={action.href}
         class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2"

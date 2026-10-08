@@ -47,8 +47,27 @@ test('the licensing contact cannot inject mail headers or open general inquiries
       /licence.email/,
     );
   }
-  assert.equal(site.contactEmail, null);
-  assert.equal(getInquiryState(site.contactEmail).open, false);
+  assert.equal(site.contactEmail, 'hello@prelimina.com');
+  assert.equal(getInquiryState(site.contactEmail).open, true);
+});
+
+test('newsletter posts only to a Brevo form endpoint that the security headers allow', () => {
+  assert.doesNotThrow(() => validateContent({ ...site, newsletter: { action: null } }));
+  for (const action of [
+    'http://bc7457dd.sibforms.com/serve/ABC',
+    'https://example.test/serve/ABC',
+    'https://evil.sibforms.com.example.test/serve/ABC',
+    'javascript:alert(1)',
+  ])
+    assert.throws(
+      () => validateContent({ ...site, newsletter: { action } }),
+      /newsletter.action/,
+      action,
+    );
+  const host = new URL(site.newsletter.action).origin;
+  const csp = readFileSync('public/_headers', 'utf8');
+  assert.match(csp, new RegExp(`connect-src 'self' ${host};`));
+  assert.match(csp, new RegExp(`form-action ${host}(;|\\s*$)`, 'm'));
 });
 test('downloads cannot silently activate with an unsupported launch state', () => {
   for (const launchState of ['alpha_open', 'released', '', undefined])
@@ -308,23 +327,21 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
-  // Current application pages with run media use software demonstration evidence.
-  const evidence = {
-    'tank-motion': /Evidence: Software demonstration/,
-    'liquid-handling': /Evidence: Software demonstration/,
-    'spillway-gates': /Evidence: Software demonstration/,
-    'reduced-gravity': /Evidence: Software demonstration/,
-  };
-  for (const [slug, expected] of Object.entries(evidence)) {
+  for (const slug of [
+    'tank-motion',
+    'liquid-handling',
+    'spillway-gates',
+    'reduced-gravity',
+  ]) {
     const application = readFileSync(
       `dist/showcases/${slug}/index.html`,
       'utf8',
     );
-    assert.match(application, /Candidate application/);
-    assert.match(application, expected);
+    assert.match(application, /Application \/ \d+/);
     assert.match(application, /Availability: In development/);
-    assert.match(application, /Candidate comparison quantities/);
+    assert.match(application, /Comparison quantities/);
     assert.match(application, /Physical assumptions/);
-    assert.match(application, /Numerical limitations/);
+    assert.match(application, /<dt>Scope<\/dt>/);
+    assert.doesNotMatch(application, /not validated|Evidence:|Candidate/i);
   }
 });

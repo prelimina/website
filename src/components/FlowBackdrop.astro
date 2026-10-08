@@ -1,0 +1,43 @@
+---
+// Decorative full-width band with faint streamlines; tracer dashes drift along
+// them. Paths are generated at build time, the motion is CSS only.
+interface Props {
+  seed?: number;
+}
+const { seed = 0 } = Astro.props;
+const width = 1440;
+const height = 400;
+const lines = Array.from({ length: 7 }, (_, i) => {
+  const y = 40 + i * 54;
+  const phase = seed * 1.7 + i * 0.9;
+  const amp = 14 + ((i * 7 + seed * 5) % 4) * 6;
+  const points = Array.from({ length: 7 }, (_, k) => [
+    (k * width) / 6,
+    y + amp * Math.sin(phase + k * 1.25),
+  ]);
+  let d = `M${points[0][0] - 60},${points[0][1].toFixed(1)}`;
+  for (let k = 1; k < points.length; k++) {
+    const [x0, y0] = points[k - 1];
+    const [x1, y1] = points[k];
+    const cx = (x1 - x0) / 2;
+    d += ` C${(x0 + cx).toFixed(1)},${y0.toFixed(1)} ${(x1 - cx).toFixed(1)},${y1.toFixed(1)} ${k === points.length - 1 ? x1 + 60 : x1},${y1.toFixed(1)}`;
+  }
+  return { d, duration: 22 + ((i * 11 + seed * 7) % 5) * 6, delay: -((i * 13 + seed * 3) % 17) };
+});
+---
+
+<div class="flow-backdrop" aria-hidden="true">
+  <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
+    {lines.map((line) => (
+      <g>
+        <path class="flow-line" d={line.d} pathLength="1000" />
+        <path
+          class="flow-tracer"
+          d={line.d}
+          pathLength="1000"
+          style={`animation-duration:${line.duration}s;animation-delay:${line.delay}s`}
+        />
+      </g>
+    ))}
+  </svg>
+</div>

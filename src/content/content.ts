@@ -73,12 +73,6 @@ export const availabilityLabels = {
   in_development: 'In development',
   planned: 'Planned',
 } as const;
-export const evidenceLabels = {
-  illustration: 'Illustration',
-  software_demonstration: 'Software demonstration',
-  numerical_verification: 'Numerical verification',
-  physical_validation: 'Physical validation',
-} as const;
 
 export interface ShowcaseMediaConfig {
   kind: 'image' | 'video';
@@ -100,7 +94,6 @@ interface Application {
   category: string;
   type: ShowcaseIllustrationType;
   availability: keyof typeof availabilityLabels;
-  evidence: keyof typeof evidenceLabels;
   description: string;
   media?: ShowcaseMediaConfig;
   question: string;
@@ -122,7 +115,6 @@ export const showcases: readonly Application[] = [
     category: 'Tanks & prescribed motion',
     type: 'tank',
     availability: 'in_development',
-    evidence: 'software_demonstration',
     description:
       'Roll a partially filled tank near its sloshing period and watch the response build.',
     media: {
@@ -142,13 +134,13 @@ export const showcases: readonly Application[] = [
     controls:
       'Use the same geometry, numerical settings, initial level, ramp, and observation interval.',
     outputs:
-      'A live fluid view and particle exports for offline rendering. Forces and moments on the tank are not extracted for this case.',
+      'A live fluid view and particle exports for offline rendering.',
     metrics:
-      'Free-surface run-up at the end walls and the phase between roll and water motion are candidate comparison quantities. Neither has been extracted or checked here.',
+      'Free-surface run-up at the end walls and the phase between roll and water motion.',
     assumptions:
       'The tank follows an imposed roll about a fixed axis; the ship does not respond to the water. A single liquid without air entrainment.',
     limitation:
-      'Software demonstration, not validated. Roll is imposed; ship stabilisation, damping effectiveness, and reaction moments are not established. Near resonance the response keeps growing, and the clip stops before the water spills over the walls.',
+      'Near resonance the response keeps growing, and the clip stops before the water spills over the walls.',
     nextAction: {
       label: 'Explore motion capabilities',
       href: '/capabilities/#motion',
@@ -161,7 +153,6 @@ export const showcases: readonly Application[] = [
     category: 'Liquid handling',
     type: 'pipe',
     availability: 'in_development',
-    evidence: 'software_demonstration',
     description:
       'Watch a tank drain through two pipes at different heights as the water level falls.',
     media: {
@@ -182,13 +173,13 @@ export const showcases: readonly Application[] = [
     controls:
       'Keep the grid, numerical settings, initial level, and observation interval the same between variants.',
     outputs:
-      'A live fluid view coloured by speed and particle exports for offline rendering. Outflow through each pipe is not yet extracted for this case.',
+      'A live fluid view coloured by speed and particle exports for offline rendering.',
     metrics:
-      'Time until the upper jet stops and the remaining level are candidate comparison quantities. Neither has been extracted or checked here.',
+      'Time until the upper jet stops, and the remaining level.',
     assumptions:
       'A finite store with no inflow, fixed geometry, and a single liquid without air entrainment. The jets leave through open boundaries.',
     limitation:
-      'This is a demonstration of the workflow, not a validated discharge model. Pipe friction, entrance losses, and air effects are not assessed. Pressure outlets are applied at the domain faces; general finite outlet surfaces are not yet supported.',
+      'Pressure outlets are applied at the domain faces; general finite outlet surfaces are not yet supported.',
     nextAction: {
       label: 'Explore geometry and boundaries',
       href: '/capabilities/#geometry',
@@ -201,7 +192,6 @@ export const showcases: readonly Application[] = [
     category: 'Hydraulic structures',
     type: 'pipe',
     availability: 'in_development',
-    evidence: 'software_demonstration',
     description:
       'Lift the gates on a labyrinth spillway and follow the released water over the crest and down the chute.',
     media: {
@@ -222,13 +212,13 @@ export const showcases: readonly Application[] = [
     controls:
       'Keep the grid, numerical settings, initial store, and observation interval the same between variants.',
     outputs:
-      'A live fluid view coloured by speed and particle exports for offline rendering. Discharge and pressure extraction for this case are not yet set up.',
+      'A live fluid view coloured by speed and particle exports for offline rendering.',
     metrics:
-      'Time for the front to reach the chute, wetted extent, and discharge over the crest are candidate comparison quantities. None has been extracted or checked here.',
+      'Time for the front to reach the chute, wetted extent, and discharge over the crest.',
     assumptions:
       'A finite upstream store with no inflow, rigid gates on a prescribed lift, and a single liquid without air entrainment.',
     limitation:
-      'The run becomes unstable at about 17 s, as the falling store level reaches the crest. Moving gates need flush contact with the structure and walls at least three cells thick. The case is a look-alike of a real structure, not a model of it, and no comparison with measurements is attached.',
+      'Moving gates need flush contact with the structure and walls at least three cells thick. The geometry resembles a real structure but is not a model of it.',
     nextAction: {
       label: 'Explore geometry and boundaries',
       href: '/capabilities/#geometry',
@@ -241,7 +231,6 @@ export const showcases: readonly Application[] = [
     category: 'Reduced gravity',
     type: 'tank',
     availability: 'in_development',
-    evidence: 'software_demonstration',
     description:
       'Shake the same tank the same way at 1 g and at 0.01 g and compare how the liquid moves.',
     media: {
@@ -261,13 +250,13 @@ export const showcases: readonly Application[] = [
     controls:
       'Use the same geometry, fill, motion, numerical settings, and observation interval for every gravity level.',
     outputs:
-      'Live fluid views and particle exports for offline rendering. No loads or probe histories are extracted for this comparison.',
+      'Live fluid views and particle exports for offline rendering.',
     metrics:
-      'Wall run-up and how long liquid stays off the floor are candidate comparison quantities. Neither has been extracted or checked here.',
+      'Wall run-up and how long liquid stays off the floor.',
     assumptions:
       'A single liquid in a passive void, constant reduced gravity, and an imposed tank motion. Surface tension and wetting are switched off.',
     limitation:
-      'Software demonstration, not validated. At very low gravity surface tension and wetting dominate real liquid behaviour; they are not included here, so this is reduced-gravity sloshing, not capillary microgravity behaviour. Gas, thermal, and propellant effects are not represented.',
+      'At very low gravity surface tension and wetting dominate real liquid behaviour; they are switched off here, so this is reduced-gravity sloshing, not capillary microgravity behaviour. Gas, thermal, and propellant effects are not represented.',
     nextAction: {
       label: 'Explore motion capabilities',
       href: '/capabilities/#motion',
@@ -374,4 +363,32 @@ export const faqs = [
 export const nav = [
   { label: 'Applications', href: '/#applications' },
   { label: 'Capabilities', href: '/capabilities/' },
+  { label: 'About', href: '/#team' },
 ];
+
+export const team = {
+  title: 'Built by people who <em>write solvers.</em>',
+  description:
+    'Prelimina is developed by PLASMICA, a spin-out from the University of Split. Most of the team hold PhDs in computational fluid dynamics, numerical methods, or engineering, and have spent their careers between university research and industrial projects, from launcher propellant tanks to marine hydrodynamics.',
+  facts: [
+    {
+      value: 'PhD',
+      label: 'Research-trained core team',
+      description:
+        'Fluid dynamics, numerical analysis, and GPU computing are the fields the team publishes and teaches in.',
+    },
+    {
+      value: '100+',
+      label: 'Years of combined experience',
+      description:
+        'Across academic research and engineering work for industrial clients in aerospace, marine, and manufacturing.',
+    },
+    {
+      value: 'In-house',
+      label: 'Methods written by the team',
+      description:
+        'Every solver in Prelimina is designed and implemented by the people who answer your questions about it.',
+    },
+  ],
+  link: { label: 'About PLASMICA', href: 'https://plasmica.com/' },
+} as const;

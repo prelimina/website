@@ -2,7 +2,7 @@ export const pages = {
   showcases: {
     title: 'Start with an engineering question.',
     description:
-      'Explore prescribed tank roll, tank drainage, gated spillways, and reduced-gravity sloshing with GPU-native CFD. These candidate applications state the question, inputs, and scope still to qualify.',
+      'Explore prescribed tank roll, tank drainage, gated spillways, and reduced-gravity sloshing with GPU-native CFD. Each application states the question, inputs, and what to compare.',
   },
   capabilities: {
     title: 'Capabilities',
@@ -13,6 +13,11 @@ export const pages = {
     title: 'The details, clearly stated.',
     description:
       'Company details, the Prelimina Licence Agreement, and privacy information for this prelaunch website.',
+  },
+  confirmed: {
+    title: 'You’re on the list.',
+    description:
+      'Thanks for confirming. We’ll email you when new Prelimina releases and the browser version ship, and nothing else.',
   },
   changelog: {
     title: 'The story starts here.',

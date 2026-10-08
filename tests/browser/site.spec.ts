@@ -210,6 +210,7 @@ test('homepage order, primary actions, and application status communicate the pr
     'applications',
     'desktop-app',
     'capabilities',
+    'team',
     'download',
     'faq',
     'container cta-wrap',
@@ -221,12 +222,13 @@ test('homepage order, primary actions, and application status communicate the pr
     'href',
     '/#download',
   );
-  await expect(page.locator('.hero-actions .button-quiet')).toHaveAttribute(
+  await expect(page.locator('.hero-actions .button')).toHaveCount(1);
+  await expect(page.locator('.signup-form .button')).toHaveText('Notify me');
+  await expect(page.locator('a[href^="mailto:"]')).toHaveCount(2);
+  await expect(page.locator('.signup-pilot a')).toHaveAttribute(
     'href',
-    '#applications',
+    /^mailto:hello@prelimina\.com\?/,
   );
-  await expect(page.locator('.cta-panel .button')).toHaveText('Download now');
-  await expect(page.locator('a[href^="mailto:"]')).toHaveCount(1);
   await expect(
     page.locator('a').filter({ hasText: 'Discuss your case' }),
   ).toHaveCount(0);
@@ -240,23 +242,22 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
   await expect(page.locator('.showcase-card')).toHaveCount(4);
-  const evidence: Record<string, string> = {
-    'tank-motion': 'Software demonstration',
-    'liquid-handling': 'Software demonstration',
-    'spillway-gates': 'Software demonstration',
-    'reduced-gravity': 'Software demonstration',
-  };
-  for (const slug of Object.keys(evidence)) {
+  for (const slug of [
+    'tank-motion',
+    'liquid-handling',
+    'spillway-gates',
+    'reduced-gravity',
+  ]) {
     await page.goto(`/showcases/${slug}/`);
     await expect(page.locator('.application-status')).toContainText(
       'Availability: In development',
     );
-    await expect(page.locator('.application-status')).toContainText(
-      `Evidence: ${evidence[slug]}`,
+    await expect(page.locator('.page-container > .button')).toHaveText(
+      /Discuss your case/,
     );
     await expect(page.locator('.page-container > .button')).toHaveAttribute(
       'href',
-      /\/capabilities\/#/,
+      /^mailto:hello@prelimina\.com\?/,
     );
   }
   await page.goto('/#licensing');
@@ -574,4 +575,31 @@ test('capture desktop and mobile views and measure initial local resource weight
       fullPage: true,
     });
   }
+});
+
+test('release signup submits in the background and reports success or failure', async ({
+  page,
+}) => {
+  // Never contact Brevo from tests: answer the form endpoint locally.
+  const posted: string[] = [];
+  let reply = { success: true };
+  await page.route(/sibforms\.com\/serve\//, async (route) => {
+    posted.push(route.request().postData() ?? '');
+    await route.fulfill({ json: reply });
+  });
+  await page.goto('/');
+  const form = page.locator('.signup-form');
+  await form.locator('input[type="email"]').fill('reader@example.test');
+  await form.locator('button').click();
+  await expect(form.locator('.signup-status')).toHaveText(/check your inbox/);
+  await expect(page).toHaveURL(/\/$/);
+  expect(posted).toHaveLength(1);
+  expect(posted[0]).toContain('EMAIL=reader%40example.test');
+  expect(posted[0]).toContain('email_address_check=');
+  await expect(form.locator('input[type="email"]')).toHaveValue('');
+
+  reply = { success: false };
+  await form.locator('input[type="email"]').fill('reader@example.test');
+  await form.locator('button').click();
+  await expect(form.locator('.signup-status')).toHaveText(/didn’t go through/);
 });

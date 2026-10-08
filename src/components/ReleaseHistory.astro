@@ -1,15 +1,61 @@
 ---
 import { loadCatalogue } from '../data/releases.mjs';
+import { parseReleaseNotes } from '../data/release-notes.mjs';
+import InlineText from './InlineText.astro';
 const { releases } = loadCatalogue();
+// The validated notes start with `# Prelimina <version>`, already shown as the heading.
+const body = (notes: string) => parseReleaseNotes(notes.slice(notes.indexOf('\n') + 1));
 ---
-{releases.map(release => (
+
+{releases.map((release) => (
   <article class="info-panel">
     <h2>Prelimina {release.version}</h2>
     <time datetime={release.publishedAt}>{release.publishedAt.slice(0, 10)}</time>
-    <!-- Astro escapes the exact reviewed text. No MDX or raw HTML execution. -->
-    <div class="release-notes">{release.notes}</div>
+    <div class="release-notes">
+      {body(release.notes).map((block) => {
+        if (block.type === 'heading') {
+          const Tag = `h${block.level}` as 'h3';
+          return <Tag><InlineText parts={block.inline} /></Tag>;
+        }
+        if (block.type === 'list') {
+          const Tag = block.ordered ? 'ol' : 'ul';
+          return <Tag>{block.items.map((item) => <li><InlineText parts={item} /></li>)}</Tag>;
+        }
+        return <p><InlineText parts={block.inline} /></p>;
+      })}
+    </div>
   </article>
 ))}
+
 <style>
-  .release-notes { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 1rem; }
+  .release-notes {
+    overflow-wrap: anywhere;
+    margin-top: 1rem;
+  }
+  .release-notes :is(h3, h4, h5, h6) {
+    margin: 1.6rem 0 0.5rem;
+  }
+  .release-notes ul,
+  .release-notes ol {
+    margin: 0.5rem 0;
+    padding-left: 1.4rem;
+  }
+  .release-notes li {
+    color: var(--muted);
+    font-size: var(--font-body);
+    max-width: 780px;
+  }
+  .release-notes li + li {
+    margin-top: 0.3rem;
+  }
+  .release-notes em {
+    font-style: italic;
+    color: inherit;
+  }
+  .release-notes code {
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    background: rgb(0 0 0 / 0.06);
+  }
 </style>

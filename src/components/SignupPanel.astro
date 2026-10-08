@@ -1,0 +1,99 @@
+---
+import site from '../content/site.json';
+import { inquiryHref } from '../content/inquiry.mjs';
+const action = site.newsletter?.action ?? null;
+const pilotHref = site.contactEmail
+  ? inquiryHref(
+      site.contactEmail,
+      'The tank, vessel, or flow I have in mind:\n\nWhat I would like to compare:\n\nTimeline (optional):',
+      'Prelimina — pilot',
+    )
+  : null;
+---
+
+<section class="container cta-wrap">
+  <div class="cta-panel signup-panel">
+    <div>
+      <h2>
+        Be first to see <em>what’s next.</em>
+      </h2>
+      <p>
+        Get an email when new releases and the browser version ship. Nothing
+        else.
+      </p>
+    </div>
+    {action && (
+      <form class="signup-form" method="POST" action={action} data-signup>
+        <div class="signup-row">
+          <label class="visually-hidden" for="signup-email">Email address</label>
+          <input
+            id="signup-email"
+            name="EMAIL"
+            type="email"
+            autocomplete="email"
+            placeholder="you@company.com"
+            required
+          />
+          <button
+            class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
+            type="submit"
+          >
+            Notify me
+          </button>
+        </div>
+        {/* Brevo's spam trap: real visitors never see or fill this field. */}
+        <input
+          class="visually-hidden"
+          type="text"
+          name="email_address_check"
+          value=""
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+        <input type="hidden" name="locale" value="en" />
+        <p class="signup-consent">
+          You’ll get a confirmation email first. Unsubscribe anytime. Handled
+          by Brevo; see <a href="/legal/#privacy">privacy</a>.
+        </p>
+        <p class="signup-status" role="status" aria-live="polite" data-signup-status></p>
+      </form>
+    )}
+  </div>
+  {pilotHref && (
+    <p class="signup-pilot">
+      Have a tank or sloshing problem in mind?{' '}
+      <a class="text-link" href={pilotHref}>Talk to us about a pilot</a>
+    </p>
+  )}
+</section>
+
+<script>
+  // Submit in the background: Brevo answers a plain form post with raw JSON.
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-signup]')) {
+    const status = form.querySelector<HTMLElement>('[data-signup-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      button.disabled = true;
+      status.dataset.state = 'pending';
+      status.textContent = 'Sending…';
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+        });
+        const result = response.ok ? await response.json() : null;
+        if (!result?.success) throw new Error('rejected');
+        form.reset();
+        status.dataset.state = 'success';
+        status.textContent = 'Almost there: check your inbox and confirm your subscription.';
+      } catch {
+        status.dataset.state = 'error';
+        status.textContent = 'That didn’t go through. Please try again in a moment.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

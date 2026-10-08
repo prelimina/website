@@ -1,0 +1,11 @@
+---
+import type { InlinePart } from '../data/release-notes.mjs';
+const { parts } = Astro.props as { parts: InlinePart[] };
+---
+
+{parts.map((part) =>
+  part.type === 'strong' ? <strong>{part.text}</strong>
+  : part.type === 'em' ? <em>{part.text}</em>
+  : part.type === 'code' ? <code>{part.text}</code>
+  : part.text,
+)}

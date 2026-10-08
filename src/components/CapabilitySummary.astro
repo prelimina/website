@@ -1,9 +1,11 @@
 ---
 import Icon from './Icon.astro';
+import FlowBackdrop from './FlowBackdrop.astro';
 import { capabilityGroups } from '../content/capabilities';
 ---
 
-<section class="section container capability-summary" id="capabilities">
+<section class="section container capability-summary band" id="capabilities">
+  <FlowBackdrop seed={1} />
   <div class="section-heading">
     <h2>
       From moving liquid

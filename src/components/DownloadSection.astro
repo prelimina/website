@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import FlowBackdrop from './FlowBackdrop.astro';
 import site from '../content/site.json';
 import { downloadPlatforms } from '../content/content';
 import { loadCatalogue } from '../data/releases.mjs';
@@ -14,7 +15,8 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
 );
 ---
 
-<section class="section container download-section" id="download">
+<section class="section container download-section band" id="download">
+  <FlowBackdrop seed={2} />
   <div class="section-heading">
     <div>
       <h2>

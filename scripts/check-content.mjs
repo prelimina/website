@@ -24,6 +24,11 @@ export function validateContent(site, { publication = false, catalogue = null } 
     throw new Error(
       'contactEmail must be null or a plain valid email address.',
     );
+  if (
+    site.newsletter?.action != null &&
+    !/^https:\/\/[a-z0-9]+\.sibforms\.com\/serve\/[A-Za-z0-9_=-]+$/.test(site.newsletter.action)
+  )
+    throw new Error('newsletter.action must be null or a Brevo form endpoint.');
   if (!isPlainEmail(site.licence?.email))
     throw new Error('licence.email must be a plain valid licensing address.');
   if (!site.company || !site.name || !site.hero?.descriptor)

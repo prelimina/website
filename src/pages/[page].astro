@@ -45,11 +45,6 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
               <ShowcaseCard item={item} />
             ))}
           </div>
-          <p class="notice">
-            Availability describes application development or release status.
-            Evidence describes what you can inspect. An illustration does not
-            establish numerical accuracy or physical validation.
-          </p>
         </>
       )}
       {page === 'capabilities' && <CapabilityCatalog />}
@@ -74,12 +69,25 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
             Licensing and legal enquiries, notices, and complaints:{' '}
             <a href={licensingAction.href}>{licence.email}</a>.
           </p>
-          <h2>Privacy in this implementation</h2>
+          <h2 id="privacy">Privacy in this implementation</h2>
           <p>
             The website contains no analytics, advertising cookies, session
             replay, remote fonts, or third-party embeds. The case-outline
             control does not send data to a server; its copy button only writes
             to your clipboard when you use it.
+          </p>
+          <p>
+            If you subscribe to release updates, the email address you enter is
+            sent to Brevo (Sendinblue SAS, France), which stores it with the
+            time of your consent and sends you a confirmation email. You are
+            only added once you confirm. We use the address solely to tell you
+            about Prelimina releases and the browser version. Every email has an
+            unsubscribe link, and you can ask us to delete your address at any
+            time{site.contactEmail && (
+              <>
+                {' '}at <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+              </>
+            )}.
           </p>
           <p>
             A hosting provider may process network request logs.
@@ -106,17 +114,20 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
           <h2>Third-party design assets</h2>
           <p>
             The site uses AmbientCSS under the MIT license and the locally
-            hosted Bacasime Antique and Quicksand fonts under the SIL Open Font
-            License 1.1.
+            hosted Fraunces and Quicksand fonts under the SIL Open Font License
+            1.1.
           </p>
           <div class="legal-list">
             <a href="/licenses/AmbientCSS-MIT.txt">AmbientCSS license</a>
-            <a href="/licenses/BacasimeAntique-OFL.txt">
-              Bacasime Antique license
-            </a>
+            <a href="/licenses/Fraunces-OFL.txt">Fraunces license</a>
             <a href="/licenses/Quicksand-OFL.txt">Quicksand license</a>
           </div>
         </div>
+      )}
+      {page === 'confirmed' && (
+        <a class="text-link" href="/">
+          Back to the homepage <Icon />
+        </a>
       )}
       {page === 'changelog' && current && <ReleaseHistory />}
       {page === 'changelog' && !current && (
