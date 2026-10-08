@@ -701,6 +701,38 @@ em {
   opacity: 0.22;
   animation: flow-drift linear infinite;
 }
+/* Staggered timing so the tracers never move in step. */
+.flow-backdrop g:nth-of-type(7n + 1) .flow-tracer {
+  animation-duration: 34s;
+  animation-delay: -6s;
+}
+.flow-backdrop g:nth-of-type(7n + 2) .flow-tracer {
+  animation-duration: 46s;
+  animation-delay: -15s;
+}
+.flow-backdrop g:nth-of-type(7n + 3) .flow-tracer {
+  animation-duration: 28s;
+  animation-delay: -3s;
+}
+.flow-backdrop g:nth-of-type(7n + 4) .flow-tracer {
+  animation-duration: 40s;
+  animation-delay: -21s;
+}
+.flow-backdrop g:nth-of-type(7n + 5) .flow-tracer {
+  animation-duration: 52s;
+  animation-delay: -9s;
+}
+.flow-backdrop g:nth-of-type(7n + 6) .flow-tracer {
+  animation-duration: 31s;
+  animation-delay: -12s;
+}
+.flow-backdrop g:nth-of-type(7n + 7) .flow-tracer {
+  animation-duration: 43s;
+  animation-delay: -27s;
+}
+#capabilities .flow-backdrop .flow-tracer {
+  animation-direction: reverse;
+}
 @keyframes flow-drift {
   to {
     stroke-dashoffset: -1000;

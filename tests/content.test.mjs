@@ -177,6 +177,9 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, h1s, path);
     }
     assert.doesNotMatch(html, /<iframe|src="https?:|href="javascript:/);
+    // The CSP blocks inline styles, so the decorative flow must not rely on them.
+    for (const [backdrop] of html.matchAll(/<div class="flow-backdrop"[\s\S]*?<\/div>/g))
+      assert.doesNotMatch(backdrop, /style=/, path);
     // The only external form target is the configured Brevo signup endpoint.
     for (const [, action] of html.matchAll(/action="(https?:[^"]*)"/g))
       assert.equal(action.replaceAll('&amp;', '&'), site.newsletter.action, path);

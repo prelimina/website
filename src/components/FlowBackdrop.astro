@@ -1,6 +1,7 @@
 ---
 // Decorative full-width band with faint streamlines; tracer dashes drift along
-// them. Paths are generated at build time, the motion is CSS only.
+// them. Paths are generated at build time; the motion is CSS only, and its
+// per-line timing lives in global.css because the site CSP forbids inline styles.
 interface Props {
   seed?: number;
 }
@@ -22,7 +23,7 @@ const lines = Array.from({ length: 7 }, (_, i) => {
     const cx = (x1 - x0) / 2;
     d += ` C${(x0 + cx).toFixed(1)},${y0.toFixed(1)} ${(x1 - cx).toFixed(1)},${y1.toFixed(1)} ${k === points.length - 1 ? x1 + 60 : x1},${y1.toFixed(1)}`;
   }
-  return { d, duration: 22 + ((i * 11 + seed * 7) % 5) * 6, delay: -((i * 13 + seed * 3) % 17) };
+  return { d };
 });
 ---
 
@@ -31,12 +32,7 @@ const lines = Array.from({ length: 7 }, (_, i) => {
     {lines.map((line) => (
       <g>
         <path class="flow-line" d={line.d} pathLength="1000" />
-        <path
-          class="flow-tracer"
-          d={line.d}
-          pathLength="1000"
-          style={`animation-duration:${line.duration}s;animation-delay:${line.delay}s`}
-        />
+        <path class="flow-tracer" d={line.d} pathLength="1000" />
       </g>
     ))}
   </svg>
