@@ -173,7 +173,7 @@ export const showcases: readonly Application[] = [
       src: '/assets/showcases/dam-break-validation.webp',
       alt: 'Perspective view of a long tank. A column of water at the far end collapses, runs along the floor, slams into a small box and sprays over it, then sloshes back. Below it, the simulated pressure on the front of the box draws in step over the measured trace.',
       caption:
-        'The first 3.6 s of a repeat Prelimina run with the record settings, coloured by speed (0–4 m/s). The P1 trace draws in step with the view over the measured one. Development build a96e149a.',
+        'A repeat Prelimina run with the record settings, coloured by speed (0–4 m/s). The P1 trace draws in step with the view over the measured one. Development build 288a4f34, which gives the same P1 and P2 impulses as the run in the chart (+13 % and +4 %).',
       aspectRatio: '960 / 770',
       fit: 'contain',
     },
@@ -198,11 +198,11 @@ export const showcases: readonly Application[] = [
     outputs:
       'Pressure histories at the eight box sensors and four water-level histories, exported as CSV, and the live fluid view.',
     metrics:
-      'Pressure impulse over the first second at the two lowest front sensors: +13 % (P1) and +4 % (P2) against the experiment. Mean pressure from 2 to 6 s, including the reflected waves, within 5 % on all four front sensors. The impact reaches P1 to P3 within 20 ms of the measurement. Water level near the reservoir end wall: median error 8 mm over 6 s; the returning wave arrives within 0.1 s. On 13.3, 10 and 8 mm grids at CFL 2 the P1 impulse stays between +8 % and +11 %.',
+      'Pressure impulse over the first second at the two lowest front sensors: +13 % (P1) and +4 % (P2) against the experiment. Mean pressure from 2 to 6 s, including the reflected waves, within 5 % on all four front sensors. The impact reaches P1 to P3 within 20 ms of the measurement. Water level near the reservoir end wall: median error 8 mm over 6 s; the returning wave arrives within 0.1 s. At the record settings the 10 and 8 mm grids give the same impulses, +13 % and +4 %; on 13.3, 10 and 8 mm grids at CFL 2 the P1 impulse stays between +8 % and +11 %.',
     assumptions:
       'A single liquid; the air is not simulated, so trapped air pockets close freely. The gate that holds the water in the experiment is not modelled: the column is released at once. Each pressure is the average over a small sphere of water in front of the sensor, not a flush wall transducer. The tank is open at the top, as in the experiment.',
     limitation:
-      'One experiment. The two upper front sensors, P3 and P4, 0.10 and 0.14 m up and close to the top edge of the box, peak 30 % and 75 % below the measurement on every grid; the cause is not yet known. The sensors on top of the box show short spikes at about 1.5 s, up to 2.7 times the measured peak, that the experiment does not. The impact peak rises as the grid is refined, so peaks are not compared; impulses are.',
+      'One experiment. The two upper front sensors, P3 and P4, 0.10 and 0.14 m up and close to the top edge of the box, peak 30 % and 75 % below the measurement on every grid; the cause is not yet known. The sensors on top of the box show short spikes at about 1.5 s, up to 2.7 times the measured peak, that the experiment does not. The impact peaks sit 32 % (P1) and 17 % (P2) above the measurement on both record grids, and at CFL 2 they rise as the grid is refined, so impulses are compared rather than peaks.',
     nextAction: {
       label: 'Explore geometry capabilities',
       href: '/capabilities/#geometry',
