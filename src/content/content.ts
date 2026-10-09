@@ -362,6 +362,45 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#motion',
     },
   },
+  {
+    slug: 'capillary-microgravity',
+    number: '07',
+    title: 'See wetting take over in microgravity.',
+    category: 'Microgravity',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'Drop a half-filled spherical tank from 0.1 g to 0.001 g and watch surface tension and the wall contact angle reshape the liquid.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/capillary-microgravity.webp',
+      alt: 'Two half-filled spherical tanks side by side. After gravity drops, the wetting liquid on the left climbs the wall and leaves a curved hollow; the non-wetting liquid on the right pulls away from the wall and rises into a dome.',
+      caption:
+        'Prelimina FLIP runs of a half-filled 62.5 mm sphere with a water-like liquid, surface tension 0.072 N/m, and a static contact angle of 30° (left) or 150° (right). Gravity steps from 0.1 g to 0.001 g at t = 1 s. Mid-plane section coloured by speed (0–0.1 m/s). Development build 389717f5.',
+      aspectRatio: '1200 / 656',
+      fit: 'contain',
+    },
+    question:
+      'Where does the liquid go once surface tension and wetting outweigh gravity?',
+    inputs:
+      'Tank geometry, fill level, liquid properties, surface tension, a static contact angle, and a gravity history.',
+    variables:
+      'Contact angle or gravity level. Change one at a time.',
+    controls:
+      'Use the same geometry, fill, grid, numerical settings, and gravity history for every contact angle. A run without surface tension stays at rest.',
+    outputs:
+      'Live fluid views and particle exports for offline rendering.',
+    metrics:
+      'Meniscus height at the wall against the centre, and where the liquid sits in the tank.',
+    assumptions:
+      'A single liquid in a passive void, a static contact angle on a rigid wall, and a step change in gravity. The Bond number on the tank radius is 0.13 after the step.',
+    limitation:
+      'Software demonstration. At intermediate contact angles (about 60–120°) on curved walls the liquid still drifts around the tank at 0.001 g; a fix is in progress. Low viscosity keeps the liquid moving after 8 s. Gas, thermal, and propellant effects are not represented.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux

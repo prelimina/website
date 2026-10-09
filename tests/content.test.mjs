@@ -157,7 +157,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 16);
+  assert.equal(htmlFiles.length, 17);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -222,6 +222,7 @@ test('active pages remain available and retired pages are removed or redirected'
     'showcases/liquid-handling',
     'showcases/spillway-gates',
     'showcases/reduced-gravity',
+    'showcases/capillary-microgravity',
   ]) {
     assert.ok(existsSync(join('dist', route, 'index.html')), route);
   }
@@ -338,6 +339,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     'liquid-handling',
     'spillway-gates',
     'reduced-gravity',
+    'capillary-microgravity',
   ]) {
     const application = readFileSync(
       `dist/showcases/${slug}/index.html`,
