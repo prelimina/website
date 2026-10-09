@@ -415,7 +415,7 @@ export const showcases: readonly Application[] = [
       src: '/assets/showcases/spheric-t10-validation.webp',
       alt: 'Side view of a long, closed tank rolling a few degrees each way. The shallow water runs to one end and slams into the left wall, sending a sheet up the wall to the lid, then runs back; four times in all. Below it, the simulated pressure at the wall sensor S1 draws in step over the measured trace, each impact lining up with a measured one.',
       caption:
-        'A Prelimina FLIP run with the record settings: the closed tank rolls in a still domain, driven by the measured roll history. Side view coloured by speed (0–1.5 m/s). The pressure at S1 draws in step over the measured reference run; both use a 10 ms moving average. Development build 1b766fd6.',
+        'A Prelimina FLIP run with the record settings: the closed tank rolls in a still domain, driven by the measured roll history. Side view coloured by speed (0–1.5 m/s); isolated spray particles, about 0.5 % of the water, are not drawn. The pressure at S1 draws in step over the measured reference run; both use a 10 ms moving average. Development build 1b766fd6.',
       aspectRatio: '960 / 1012',
       fit: 'contain',
     },
