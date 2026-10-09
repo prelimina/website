@@ -401,6 +401,55 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#motion',
     },
   },
+  {
+    slug: 'rolling-tank-impact',
+    number: '08',
+    title: 'Check sloshing impacts in a rolling tank against a benchmark.',
+    category: 'Tanks & prescribed motion',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'Roll a shallow water tank with the measured motion of SPHERIC benchmark Test 10 and compare the wall pressure through four lateral impacts.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/spheric-t10-validation.webp',
+      alt: 'Side view of a long, closed tank rolling a few degrees each way. The shallow water runs to one end and slams into the left wall, sending a sheet up the wall to the lid, then runs back; four times in all. Below it, the simulated pressure at the wall sensor S1 draws in step over the measured trace, each impact lining up with a measured one.',
+      caption:
+        'A Prelimina FLIP run with the record settings: the closed tank rolls in a still domain, driven by the measured roll history. Side view coloured by speed (0–1.5 m/s). The pressure at S1 draws in step over the measured reference run; both use a 10 ms moving average. Development build 1b766fd6.',
+      aspectRatio: '960 / 1012',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/spheric-t10-validation-chart.svg',
+      alt: 'Top: the pressure at S1 over 8.35 s. The Prelimina curve rises with each of the four measured impacts and then sits a few millibar above the measured pressure while the water stays against the wall. Bottom: four close-ups of the raw signals around each impact, with the spread of the peaks over 102 repeated experiments as a band. The first simulated impact shows a single tall spike; the later peaks fall near or above the band.',
+      caption:
+        'Pressure at sensor S1 on the left wall, at the still-water level. Top: both signals with a 10 ms moving average. Bottom: raw signals around each impact against the peak mean ± 1 standard deviation of 102 repeated runs. Experiment: SPHERIC benchmark Test 10 (Souto-Iglesias and Botia-Vera), lateral impact, water, 93 mm fill. Prelimina FLIP with density projection, no PBD and wall boundary damping one cell wide, 4 mm grid, CFL 0.4, closed tank. Development build 1b766fd6.',
+      aspectRatio: '960 / 760',
+      fit: 'contain',
+    },
+    metricsHeading: 'Comparison with measurements',
+    question:
+      'Does the simulated wall pressure follow a sequence of sloshing impacts in a rolling tank, and do the impacts arrive on time?',
+    inputs:
+      'A closed tank, 900 × 508 × 62 mm inside, with 93 mm of water, rolled about the centre of its floor by the measured roll history (±4°, period 1.63 s). Water properties and gravity.',
+    variables:
+      'Grid spacing (6, 4 and 3 mm), the time-step limit (CFL 2 and 0.4), and the particle-transfer settings.',
+    controls:
+      'The tank, fill, roll history and sensor position of SPHERIC benchmark Test 10: pressure sensor S1 on the left wall, at the still-water level.',
+    outputs:
+      'The S1 pressure history and the tank motion, exported as CSV, and the live fluid view.',
+    metrics:
+      'All four impacts reach S1 within 35 ms of the measurement. Pressure impulse at S1 over each impact, from 0.4 s before to 0.3 s after the measured peak, against the reference run: −2 % for the first impact, then +35 %, +47 % and +60 %. On 6, 4 and 3 mm grids the first impulse stays between −12 % and +2 %; the later three range from +29 % to +72 %, and two identical 4 mm runs differ by up to 25 percentage points.',
+    assumptions:
+      'A single liquid; the air is not simulated, so the air trapped at the impacts is absent and the water closes freely. Each pressure is the average over a 6 mm sphere of water at the sensor, not a flush wall transducer. The tank rolls as a rigid body in a still domain, driven by the measured roll rate.',
+    limitation:
+      'One sensor and one published experiment. The first impact gives a single-step pressure spike of up to 550 mbar against a measured 37 ± 7 mbar, and the spike grows as the grid is refined, so impulses are compared rather than peaks. From the second impact on, the pressure after each impact sits about 3 mbar above the measurement under every setting tried, so the later impulses come out 30–70 % high; the air that the experiment traps at these impacts, which is not simulated, is the leading candidate. From the second impact on, a few hundred particles hang as spray above the water.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux

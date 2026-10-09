@@ -15,6 +15,7 @@ const routes = [
   '/showcases/spillway-gates/',
   '/showcases/reduced-gravity/',
   '/showcases/capillary-microgravity/',
+  '/showcases/rolling-tank-impact/',
 ];
 
 test('all pages render without script errors, missing assets, or horizontal overflow', async ({
@@ -243,7 +244,7 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(7);
+  await expect(page.locator('.showcase-card')).toHaveCount(8);
   for (const slug of [
     'sloshing-validation',
     'dam-break-validation',
@@ -252,6 +253,7 @@ test('homepage order, primary actions, and application status communicate the pr
     'spillway-gates',
     'reduced-gravity',
     'capillary-microgravity',
+    'rolling-tank-impact',
   ]) {
     await page.goto(`/showcases/${slug}/`);
     await expect(page.locator('.application-status')).toContainText(
