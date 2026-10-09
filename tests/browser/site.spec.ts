@@ -10,7 +10,6 @@ const routes = [
   '/legal/',
   '/changelog/',
   '/showcases/sloshing-validation/',
-  '/showcases/tank-motion/',
   '/showcases/liquid-handling/',
   '/showcases/spillway-gates/',
   '/showcases/reduced-gravity/',
@@ -244,11 +243,10 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(8);
+  await expect(page.locator('.showcase-card')).toHaveCount(7);
   for (const slug of [
     'sloshing-validation',
     'dam-break-validation',
-    'tank-motion',
     'liquid-handling',
     'spillway-gates',
     'reduced-gravity',
@@ -509,7 +507,7 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/showcases/',
     '/capabilities/',
     '/showcases/sloshing-validation/',
-    '/showcases/tank-motion/',
+    '/showcases/rolling-tank-impact/',
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',
     '/legal/',
@@ -575,7 +573,7 @@ test('capture desktop and mobile views and measure initial local resource weight
   });
   for (const [route, width] of [
     ['/showcases/', 1440],
-    ['/showcases/tank-motion/', 1440],
+    ['/showcases/rolling-tank-impact/', 1440],
     ['/showcases/liquid-handling/', 1440],
     ['/capabilities/', 1440],
     ['/capabilities/', 390],

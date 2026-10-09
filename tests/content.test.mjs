@@ -164,6 +164,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       pricing: '/#download',
       download: '/#download',
       docs: '/capabilities/',
+      'showcases/tank-motion': '/showcases/rolling-tank-impact/',
     }).find(([route]) => path === join(root, route, 'index.html'));
     if (redirect) {
       assert.match(html, /name="robots" content="noindex"/);
@@ -218,7 +219,6 @@ test('active pages remain available and retired pages are removed or redirected'
     'download',
     'changelog',
     'showcases/sloshing-validation',
-    'showcases/tank-motion',
     'showcases/liquid-handling',
     'showcases/spillway-gates',
     'showcases/reduced-gravity',
@@ -237,6 +237,11 @@ test('active pages remain available and retired pages are removed or redirected'
       /http-equiv="refresh" content="0;url=\/#download"/,
     );
   }
+  // The prescribed-roll demo was retired for the SPHERIC Test 10 validation (9 Oct 2026).
+  assert.match(
+    readFileSync('dist/showcases/tank-motion/index.html', 'utf8'),
+    /http-equiv="refresh" content="0;url=\/showcases\/rolling-tank-impact\/"/,
+  );
 });
 
 test('licensing summaries link the supplied agreement and preserve its core permissions', () => {
@@ -336,7 +341,6 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
   for (const slug of [
     'sloshing-validation',
-    'tank-motion',
     'liquid-handling',
     'spillway-gates',
     'reduced-gravity',

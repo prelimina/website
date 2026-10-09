@@ -8,6 +8,7 @@ export default defineConfig({
     '/docs/': '/capabilities/',
     '/pricing/': '/#download',
     '/download/': '/#download',
+    '/showcases/tank-motion/': '/showcases/rolling-tank-impact/',
   },
   build: { inlineStylesheets: 'never' },
   devToolbar: { enabled: false },
