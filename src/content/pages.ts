@@ -1,6 +1,6 @@
 export const pages = {
   showcases: {
-    title: 'Start with an engineering question.',
+    title: 'Applications',
     description:
       'Check sloshing wall pressure against measurements, then explore prescribed tank roll, tank drainage, gated spillways, and reduced-gravity sloshing with GPU-native CFD. Each application states the question, inputs, and what to compare.',
   },

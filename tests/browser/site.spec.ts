@@ -292,9 +292,9 @@ test('capability panels lead to grouped features with a maturity label on every 
     'Geometry without meshing',
     'Motion & free surfaces',
     'GPU computing',
-    'Multiphysics',
+    'Coupled physics',
     'Automation & optimisation',
-    'AI-ready setups',
+    'Setups for AI agents',
   ]);
   const featureGroups = await page
     .locator('.capability-group')

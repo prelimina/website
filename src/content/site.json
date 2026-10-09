@@ -24,6 +24,6 @@
   "hero": {
     "title": "See the flow. Shape the design.",
     "descriptor": "GPU-native CFD for moving liquids and early-stage design.",
-    "description": "Explore sloshing, baffle layouts, and free-surface motion using geometry from your existing tools. Examine how the liquid responds and use what you learn to guide your next design iteration."
+    "description": "Load geometry from your CAD tools, run sloshing and free-surface cases, and compare baffle layouts and fill levels before the design is fixed."
   }
 }

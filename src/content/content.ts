@@ -365,7 +365,7 @@ export const showcases: readonly Application[] = [
   {
     slug: 'capillary-microgravity',
     number: '07',
-    title: 'See wetting take over in microgravity.',
+    title: 'Wetting takes over in microgravity.',
     category: 'Microgravity',
     type: 'tank',
     availability: 'in_development',
@@ -506,15 +506,15 @@ export const nav = [
 ];
 
 export const team = {
-  title: 'Built by people who <em>write solvers.</em>',
+  title: 'Built by people who <em>write and use solvers.</em>',
   description:
-    'Prelimina is developed by PLASMICA, a spin-out from the University of Split. Most of the team hold PhDs in computational fluid dynamics, numerical methods, or engineering, and have spent their careers between university research and industrial projects, from launcher propellant tanks to marine hydrodynamics.',
+    'Prelimina is developed by <em>PLASMICA Ltd.</em>, a spin-out from the University of Split, Croatia. Most of the team hold PhDs in fluid dynamics, numerical methods, engineering, and have spent their careers between university research and industrial applications, from deep sea to deep space.',
   facts: [
     {
       value: 'PhD',
       label: 'Research-trained core team',
       description:
-        'Fluid dynamics, numerical analysis, and GPU computing are the fields the team publishes and teaches in.',
+        'Fluid dynamics, numerical analysis, HPC, and machine learning are the fields the team publishes and teaches in.',
     },
     {
       value: '100+',
@@ -526,8 +526,8 @@ export const team = {
       value: 'In-house',
       label: 'Methods written by the team',
       description:
-        'Every solver in Prelimina is designed and implemented by the people who answer your questions about it.',
+        'Every solver in Prelimina is designed, implemented, and used by the people who answer your questions about it.',
     },
   ],
-  link: { label: 'About PLASMICA', href: 'https://plasmica.com/' },
+  link: { label: 'About the company', href: 'https://plasmica.com/' },
 } as const;

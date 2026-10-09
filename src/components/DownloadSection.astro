@@ -20,10 +20,10 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
   <div class="section-heading">
     <div>
       <h2>
-        Download <em>desktop app.</em>
+        <em>Download.</em>
       </h2>
       <p class="download-intro">
-        Free for noncommercial use. Commercial licences available.
+        Free for noncommercial use. Windows and Linux now, macOS and a browser version later.
       </p>
     </div>
   </div>
@@ -48,9 +48,6 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
         </dd>
       </div>
     </dl>
-    <a class="text-link" href={site.downloadPreview.releasesUrl}>
-      See all releases <Icon name="diagonal" size={16} />
-    </a>
   </div>
   <div class="platform-grid">
     {downloadPlatforms.map((platform) => (

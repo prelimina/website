@@ -49,8 +49,12 @@ const productAction = createProductAction(loadCatalogue().current);
     <div class="container">
       <div class="section-heading">
         <h2>
-          Start with an <em>engineering question.</em>
+          <em>Applications.</em>
         </h2>
+        <p>
+          Validation cases and demonstrations, from tank sloshing to wetting in
+          microgravity.
+        </p>
       </div>
       <div class="showcase-grid">
         {showcases.map((item) => (
@@ -66,7 +70,7 @@ const productAction = createProductAction(loadCatalogue().current);
   <section class="section container faq-section" id="faq">
     <div class="faq-intro" id="licensing">
       <h2>FAQ</h2>
-      <p>Answers about Prelimina, getting started, and licensing.</p>
+      <p>Licensing, supported hardware, and what Prelimina is for.</p>
       <a class="text-link" href={licence.href}>
         Read the full agreement <Icon size={16} />
       </a>

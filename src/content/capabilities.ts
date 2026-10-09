@@ -121,7 +121,7 @@ export const capabilityGroups = [
     id: 'motion',
     title: 'Motion & free surfaces',
     icon: 'motion',
-    summaryTitle: 'Unconstrained motion',
+    summaryTitle: 'Moving geometry',
     summary:
       'Rotate, oscillate, shake, or accelerate the geometry. The liquid splashes, breaks up, and reconnects, keeping a sharp surface through impacts, with surface tension and wetting acting at the interface.',
     description:
@@ -233,11 +233,11 @@ export const capabilityGroups = [
   },
   {
     id: 'multiphysics',
-    title: 'Multiphysics',
+    title: 'Coupled physics',
     icon: 'nodes',
-    summaryTitle: 'Multiphysics',
+    summaryTitle: 'Coupled physics',
     summary:
-      'Couple the liquid to free-moving bodies and structural solvers, add a resolved gas phase, and choose viscous or shear-dependent fluids. Heat transfer and viscoelasticity are on the roadmap.',
+      'Simulate multiple phases. Couple the liquid to free-moving bodies and structural solvers. Choose non-Newtonian fluids. Heat transfer and viscoelasticity are also on the roadmap.',
     description:
       'Fluid models, method choices, and coupling to bodies and other solvers.',
     features: [
@@ -245,7 +245,7 @@ export const capabilityGroups = [
         name: 'Newtonian viscosity',
         status: 'implemented',
         description:
-          'Set liquid density and viscosity across low- and high-viscosity Newtonian flow regimes, with implicit viscosity in supported configurations.',
+          'Vary density and viscosity across Newtonian flow regimes, with implicit viscosity solver support.',
       },
       {
         name: 'Fluid-driven rigid bodies',
@@ -267,24 +267,18 @@ export const capabilityGroups = [
       },
       {
         name: 'Turbulence and wall treatment',
-        status: 'experimental',
+        status: 'development',
         description:
           'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment.',
       },
       {
-        name: 'Finite-volume and meshless methods',
-        status: 'experimental',
-        description:
-          'Explore Cartesian finite volumes with cut cells, or a fully Lagrangian meshless particle formulation.',
-      },
-      {
-        name: 'Non-Newtonian fluid models',
+        name: 'Non-Newtonian models',
         status: 'development',
         description:
           'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
       },
       {
-        name: 'Viscoelasticity',
+        name: 'Viscoelasticity models',
         status: 'planned',
         description:
           'Represent fluids with both viscous and elastic response through planned constitutive models.',
@@ -295,20 +289,26 @@ export const capabilityGroups = [
         description:
           'Transport temperature through the liquid and exchange heat with walls and bodies.',
       },
+      {
+        name: 'Phase-change and boiling',
+        status: 'planned',
+        description:
+          'Simulate phase change, including boiling and condensation.',
+      },
     ],
   },
   {
     id: 'optimisation',
     title: 'Automation & optimisation',
     icon: 'chart',
-    summaryTitle: 'Built for optimisation',
+    summaryTitle: 'Batch runs and optimisation',
     summary:
       'Dimensions, fill levels, motion, and fluid properties are all plain setup inputs. Run batches of variants from the command line, compare the results automatically, or drive the solver from your own optimisation loop.',
     description:
       'Run many variants, capture the quantities behind a design decision, and take them into your analysis tools.',
     features: [
       {
-        name: 'Editable setup files',
+        name: 'Easy setup files',
         status: 'implemented',
         description:
           'Save and reload JSON setups, share common inputs through inheritance, and run the same setup from the command line.',
@@ -365,9 +365,9 @@ export const capabilityGroups = [
   },
   {
     id: 'ai',
-    title: 'AI-ready setups',
+    title: 'Setups for AI agents',
     icon: 'sparkle',
-    summaryTitle: 'AI-ready',
+    summaryTitle: 'Readable by AI agents',
     summary:
       'Setups are plain, schema-validated files that AI agents can read, write, and check before a run. Next: an assistant that sets up a case, runs it, and summarises the results with you.',
     summaryStatus: 'development',
