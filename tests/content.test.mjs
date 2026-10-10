@@ -336,7 +336,14 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   assert.match(navigation, /href="\/#download"[^>]*>\s*Download now\s*</);
   assert.doesNotMatch(navigation, /Showcases|\/download\/|\/changelog\//);
   assert.doesNotMatch(navigation, /Evidence|Access &amp; licensing/);
-  assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
+  // Download buttons link the verified installers, falling back to the releases page until the
+  // catalogue has a public release.
+  const currentDownloads = catalogue.current?.downloads ?? [];
+  if (currentDownloads.length > 0) {
+    assert.ok(currentDownloads.some(download => home.includes(`href="${download.installerUrl}"`)));
+  } else {
+    assert.ok(home.includes(`href="${site.downloadPreview.releasesUrl}"`));
+  }
   assert.ok(home.includes(`v${catalogue.current?.version ?? site.downloadPreview.version}`));
   assert.ok(home.includes(`datetime="${catalogue.current?.publishedAt.slice(0, 10) ?? site.downloadPreview.date}"`));
   for (const slug of [
@@ -355,12 +362,13 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     assert.match(application, /Availability: In development/);
     assert.match(
       application,
-      slug === 'sloshing-validation'
+      slug === 'sloshing-validation' || slug === 'rolling-tank-impact'
         ? /Comparison with measurements/
         : /Comparison quantities/,
     );
     assert.match(application, /Physical assumptions/);
     assert.match(application, /<dt>Scope<\/dt>/);
-    assert.doesNotMatch(application, /not validated|Evidence:|Candidate/i);
+    // Status labels only; ordinary prose such as "the leading candidate" is allowed.
+    assert.doesNotMatch(application, /not validated|Evidence:|Candidate:|release candidate/i);
   }
 });
