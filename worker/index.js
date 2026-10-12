@@ -45,7 +45,7 @@ export async function serveApp(request, env) {
   const notFound = () =>
     respond('Not found', 404, { 'Content-Type': 'text/plain; charset=utf-8' });
 
-  // /app, /app/ and /app/version.json follow the live pointer and are never cached.
+  // /app/ and /app/version.json follow the live pointer and are never cached.
   if (
     parts.length === 1 ||
     (parts.length === 2 && ['', 'version.json'].includes(parts[1]))
@@ -64,8 +64,19 @@ export async function serveApp(request, env) {
         'Cache-Control': 'no-store',
       });
     }
-    return respond(null, 302, {
-      Location: `/app/${pointer.version}/`,
+    if (parts.length === 1) {
+      return respond(null, 301, { Location: '/app/' });
+    }
+    // Serve the live version's page at /app/ itself. The base element points
+    // its relative script and wasm requests at the immutable version path.
+    const page = await env.WEB_APP.get(`app/${pointer.version}/index.html`);
+    if (!page) return notFound();
+    const html = (await page.text()).replace(
+      /<head>/i,
+      `<head><base href="/app/${pointer.version}/">`,
+    );
+    return respond(head ? null : html, 200, {
+      'Content-Type': FILES['index.html'],
       'Cache-Control': 'no-store',
     });
   }

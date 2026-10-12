@@ -25,7 +25,8 @@ function env(objects) {
 
 const live = {
   'app/current.json': '{"schemaVersion":1,"version":"0.2.0"}\n',
-  'app/0.2.0/index.html': '<!doctype html>',
+  'app/0.2.0/index.html':
+    '<!doctype html><html><head><title>Prelimina</title></head></html>',
   'app/0.2.0/index.wasm': 'wasm bytes',
 };
 const get = (path, objects = live, method = 'GET') =>
@@ -34,13 +35,17 @@ const get = (path, objects = live, method = 'GET') =>
     env(objects),
   );
 
-test('app entry redirects to the live version without caching', async () => {
-  for (const path of ['/app', '/app/']) {
-    const response = await get(path);
-    assert.equal(response.status, 302);
-    assert.equal(response.headers.get('Location'), '/app/0.2.0/');
-    assert.equal(response.headers.get('Cache-Control'), 'no-store');
-  }
+test('app entry serves the live page in place without caching', async () => {
+  const redirect = await get('/app');
+  assert.equal(redirect.status, 301);
+  assert.equal(redirect.headers.get('Location'), '/app/');
+  const page = await get('/app/');
+  assert.equal(page.status, 200);
+  assert.equal(page.headers.get('Cache-Control'), 'no-store');
+  assert.equal(
+    await page.text(),
+    '<!doctype html><html><head><base href="/app/0.2.0/"><title>Prelimina</title></head></html>',
+  );
   const version = await get('/app/version.json');
   assert.deepEqual(await version.json(), {
     schemaVersion: 1,
@@ -51,7 +56,10 @@ test('app entry redirects to the live version without caching', async () => {
 test('versioned files are immutable and typed; other names are not served', async () => {
   const page = await get('/app/0.2.0/');
   assert.equal(page.status, 200);
-  assert.equal(await page.text(), '<!doctype html>');
+  assert.equal(
+    await page.text(),
+    '<!doctype html><html><head><title>Prelimina</title></head></html>',
+  );
   assert.match(
     page.headers.get('Content-Security-Policy'),
     /'wasm-unsafe-eval'/,
