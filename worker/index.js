@@ -1,7 +1,7 @@
-// Serves the browser app from R2 below /app/; every other path is a static
-// asset (wrangler.jsonc runs this Worker first only for /app routes).
-// SlangSolvers' release-web-app workflow uploads app/<version>/<file> and then
-// switches app/current.json to that version.
+// Serves the browser app from R2 at /app/; every other path is a static asset
+// (wrangler.jsonc runs this Worker first only for /app routes).
+// SlangSolvers' release-web-app workflow uploads app/index.{wasm,js,html}
+// (page last) and then updates app/current.json with the live version.
 const VERSION = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/;
 const FILES = {
   'index.html': 'text/html; charset=utf-8',
@@ -23,17 +23,6 @@ function respond(body, status, headers) {
   return new Response(body, { status, headers: { ...SECURITY, ...headers } });
 }
 
-async function currentPointer(env) {
-  const object = await env.WEB_APP.get('app/current.json');
-  if (!object) return null;
-  const text = await object.text();
-  const pointer = JSON.parse(text);
-  if (pointer.schemaVersion !== 1 || !VERSION.test(pointer.version)) {
-    throw new Error('Invalid browser app pointer');
-  }
-  return { text, version: pointer.version };
-}
-
 export async function serveApp(request, env) {
   const url = new URL(request.url);
   const parts = url.pathname.split('/').slice(1);
@@ -44,60 +33,46 @@ export async function serveApp(request, env) {
   const head = request.method === 'HEAD';
   const notFound = () =>
     respond('Not found', 404, { 'Content-Type': 'text/plain; charset=utf-8' });
+  if (parts.length === 1) return respond(null, 301, { Location: '/app/' });
+  if (parts.length !== 2) return notFound();
 
-  // /app/ and /app/version.json follow the live pointer and are never cached.
-  if (
-    parts.length === 1 ||
-    (parts.length === 2 && ['', 'version.json'].includes(parts[1]))
-  ) {
-    const pointer = await currentPointer(env);
-    if (parts[1] === 'version.json') {
-      if (!pointer) return notFound();
-      return respond(head ? null : pointer.text, 200, {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-store',
-      });
+  if (parts[1] === 'version.json') {
+    const object = await env.WEB_APP.get('app/current.json');
+    if (!object) return notFound();
+    const text = await object.text();
+    const pointer = JSON.parse(text);
+    if (pointer.schemaVersion !== 1 || !VERSION.test(pointer.version)) {
+      throw new Error('Invalid browser app pointer');
     }
-    if (!pointer) {
-      return respond('The browser app is not available yet.', 404, {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Cache-Control': 'no-store',
-      });
-    }
-    if (parts.length === 1) {
-      return respond(null, 301, { Location: '/app/' });
-    }
-    // Serve the live version's page at /app/ itself. The base element points
-    // its relative script and wasm requests at the immutable version path.
-    const page = await env.WEB_APP.get(`app/${pointer.version}/index.html`);
-    if (!page) return notFound();
-    const html = (await page.text()).replace(
-      /<head>/i,
-      `<head><base href="/app/${pointer.version}/">`,
-    );
-    return respond(head ? null : html, 200, {
-      'Content-Type': FILES['index.html'],
+    return respond(head ? null : text, 200, {
+      'Content-Type': 'application/json',
       'Cache-Control': 'no-store',
     });
   }
 
-  if (!VERSION.test(parts[1])) return notFound();
-  if (parts.length === 2) {
-    return respond(null, 301, { Location: `/app/${parts[1]}/` });
-  }
-  const name = parts.length === 3 ? parts[2] || 'index.html' : '';
+  const name = parts[1] || 'index.html';
   if (!Object.hasOwn(FILES, name)) return notFound();
-  const object = await (head ? env.WEB_APP.head : env.WEB_APP.get).call(
-    env.WEB_APP,
-    `app/${parts[1]}/${name}`,
-  );
-  if (!object) return notFound();
-  // Published versions are immutable; a new release gets a new path.
-  return respond(head ? null : object.body, 200, {
+  const key = `app/${name}`;
+  // Revalidate on every visit: a matching ETag answers 304 without a body,
+  // so the large wasm downloads again only after a new release.
+  const object = head
+    ? await env.WEB_APP.head(key)
+    : await env.WEB_APP.get(key, { onlyIf: request.headers });
+  if (!object) {
+    return name === 'index.html'
+      ? respond('The browser app is not available yet.', 404, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store',
+        })
+      : notFound();
+  }
+  const headers = {
     'Content-Type': FILES[name],
     ETag: object.httpEtag,
-    'Cache-Control': 'public, max-age=31536000, immutable',
-  });
+    'Cache-Control': 'no-cache',
+  };
+  if (!head && !('body' in object)) return respond(null, 304, headers);
+  return respond(head ? null : object.body, 200, headers);
 }
 
 export default { fetch: serveApp };
