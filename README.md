@@ -152,3 +152,11 @@ The data loader checks identities, hashes, approved GitHub download URLs, suppor
 `/release-status.json` reports the selected public release ID, version and notes hash, or `null`. Source automation checks this actual deployed response after the existing Workers Builds connection deploys a synchronization commit. A successful push alone is not deployment verification. No new Cloudflare deployment integration is added.
 
 Run `npm run test:releases` for a disposable build with a synthetic verified alpha catalogue. It verifies actual download links, escaped reviewed notes, unchanged noindex, deployment status and content checks without modifying the real preview or publishing fixture packages. `npm run check`, `npm run build` and `npm test` cover the checked-in empty catalogue.
+
+## Browser app
+
+`/app/` serves the browser build of the Prelimina viewer for the newest published desktop release. The wasm exceeds the 25 MiB per-file limit for Workers static assets, so the app lives in the R2 bucket `prelimina-web-app` instead of this repository. SlangSolvers' `release-web-app.yml` workflow builds the released source after each desktop publication, uploads `app/<version>/{index.html,index.js,index.wasm}`, switches `app/current.json`, and then deletes the previous version, so only the live version stays online.
+
+`worker/index.js` runs only for `/app` routes (`run_worker_first` in `wrangler.jsonc`); every other path is still a static asset. It redirects `/app/` to the live version without caching, serves only the three app files under a version path with immutable caching, and reports the live pointer at `/app/version.json`. Because `public/_headers` covers static assets only, the Worker sets its own security headers. Its CSP adds `'unsafe-inline'` for the page's bootstrap script and `'wasm-unsafe-eval'` for WebAssembly. Without a pointer, `/app/` answers 404. `tests/app-worker.test.mjs` covers the routes.
+
+Create the bucket before deploying this configuration; a missing R2 binding fails the Workers deployment.

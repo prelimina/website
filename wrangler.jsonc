@@ -1,11 +1,17 @@
 {
   "name": "prelimina-website",
   "compatibility_date": "2026-09-16",
+  "main": "worker/index.js",
   "build": {
     "command": "npm run build",
   },
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
+    // Only the browser app routes reach the Worker; the site stays static.
+    "run_worker_first": ["/app", "/app/*"],
   },
+  // Browser app builds, uploaded by SlangSolvers' release-web-app workflow.
+  "r2_buckets": [{ "binding": "WEB_APP", "bucket_name": "prelimina-web-app" }],
 }
