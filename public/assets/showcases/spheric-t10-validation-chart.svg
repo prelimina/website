@@ -4069,7 +4069,7 @@ L 676.786617 191.208836
 L 677.228654 191.274479 
 L 677.302327 191.381982 
 L 677.302327 191.381982 
-" clip-path="url(#pf10ca9e7ed)" style="fill: none; stroke: #745394; stroke-width: 1.8; stroke-linecap: square"/>
+" clip-path="url(#pf10ca9e7ed)" style="fill: none; stroke: #888888; stroke-width: 1.8; stroke-linecap: square"/>
    </g>
    <g id="patch_3">
     <path d="M 62.208 210.985804 
@@ -4584,7 +4584,7 @@ z
      <path d="M 72.108 52.716 
 L 83.108 52.716 
 L 94.108 52.716 
-" style="fill: none; stroke: #745394; stroke-width: 1.8; stroke-linecap: square"/>
+" style="fill: none; stroke: #888888; stroke-width: 1.8; stroke-linecap: square"/>
     </g>
     <g id="text_18">
      <!-- Prelimina FLIP -->
@@ -4669,7 +4669,7 @@ L 186.233806 464.989475
 L 186.233806 460.329934 
 L 62.208 460.329934 
 z
-" clip-path="url(#p33e74645bd)" style="fill: #cfc4dc"/>
+" clip-path="url(#p33e74645bd)" style="fill: #cccccc"/>
    </g>
    <g id="matplotlib.axis_3">
     <g id="xtick_10">
@@ -5526,7 +5526,7 @@ L 182.922909 471.745472
 L 183.17592 472.142607 
 L 183.428931 472.158382 
 L 183.428931 472.158382 
-" clip-path="url(#p33e74645bd)" style="fill: none; stroke: #745394; stroke-linecap: square"/>
+" clip-path="url(#p33e74645bd)" style="fill: none; stroke: #888888; stroke-linecap: square"/>
    </g>
    <g id="text_29">
     <!-- Impact 1 -->
@@ -5557,7 +5557,7 @@ L 349.947871 392.891634
 L 349.947871 327.4586 
 L 225.922065 327.4586 
 z
-" clip-path="url(#pfa8e4fcf2d)" style="fill: #cfc4dc"/>
+" clip-path="url(#pfa8e4fcf2d)" style="fill: #cccccc"/>
    </g>
    <g id="matplotlib.axis_5">
     <g id="xtick_12">
@@ -7724,7 +7724,7 @@ L 342.695851 448.06561
 L 342.934842 448.460474 
 L 343.424579 448.475039 
 L 343.424579 448.475039 
-" clip-path="url(#pfa8e4fcf2d)" style="fill: none; stroke: #745394; stroke-linecap: square"/>
+" clip-path="url(#pfa8e4fcf2d)" style="fill: none; stroke: #888888; stroke-linecap: square"/>
    </g>
    <g id="text_38">
     <!-- Impact 2 -->
@@ -7755,7 +7755,7 @@ L 513.661935 406.88897
 L 513.661935 339.153468 
 L 389.636129 339.153468 
 z
-" clip-path="url(#pe65afc5c10)" style="fill: #cfc4dc"/>
+" clip-path="url(#pe65afc5c10)" style="fill: #cccccc"/>
    </g>
    <g id="matplotlib.axis_7">
     <g id="xtick_14">
@@ -9847,7 +9847,7 @@ L 508.548025 448.593941
 L 509.047626 448.988296 
 L 509.297426 448.88225 
 L 509.297426 448.88225 
-" clip-path="url(#pe65afc5c10)" style="fill: none; stroke: #745394; stroke-linecap: square"/>
+" clip-path="url(#pe65afc5c10)" style="fill: none; stroke: #888888; stroke-linecap: square"/>
    </g>
    <g id="text_47">
     <!-- Impact 3 -->
@@ -9878,7 +9878,7 @@ L 677.376 408.509955
 L 677.376 361.69924 
 L 553.350194 361.69924 
 z
-" clip-path="url(#pb18afffcab)" style="fill: #cfc4dc"/>
+" clip-path="url(#pb18afffcab)" style="fill: #cccccc"/>
    </g>
    <g id="matplotlib.axis_9">
     <g id="xtick_16">
@@ -12065,7 +12065,7 @@ L 677.072654 452.382875
 L 677.21735 451.818881 
 L 677.347577 452.080066 
 L 677.347577 452.080066 
-" clip-path="url(#pb18afffcab)" style="fill: none; stroke: #745394; stroke-linecap: square"/>
+" clip-path="url(#pb18afffcab)" style="fill: none; stroke: #888888; stroke-linecap: square"/>
    </g>
    <g id="text_56">
     <!-- Impact 4 -->
@@ -12210,7 +12210,7 @@ z
     <path d="M 224.43 534.186 
 L 234.93 534.186 
 L 245.43 534.186 
-" style="fill: none; stroke: #745394; stroke-width: 1.4; stroke-linecap: square"/>
+" style="fill: none; stroke: #888888; stroke-width: 1.4; stroke-linecap: square"/>
    </g>
    <g id="text_58">
     <!-- Prelimina FLIP, every solver step -->
@@ -12300,7 +12300,7 @@ L 447.520547 537.861
 L 447.520547 530.511 
 L 426.520547 530.511 
 z
-" style="fill: #cfc4dc; stroke: #cfc4dc; stroke-linejoin: miter"/>
+" style="fill: #cccccc; stroke: #cccccc; stroke-linejoin: miter"/>
    </g>
    <g id="text_59">
     <!-- 102 repeated runs: peak mean ± 1 sd -->

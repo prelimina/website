@@ -1695,7 +1695,7 @@ L 426.70415 214.987465
 L 428.5407 215.463077 
 L 437.72345 215.463077 
 L 437.72345 215.463077 
-" clip-path="url(#pd8f7ea1a47)" style="fill: none; stroke: #745394; stroke-width: 2.2; stroke-linecap: square"/>
+" clip-path="url(#pd8f7ea1a47)" style="fill: none; stroke: #888888; stroke-width: 2.2; stroke-linecap: square"/>
    </g>
    <g id="patch_3">
     <path d="M 72.25 223.26 
@@ -2236,7 +2236,7 @@ z
      <path d="M 197.069063 73.565 
 L 207.569063 73.565 
 L 218.069063 73.565 
-" style="fill: none; stroke: #745394; stroke-width: 2.2; stroke-linecap: square"/>
+" style="fill: none; stroke: #888888; stroke-width: 2.2; stroke-linecap: square"/>
     </g>
     <g id="text_17">
      <!-- Prelimina FLIP (impulse −2.4 %, RMS 121 Pa) -->
