@@ -33,7 +33,8 @@
   --paper: #f4f4f4;
   --ink: #292929;
   --muted: #636363;
-  --purple: #745394;
+  --accent: #c0645a;
+  --accent-gradient: linear-gradient(90deg, #e07a3f, #d4607a);
   --line: #d9d9d9;
   --amb-albedo: #efefef;
   --amb-light-x: -0.7;
@@ -142,10 +143,17 @@ h3 {
 }
 em {
   font-style: normal;
-  color: var(--purple);
+  /* Gradient text; the small right pad keeps italic overhang inside the clip. */
+  padding-right: 0.08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 :focus-visible {
-  outline: 3px solid #9773bf;
+  outline: 3px solid #d4607a;
   outline-offset: 5px;
 }
 ::selection {
@@ -181,7 +189,7 @@ em {
   font-weight: 600;
 }
 .text-link:hover {
-  color: var(--purple);
+  color: var(--accent);
 }
 .text-link svg {
   transition: transform 0.2s;
@@ -289,7 +297,7 @@ em {
   align-items: center;
   gap: 10px;
   border: 1px solid #5a5a5a;
-  border-radius: 999px;
+  border-radius: 5px;
   padding: 12px 22px;
   margin-left: 14px;
   font-size: 17px;
@@ -297,7 +305,10 @@ em {
   color: #fff;
 }
 .site-header .header-cta.ambient {
-  border-radius: 999px;
+  border-radius: 5px;
+}
+.header-cta + .header-cta {
+  margin-left: 10px;
 }
 .header-cta:hover {
   border-color: #fff;
@@ -358,9 +369,20 @@ em {
     filter 0.2s,
     transform 0.2s;
 }
+.app-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
 .button-primary {
-  --amb-albedo: #684783;
+  --amb-albedo: #c0645a;
   color: #fff;
+}
+/* Two classes outrank ambient's convex-surface background shorthand. */
+.button.button-primary {
+  background-image: var(--accent-gradient);
 }
 .button-primary:hover {
   filter: brightness(1.035);
@@ -464,18 +486,18 @@ em {
   padding: 8px 6px;
 }
 .key-number {
-  color: #665271;
+  color: var(--muted);
 }
 .bench-key[aria-pressed='true'] {
-  color: #523b6d;
-  background: #ebe7ef;
-  border-bottom-color: var(--purple);
+  color: var(--ink);
+  background: #e8e8e8;
+  border-bottom-color: var(--accent);
 }
 .bench-key:hover {
-  background-color: #efedf1;
+  background-color: #eeeeee;
 }
 .bench-key:active {
-  background-color: #e5e0e9;
+  background-color: #e2e2e2;
 }
 .bench-media {
   aspect-ratio: 48 / 29;
@@ -600,15 +622,6 @@ em {
   font-size: var(--font-ui);
   flex: 1;
 }
-.capability-card-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 28px;
-  color: var(--purple);
-  font-size: var(--font-ui);
-  font-weight: 600;
-}
 .team-section {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
@@ -648,7 +661,7 @@ em {
   color: var(--ink);
 }
 .team-fact-label {
-  color: var(--purple);
+  color: var(--accent);
   font-size: var(--font-meta);
   font-weight: 600;
 }
@@ -690,7 +703,7 @@ em {
 }
 .flow-backdrop path {
   fill: none;
-  stroke: var(--purple);
+  stroke: var(--accent);
   vector-effect: non-scaling-stroke;
 }
 .flow-line {
@@ -782,13 +795,13 @@ em {
   color: var(--ink);
   background: #fafafa;
   border: 1px solid #cfcfcf;
-  border-radius: 999px;
+  border-radius: 5px;
   padding: 12px 20px;
 }
 .signup-row input:focus-visible {
-  outline: 3px solid #9773bf;
+  outline: 3px solid #d4607a;
   outline-offset: 2px;
-  border-color: var(--purple);
+  border-color: var(--accent);
 }
 .signup-row .button {
   flex-shrink: 0;
@@ -824,7 +837,7 @@ em {
 }
 .signup-pilot .text-link {
   gap: 10px;
-  color: var(--purple);
+  color: var(--accent);
 }
 @media (max-width: 620px) {
   .signup-row {
@@ -1013,7 +1026,12 @@ em {
   padding-bottom: 65px;
 }
 .showcase-section .section-heading {
+  display: block;
   margin-bottom: 40px;
+}
+.showcase-section .section-heading > p {
+  max-width: 720px;
+  margin-top: 18px;
 }
 .showcase-grid {
   display: grid;
@@ -1137,7 +1155,7 @@ em {
 }
 .release-summary .text-link {
   flex-shrink: 0;
-  color: var(--purple);
+  color: var(--accent);
 }
 .faq-intro > p {
   color: var(--muted);
@@ -1275,7 +1293,7 @@ em {
   margin: 5px 0 45px;
 }
 .back-link {
-  color: var(--purple);
+  color: var(--accent);
   display: inline-flex;
   gap: 8px;
   margin-bottom: 22px;
@@ -1397,7 +1415,7 @@ em {
   margin-top: 15px;
 }
 .article a:not(.button) {
-  color: var(--purple);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1442,7 +1460,7 @@ em {
 .legal-list a {
   display: inline-block;
   margin-right: 30px;
-  color: var(--purple);
+  color: var(--accent);
   text-decoration: underline;
 }
 @media (min-width: 1500px) {

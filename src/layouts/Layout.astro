@@ -2,7 +2,7 @@
 import '@ambientcss/css/ambient.css';
 import '../styles/global.css';
 import site from '../content/site.json';
-import { nav, productActionConfig } from '../content/content';
+import { browserAction, nav, productActionConfig } from '../content/content';
 import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
@@ -73,6 +73,12 @@ const path = Astro.url.pathname;
               {link.label}
             </a>
           ))}
+          <a
+            class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+            href={browserAction.href}
+          >
+            {browserAction.label} <Icon name="diagonal" size={15} />
+          </a>
           <a
             class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
             href={productActionConfig.href}

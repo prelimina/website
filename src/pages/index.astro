@@ -9,36 +9,24 @@ import TeamSection from '../components/TeamSection.astro';
 import FlowBackdrop from '../components/FlowBackdrop.astro';
 import SignupPanel from '../components/SignupPanel.astro';
 import AppScreenshot from '../components/AppScreenshot.astro';
-import { loadCatalogue } from '../data/releases.mjs';
 import site from '../content/site.json';
 import {
-  createProductAction,
   showcases,
   faqs,
   licence,
   licensingAction,
 } from '../content/content';
-const productAction = createProductAction(loadCatalogue().current);
 ---
 
 <Layout>
   <section class="hero container">
     <div class="hero-copy">
       <h1>
-        See the flow.
-        <br />
-        Shape the <em>design.</em>
+        See the flow.<br>
+        <em>Shape the design.</em>
       </h1>
       <p class="hero-descriptor">{site.hero.descriptor}</p>
       <p class="hero-description">{site.hero.description}</p>
-      <div class="hero-actions">
-        <a
-          href={productAction.href}
-          class="button button-primary ambient amb-surface-convex amb-mat-matte amb-fillet-2 amb-elevation-0"
-        >
-          {productAction.label} <Icon name="diagonal" size={18} />
-        </a>
-      </div>
     </div>
     <div class="hero-object">
       <Workbench />

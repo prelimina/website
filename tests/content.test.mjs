@@ -188,6 +188,8 @@ test('all built local links, anchors, and assets exist, and every page stays noi
       /(?:href|src)="(\/[^"?#]*)(?:[?#][^"]*)?"/g,
     )) {
       const url = match[1];
+      // The browser app is served from R2 by the Worker, not from dist.
+      if (url === '/app/') continue;
       const target = join(root, url.endsWith('/') ? `${url}index.html` : url);
       assert.ok(existsSync(target), `${path}: missing ${url}`);
     }
@@ -334,7 +336,7 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
   const navigation = home.match(/<nav\b[^>]*>(.*?)<\/nav>/s)?.[1];
   assert.ok(navigation);
   assert.match(navigation, /Applications/);
-  assert.match(navigation, /href="\/#download"[^>]*>\s*Download now\s*</);
+  assert.match(navigation, /href="\/#download"[^>]*>\s*Download\s*</);
   assert.doesNotMatch(navigation, /Showcases|\/download\/|\/changelog\//);
   assert.doesNotMatch(navigation, /Evidence|Access &amp; licensing/);
   // Download buttons link the verified installers, falling back to the releases page until the

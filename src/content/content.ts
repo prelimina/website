@@ -2,18 +2,13 @@ import site from './site.json';
 import { getInquiryState, inquiryHref } from './inquiry.mjs';
 
 export const productActionConfig = {
-  label: 'Download now',
+  label: 'Download',
   href: '/#download',
 };
-export function createProductAction(
-  currentRelease: { downloads?: readonly unknown[] } | null,
-) {
-  const available = Boolean(currentRelease?.downloads?.length);
-  return {
-    ...productActionConfig,
-    available,
-  };
-}
+export const browserAction = {
+  label: 'Try here',
+  href: '/app/',
+};
 export const inquiryAction = getInquiryState(site.contactEmail);
 export const licence = {
   ...site.licence,
@@ -567,7 +562,7 @@ export const nav = [
 export const team = {
   title: 'Built by people who <em>write and use solvers.</em>',
   description:
-    'Prelimina is developed by <em>PLASMICA Ltd.</em>, a spin-out from the University of Split, Croatia. Most of the team hold PhDs in fluid dynamics, numerical methods, engineering, and have spent their careers between university research and industrial applications, from deep sea to deep space.',
+    'Prelimina is developed by PLASMICA Ltd., a spin-out from the University of Split, Croatia. Most of the team hold PhDs in fluid dynamics, numerical methods, engineering, and have spent their careers between university research and industrial applications, from deep sea to deep space.',
   facts: [
     {
       value: 'PhD',

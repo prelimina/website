@@ -218,14 +218,7 @@ test('homepage order, primary actions, and application status communicate the pr
     'faq',
     'container cta-wrap',
   ]);
-  await expect(page.locator('.hero-actions .button-primary')).toHaveText(
-    'Download now',
-  );
-  await expect(page.locator('.hero-actions .button-primary')).toHaveAttribute(
-    'href',
-    '/#download',
-  );
-  await expect(page.locator('.hero-actions .button')).toHaveCount(1);
+  await expect(page.locator('.hero-actions')).toHaveCount(0);
   await expect(page.locator('.signup-form .button')).toHaveText('Notify me');
   await expect(page.locator('a[href^="mailto:"]')).toHaveCount(2);
   await expect(page.locator('.signup-pilot a')).toHaveAttribute(
@@ -324,7 +317,7 @@ test('capability panels lead to grouped features with a maturity label on every 
   }
   await expect(
     page.locator('.capabilities-download').getByRole('link', {
-      name: 'Download now',
+      name: 'Download',
     }),
   ).toHaveAttribute('href', '/#download');
   await page.goto('/capabilities/#optimisation');
@@ -394,7 +387,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await page.goto('/');
   await page
     .getByRole('navigation')
-    .getByRole('link', { name: 'Download now' })
+    .getByRole('link', { name: 'Download' })
     .click();
   await expect(page).toHaveURL(/\/#download$/);
   await expect(page.locator('#download h2')).toBeInViewport();
@@ -468,7 +461,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await menu.click();
   await page
     .getByRole('navigation')
-    .getByRole('link', { name: 'Download now' })
+    .getByRole('link', { name: 'Download' })
     .click();
   await expect(page).toHaveURL(/\/#download$/);
   await expect(page.locator('#download h2')).toBeInViewport();
