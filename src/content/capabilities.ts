@@ -237,7 +237,7 @@ export const capabilityGroups = [
     icon: 'nodes',
     summaryTitle: 'Coupled physics',
     summary:
-      'Simulate multiple phases. Couple the liquid to free-moving bodies and structural solvers. Choose non-Newtonian fluids. Heat transfer and viscoelasticity are also on the roadmap.',
+      'Simulate multiple phases. Couple the liquid to free-moving bodies and structural solvers. Choose non-Newtonian fluids. Transfer heat through the liquid. Viscoelasticity is on the roadmap.',
     description:
       'Fluid models, method choices, and coupling to bodies and other solvers.',
     features: [
@@ -285,9 +285,9 @@ export const capabilityGroups = [
       },
       {
         name: 'Heat transfer',
-        status: 'planned',
+        status: 'experimental',
         description:
-          'Transport temperature through the liquid and exchange heat with walls and bodies.',
+          'Transport temperature through the liquid, with buoyancy, and exchange heat with walls and bodies at a set temperature, a set heat flux or through a surface film. Liquid side only; the gas side and phase change are planned.',
       },
       {
         name: 'Phase-change and boiling',

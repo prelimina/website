@@ -412,6 +412,54 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#motion',
     },
   },
+  {
+    slug: 'heat-conduction-validation',
+    number: '08',
+    title: 'Check heat conduction in a cooling block against the exact solution.',
+    category: 'Heat transfer',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'Cool a hot steel cube through all six faces and compare the temperature at its centre, a face and a corner with the exact solution.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/heat-conduction-validation.webp',
+      alt: 'A cube seen from one corner, with the nearest eighth cut away to show the inside. It starts dark red and cools from its edges and corners inwards, turning green and then blue while the centre stays warm longest. Below it, the simulated temperatures at the centre, a face centre and a corner draw in step over the exact curves and stay on them.',
+      caption:
+        'A Prelimina FVM run on a 2.5 mm grid with a 0.25 s time step, coloured by temperature (300–600 K). The marked points are the three probe positions, shown at symmetric copies that are visible from this corner. Development build e05668db.',
+      aspectRatio: '960 / 890',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/heat-conduction-validation-chart.svg',
+      alt: 'Top: temperature against time over 250 s at the centre, a face centre and a corner. The Prelimina curves lie on the exact curves throughout. Bottom: the corner error on three grids and at half the time step. Each error peaks at 2 to 4 K in the first second and falls below 1 K within about 20 s; the finer grids and the shorter step give the smaller errors.',
+      caption:
+        'Top: temperature at the centre, a face centre and a corner, each averaged over the same few cells as the exact solution it is compared with. Bottom: corner error (Prelimina minus exact) on 5, 2.5 and 1.25 mm grids with a 0.25 s step, and on the 2.5 mm grid with a 0.125 s step. Exact solution: the product of three plane-wall series for cooling through a surface film (Heisler 1947; Carslaw and Jaeger 1959). Prelimina FVM, development build e05668db.',
+      aspectRatio: '960 / 760',
+      fit: 'contain',
+    },
+    metricsHeading: 'Comparison with the exact solution',
+    question:
+      'Does the heat solver reproduce three-dimensional transient conduction through a body that loses heat at its surface?',
+    inputs:
+      'A 0.1 m steel cube (7850 kg/m³, 470 J/(kg·K), 45 W/(m·K)) that starts uniformly at 600 K. Every face loses heat to 300 K surroundings through a film coefficient of 900 W/(m²·K), a Biot number of 1 on the half-width.',
+    variables: 'Grid spacing (5, 2.5 and 1.25 mm) and the time step (0.25 and 0.125 s).',
+    controls:
+      'The geometry, properties, initial temperature and surface condition of the exact solution. Each probe averages a few cells at the centre, a face centre and a corner, and the exact solution is averaged over the same cells.',
+    outputs:
+      'Temperature histories at the three probes and the heat flow through each face, exported as CSV, and the temperature field.',
+    metrics:
+      'After the first 10 s, the 2.5 mm run stays within 0.32 K of the exact solution at the centre, 0.28 K at the face centre and 0.80 K at the corner, against a 300 K drop. In the first second, as the hot block first meets the cool surroundings, the corner error peaks at 3.1 K; halving the time step lowers it to 2.1 K. Heat lost over 250 s: 1035.8 kJ against an exact 1036.1 kJ (−0.03 %); all four runs are within 0.05 %.',
+    assumptions:
+      'Pure conduction. Prelimina has no separate solid model, so the liquid model fills the cube and is held still: there is no gravity and no buoyancy, the velocity stays exactly zero, and the energy equation reduces to conduction with steel’s properties. The properties are constant. The surroundings enter only through the film coefficient.',
+    limitation:
+      'A comparison with an exact solution, not with an experiment, and for the FVM solver only; the FLIP and FIRM heat solvers are not shown. With the time step held at 0.25 s, refining the grid from 2.5 to 1.25 mm changes the later errors little, because the time step then sets most of the error. Heat transfer is experimental and covers the liquid only: there is no gas side, ullage or phase change yet.',
+    nextAction: {
+      label: 'Explore physics capabilities',
+      href: '/capabilities/#multiphysics',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux
