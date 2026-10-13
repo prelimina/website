@@ -455,6 +455,54 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#multiphysics',
     },
   },
+  {
+    slug: 'heated-cavity-validation',
+    number: '09',
+    title: 'Check buoyant air flow in a heated box against a benchmark.',
+    category: 'Heat transfer',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'Heat one wall of a closed box of air and cool the opposite one, and compare the heat flow and the air speeds with the standard natural-convection benchmark.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/heated-cavity-validation.webp',
+      alt: 'A square box of air, hot on the left wall and cold on the right. Arrows show the air rising along the hot wall, crossing the top, sinking along the cold wall and returning along the floor, while the box fills with warm air above and cool air below. Below it, the hot-wall heat flow draws in step: it jumps at the start, dips, and then settles on the dashed benchmark line.',
+      caption:
+        'A Prelimina FVM run of the 102 mm box (Rayleigh number 10⁶) on a 128 × 128 grid, coloured by temperature (295–305 K), with arrows for the air flow. The hot-wall heat flow, as a Nusselt number, draws in step against the benchmark and settles on it within about 30 s; the clip shows the first 60 s of a 141 s run. Development build e05668db.',
+      aspectRatio: '960 / 940',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/heated-cavity-validation-chart.svg',
+      alt: 'Left: the error in the hot-wall Nusselt number on a log scale against 32, 64 and 128 cells across the box, one line per Rayleigh number; every line falls as the grid is refined, the steepest one at Rayleigh number one million roughly following the second-order guide. Right: vertical air speed at mid-height against distance from the hot wall; the curves rise steeply to a peak close to the wall and fall away, and the 128-cell curve passes through the marked benchmark peak.',
+      caption:
+        'Left: error in the hot-wall Nusselt number against the benchmark on 32, 64 and 128 cells across the box, for Rayleigh numbers 10³ to 10⁶, with a second-order slope for reference. Right: vertical air velocity at mid-height next to the hot wall at Rayleigh number 10⁶, in units of α/L, on the three grids, with the benchmark peak. Benchmark: de Vahl Davis (1983), Table V. Prelimina FVM, development build e05668db.',
+      aspectRatio: '960 / 460',
+      fit: 'contain',
+    },
+    metricsHeading: 'Comparison with the benchmark',
+    question:
+      'Does the solver reproduce buoyancy-driven flow, and the heat it carries across a closed box, from slow creeping flow to thin wall boundary layers?',
+    inputs:
+      'Closed square boxes of air (Prandtl number 0.71) with one side wall at 305 K, the opposite one at 295 K and insulated top and bottom, under normal gravity with Boussinesq buoyancy. Box sizes of 10, 22, 47 and 102 mm give Rayleigh numbers of 10³, 10⁴, 10⁵ and 10⁶.',
+    variables: 'Rayleigh number, through the box size, and grid spacing (32, 64 and 128 cells across).',
+    controls:
+      'The geometry and wall conditions of the de Vahl Davis benchmark: a two-dimensional square cavity, modelled one cell deep between symmetry planes. Each run continues until the heat flowing in at the hot wall equals the heat flowing out at the cold wall.',
+    outputs:
+      'The heat flow through every wall over time, exported as CSV, and the temperature and velocity fields.',
+    metrics:
+      'On the 128-cell grid the hot-wall Nusselt number is within 0.8 % of the benchmark at every Rayleigh number (+0.1 %, +0.4 %, +0.5 % and +0.8 % for 10³ to 10⁶), and the peak horizontal and vertical velocities on the mid-planes are within 1 %, at the benchmark positions. At Rayleigh number 10⁶ the Nusselt error falls from 13.4 % on 32 cells to 3.0 % on 64 and 0.8 % on 128, about four times per halving of the cell size, as expected of a second-order method.',
+    assumptions:
+      'Boussinesq buoyancy with constant air properties, in two dimensions. The box is completely full, so the volume fraction of the liquid model is held at one; left free, it does not conserve the volume of a completely full box. The pressure-solver tolerance is relaxed to 10⁻⁶ (10⁻⁵ for the 128-cell run at 10⁶), a level that single precision can reach in these small cells.',
+    limitation:
+      'A comparison with a numerical benchmark, not with an experiment, and in two dimensions; the benchmark states an accuracy of about 1 % at Rayleigh number 10⁶. The results are for the FVM solver. The FLIP solver’s walls are free-slip, so it does not form the wall boundary layers: on 64 cells its heat flow is within 5 % of the benchmark up to 10⁵ but about 50 % high at 10⁶, and its peak velocities sit at the walls. Heat transfer is experimental and covers the liquid only.',
+    nextAction: {
+      label: 'Explore physics capabilities',
+      href: '/capabilities/#multiphysics',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux

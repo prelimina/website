@@ -16,6 +16,7 @@ const routes = [
   '/showcases/capillary-microgravity/',
   '/showcases/rolling-tank-impact/',
   '/showcases/heat-conduction-validation/',
+  '/showcases/heated-cavity-validation/',
 ];
 
 test('all pages render without script errors, missing assets, or horizontal overflow', async ({
@@ -237,7 +238,7 @@ test('homepage order, primary actions, and application status communicate the pr
       .getByRole('navigation')
       .getByRole('link', { name: 'Evidence', exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator('.showcase-card')).toHaveCount(8);
+  await expect(page.locator('.showcase-card')).toHaveCount(9);
   for (const slug of [
     'sloshing-validation',
     'dam-break-validation',
@@ -247,6 +248,7 @@ test('homepage order, primary actions, and application status communicate the pr
     'capillary-microgravity',
     'rolling-tank-impact',
     'heat-conduction-validation',
+    'heated-cavity-validation',
   ]) {
     await page.goto(`/showcases/${slug}/`);
     await expect(page.locator('.application-status')).toContainText(
