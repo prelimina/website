@@ -403,7 +403,7 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
     'Linux',
     'macOS',
   ]);
-  await expect(page.locator('.release-summary')).toContainText('v0.1');
+  await expect(page.locator('.release-summary')).toContainText(/v\d+\.\d+\.\d+/);
   await expect(page.locator('.release-summary time')).toHaveAttribute(
     'datetime',
     /^\d{4}-\d{2}-\d{2}$/,
