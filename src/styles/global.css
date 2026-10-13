@@ -35,6 +35,14 @@
   --muted: #636363;
   --accent: #c0645a;
   --accent-gradient: linear-gradient(90deg, #e07a3f, #d4607a);
+  /* Mimics ambient's convex shading on top of the accent gradient. */
+  --accent-shade: linear-gradient(
+    rgb(255 255 255 / 0.16),
+    rgb(255 255 255 / 0.04) 35%,
+    transparent 50%,
+    rgb(0 0 0 / 0.05) 65%,
+    rgb(0 0 0 / 0.14)
+  );
   --line: #d9d9d9;
   --amb-albedo: #efefef;
   --amb-light-x: -0.7;
@@ -382,7 +390,7 @@ em {
 }
 /* Two classes outrank ambient's convex-surface background shorthand. */
 .button.button-primary {
-  background-image: var(--accent-gradient);
+  background-image: var(--accent-shade), var(--accent-gradient);
 }
 .button-primary:hover {
   filter: brightness(1.035);
@@ -586,7 +594,7 @@ em {
 }
 .capability-card:hover {
   transform: translateY(-3px);
-  border-color: #b8a6c7;
+  border-color: var(--ink);
 }
 .capability-card-heading {
   display: flex;

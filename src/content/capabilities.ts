@@ -367,7 +367,7 @@ export const capabilityGroups = [
     id: 'ai',
     title: 'Setups for AI agents',
     icon: 'sparkle',
-    summaryTitle: 'Readable by AI agents',
+    summaryTitle: 'Controllable by AI',
     summary:
       'Setups are plain, schema-validated files that AI agents can read, write, and check before a run. Next: an assistant that sets up a case, runs it, and summarises the results with you.',
     summaryStatus: 'development',
