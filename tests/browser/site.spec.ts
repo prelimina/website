@@ -8,6 +8,9 @@ const routes = [
   '/showcases/',
   '/capabilities/',
   '/legal/',
+  '/terms/',
+  '/privacy/',
+  '/refunds/',
   '/changelog/',
   '/showcases/sloshing-validation/',
   '/showcases/liquid-handling/',
@@ -508,6 +511,9 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',
     '/legal/',
+    '/terms/',
+    '/privacy/',
+    '/refunds/',
   ]) {
     await page.goto(route);
     const result = await new AxeBuilder({ page })

@@ -1427,7 +1427,8 @@ em {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.article ol {
+.article ol,
+.article ul {
   padding-left: 25px;
 }
 .article li {

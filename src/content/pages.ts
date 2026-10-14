@@ -14,6 +14,21 @@ export const pages = {
     description:
       'Company details, the Prelimina Licence Agreement, and privacy information for this prelaunch website.',
   },
+  terms: {
+    title: 'Terms of Service',
+    description:
+      'The terms for using this website and for buying Prelimina commercial licences and subscriptions from PLASMICA d.o.o.',
+  },
+  privacy: {
+    title: 'Privacy Notice',
+    description:
+      'What personal data PLASMICA d.o.o. collects through this website, release updates, correspondence, and purchases, and the rights you have over it.',
+  },
+  refunds: {
+    title: 'Refund Policy',
+    description:
+      'How refunds work for Prelimina commercial licences and subscriptions.',
+  },
   confirmed: {
     title: 'You’re on the list.',
     description:

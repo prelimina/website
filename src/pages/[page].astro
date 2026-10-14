@@ -11,6 +11,7 @@ import { pages } from '../content/pages';
 import {
   licence,
   licensingAction,
+  policies,
   showcases,
 } from '../content/content';
 export function getStaticPaths() {
@@ -69,30 +70,13 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
             Licensing and legal enquiries, notices, and complaints:{' '}
             <a href={licensingAction.href}>{licence.email}</a>.
           </p>
-          <h2 id="privacy">Privacy in this implementation</h2>
+          <h2 id="privacy">Terms, privacy, and refunds</h2>
           <p>
-            The website contains no analytics, advertising cookies, session
-            replay, remote fonts, or third-party embeds. The case-outline
-            control does not send data to a server; its copy button only writes
-            to your clipboard when you use it.
-          </p>
-          <p>
-            If you subscribe to release updates, the email address you enter is
-            sent to Brevo (Sendinblue SAS, France), which stores it with the
-            time of your consent and sends you a confirmation email. You are
-            only added once you confirm. We use the address solely to tell you
-            about Prelimina releases and the browser version. Every email has an
-            unsubscribe link, and you can ask us to delete your address at any
-            time{site.contactEmail && (
-              <>
-                {' '}at <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
-              </>
-            )}.
-          </p>
-          <p>
-            A hosting provider may process network request logs.
-            Hosting-specific disclosures and the full public privacy and website
-            terms will accompany the public product release.
+            Use of this website and purchases of commercial licences and
+            subscriptions are covered by our{' '}
+            <a href="/terms/">Terms of Service</a>,{' '}
+            <a href="/privacy/">Privacy Notice</a>, and{' '}
+            <a href="/refunds/">Refund Policy</a>.
           </p>
           <h2>Software licence</h2>
           <p>
@@ -122,6 +106,308 @@ const description = page === 'changelog' && current ? 'Approved notes for publis
             <a href="/licenses/Fraunces-OFL.txt">Fraunces license</a>
             <a href="/licenses/Quicksand-OFL.txt">Quicksand license</a>
           </div>
+        </div>
+      )}
+      {page === 'terms' && (
+        <div class="article">
+          <p>
+            Last updated{' '}
+            <time datetime={policies.updated}>{policies.updatedLabel}</time>
+          </p>
+          <h2>1. Who we are</h2>
+          <p>
+            Prelimina is developed and licensed by {site.company} (“PLASMICA”,
+            “we”), {licence.address}, VAT-ID {licence.vatId}. When you use this
+            website or buy a Prelimina commercial licence or subscription, your
+            contract for the licence is with {site.company}. Contact us at{' '}
+            <a href={`mailto:${licence.email}`}>{licence.email}</a>.
+          </p>
+          <h2>2. Acceptance</h2>
+          <p>
+            By using this website or placing an order, you agree to these terms.
+            If you act for an organisation, you confirm that you may bind it. If
+            you do not agree, do not use the website or place an order.
+          </p>
+          <h2>3. Orders and payment through Paddle</h2>
+          <p>
+            Our order process is conducted by our online reseller Paddle.com.
+            Paddle.com is the Merchant of Record for all our orders. Paddle
+            provides all customer service inquiries and handles returns.
+          </p>
+          <p>
+            Paddle processes your payment, charges and collects applicable sales
+            tax or VAT, and issues your invoice. Your purchase is also subject
+            to{' '}
+            <a href="https://www.paddle.com/legal/buyer-terms">
+              Paddle’s Buyer Terms
+            </a>
+            . Prices are shown before you pay, and taxes are calculated for your
+            location during the order.
+          </p>
+          <h2>4. What a purchase gives you</h2>
+          <p>
+            Prelimina software is licensed, not sold, under the{' '}
+            <a href={licence.href}>Prelimina Licence Agreement</a>.
+            Noncommercial use is free and needs no purchase. Commercial use,
+            including business evaluation, requires a paid commercial licence or
+            subscription before the work begins. Your order confirmation
+            identifies the licensee, the covered product and versions, quantity,
+            term, and fee. The Licence Agreement governs how you may use the
+            software; these terms govern the website and your purchase.
+          </p>
+          <h2>5. Subscriptions, renewal, and cancellation</h2>
+          <p>
+            A subscription runs for the billing period shown when you order,
+            such as monthly or yearly, and renews automatically for the same
+            period at the then-current price until you cancel. We will tell you
+            in advance of any price change, and it applies from your next
+            renewal. You can cancel at any time through the link in your Paddle
+            receipt or by contacting us; cancellation stops future renewals and
+            your commercial entitlement continues until the end of the period
+            already paid. A perpetual licence is paid once and does not renew.
+          </p>
+          <p>
+            Refunds are described in our <a href="/refunds/">Refund Policy</a>.
+          </p>
+          <h2>6. Acceptable use</h2>
+          <p>You must not use the website or the software to:</p>
+          <ul>
+            <li>break the law or infringe anyone’s rights;</li>
+            <li>
+              commit fraud, send spam, or use payment details without
+              authorisation;
+            </li>
+            <li>
+              infringe our or anyone else’s intellectual property, or remove
+              copyright or licence notices;
+            </li>
+            <li>
+              interfere with security, introduce malware, probe or attack our
+              systems, or scrape the website in a way that burdens it;
+            </li>
+            <li>
+              share, resell, or circumvent licence keys or entitlements beyond
+              what your order permits.
+            </li>
+          </ul>
+          <h2>7. Intellectual property</h2>
+          <p>
+            PLASMICA owns the Prelimina software, this website, and the related
+            intellectual property, including the Prelimina name and logo. You
+            receive only the rights expressly granted in the Licence Agreement
+            or your order. You keep your rights in your own inputs, projects,
+            and results.
+          </p>
+          <h2>8. No service guarantee</h2>
+          <p>
+            We aim to keep the website and software available and working, but
+            we do not promise uninterrupted or error-free service. Simulation
+            results are approximations that you must verify independently, as
+            the Licence Agreement explains. Support, updates, or response times
+            apply only where your order or a separate written agreement includes
+            them.
+          </p>
+          <h2>9. Liability</h2>
+          <p>
+            The warranty and liability provisions of the Licence Agreement apply
+            to the software, whether used free or paid. To the extent permitted
+            by law, we are not liable for indirect or consequential loss arising
+            from use of the website. Nothing in these terms limits liability
+            that cannot be limited by law, or your mandatory consumer rights.
+          </p>
+          <h2>10. Suspension and termination</h2>
+          <p>
+            We may suspend or end your access to a commercial entitlement or the
+            website for a material breach of these terms or the Licence
+            Agreement, non-payment, a security or fraud risk, or repeated or
+            serious violations. Where a breach can be remedied, we will give
+            notice and a reasonable chance to remedy it first, unless the risk
+            requires immediate action.
+          </p>
+          <h2>11. Governing law and changes</h2>
+          <p>
+            Croatian law governs these terms. For disputes with businesses, the
+            competent courts in Split, Croatia have jurisdiction. Consumers keep
+            the protections and courts available to them where they live. We may
+            update these terms; the date above shows the latest version, and
+            changes do not apply to orders already placed.
+          </p>
+          <h2>12. Contact</h2>
+          <p>
+            Questions, notices, and complaints:{' '}
+            <a href={`mailto:${licence.email}`}>{licence.email}</a>, or by post
+            to {site.company}, {licence.address}.
+          </p>
+        </div>
+      )}
+      {page === 'privacy' && (
+        <div class="article">
+          <p>
+            Last updated{' '}
+            <time datetime={policies.updated}>{policies.updatedLabel}</time>
+          </p>
+          <h2>1. Who is responsible</h2>
+          <p>
+            {site.company}, {licence.address}, Croatia, VAT-ID {licence.vatId},
+            is the data controller for the personal data described here. For any
+            privacy question or request, write to{' '}
+            <a href={`mailto:${licence.email}`}>{licence.email}</a>.
+          </p>
+          <p>
+            This notice covers this website, release-update emails,
+            correspondence with us, and purchases of Prelimina licences and
+            subscriptions. Your simulation projects, inputs, and results stay on
+            your own computer; the Licence Agreement gives us no permission to
+            publish them or use them to train AI models.
+          </p>
+          <h2>2. What we collect and why</h2>
+          <h3>Visiting the website</h3>
+          <p>
+            The website uses no analytics, advertising, session replay, remote
+            fonts, third-party embeds, or cookies. To deliver pages securely,
+            our hosting provider Cloudflare processes technical request data
+            such as your IP address, browser, and the pages requested. Legal
+            basis: our legitimate interest in operating and protecting the
+            website. We do not keep our own request logs.
+          </p>
+          <h3>Release updates</h3>
+          <p>
+            If you subscribe, we process your email address and the time of your
+            consent through Brevo (Sendinblue SAS, France). You are only added
+            after you confirm by email. We use the address solely to tell you
+            about Prelimina releases and the browser version. Legal basis: your
+            consent, which you can withdraw at any time through the unsubscribe
+            link in every email. We keep the address until you unsubscribe.
+          </p>
+          <h3>Contacting us</h3>
+          <p>
+            When you email us, we process your name, email address, and the
+            content of your message to answer you. Legal basis: our legitimate
+            interest in replying, or steps before a contract when you ask about
+            a licence. We keep correspondence as long as needed to deal with it
+            and any follow-up, and no longer than three years after it ends
+            unless it relates to an order.
+          </p>
+          <h3>Buying a licence or subscription</h3>
+          <p>
+            Paddle.com is the Merchant of Record for our orders and collects
+            your payment details directly; we never receive your full card or
+            bank details. Paddle shares with us the information needed to
+            provide and administer your licence: name, email address, company
+            name and VAT number if given, country, products bought, prices,
+            order and subscription status. Legal basis: performance of the
+            contract, and our legal obligations under accounting and tax law. We
+            keep order records for as long as Croatian accounting and tax law
+            requires, and licence records for as long as the licence is active
+            plus the period in which claims can be brought.
+          </p>
+          <h2>3. Who receives your data</h2>
+          <ul>
+            <li>
+              <strong>Paddle</strong> (Paddle.com Market Limited, United
+              Kingdom), as Merchant of Record for orders, payments, invoicing,
+              tax, and refunds. Paddle acts as an independent controller under{' '}
+              <a href="https://www.paddle.com/legal/privacy">
+                its privacy notice
+              </a>
+              .
+            </li>
+            <li>
+              <strong>Cloudflare</strong> (Cloudflare, Inc.), for website
+              hosting and security.
+            </li>
+            <li>
+              <strong>Brevo</strong> (Sendinblue SAS, France), for
+              release-update emails.
+            </li>
+            <li>Our email provider, for correspondence.</li>
+            <li>
+              Professional advisers such as accountants and lawyers, and
+              authorities where the law requires.
+            </li>
+          </ul>
+          <p>We do not sell your personal data or use it for advertising.</p>
+          <h2>4. International transfers</h2>
+          <p>
+            Where personal data is transferred outside the European Economic
+            Area, we rely on an adequacy decision (such as for the United
+            Kingdom, or for US companies certified under the EU–US Data Privacy
+            Framework) or on the European Commission’s Standard Contractual
+            Clauses.
+          </p>
+          <h2>5. Your rights</h2>
+          <p>
+            Under the GDPR you have the right to access your personal data,
+            correct it, have it erased, restrict or object to its processing,
+            receive it in a portable format, and withdraw consent at any time
+            without affecting earlier processing. To exercise a right, email{' '}
+            <a href={`mailto:${licence.email}`}>{licence.email}</a>. We respond
+            within one month. You may also complain to a supervisory authority;
+            in Croatia this is the{' '}
+            <a href="https://azop.hr/">
+              Personal Data Protection Agency (AZOP)
+            </a>
+            .
+          </p>
+          <h2>6. Security</h2>
+          <p>
+            We protect personal data with appropriate technical and
+            organisational measures, including encrypted connections, access
+            limited to people who need it, and providers bound by data
+            processing terms.
+          </p>
+          <h2>7. Changes</h2>
+          <p>
+            We will update this notice when our processing changes. The date
+            above shows the current version.
+          </p>
+        </div>
+      )}
+      {page === 'refunds' && (
+        <div class="article">
+          <p>
+            Last updated{' '}
+            <time datetime={policies.updated}>{policies.updatedLabel}</time>
+          </p>
+          <h2>Our policy</h2>
+          <p>
+            If you are not satisfied with a Prelimina commercial licence or
+            subscription, you can request a full refund within{' '}
+            {policies.refundDays} days of the payment date, for any reason. This
+            applies to first purchases and to subscription renewals.
+          </p>
+          <h2>How to request a refund</h2>
+          <p>
+            Our order process is conducted by our online reseller Paddle.com.
+            Paddle.com is the Merchant of Record for all our orders, and Paddle
+            handles refunds. Request a refund at{' '}
+            <a href="https://paddle.net/">paddle.net</a> using the email address
+            from your purchase, or write to us at{' '}
+            <a href={`mailto:${licence.email}`}>{licence.email}</a> with your
+            order number and we will arrange it with Paddle. Refunds are
+            returned to the original payment method; how soon they appear
+            depends on your bank or card provider.
+          </p>
+          <h2>After a refund</h2>
+          <p>
+            A refund ends the commercial entitlement bought with that payment.
+            You can keep using Prelimina for noncommercial purposes free of
+            charge under the{' '}
+            <a href={licence.href}>Prelimina Licence Agreement</a>.
+          </p>
+          <h2>Cancelling a subscription</h2>
+          <p>
+            You can cancel a subscription at any time. It stays active until the
+            end of the period already paid and does not renew. Cancelling after
+            the {policies.refundDays}-day refund period does not refund the
+            current period.
+          </p>
+          <h2>Your statutory rights</h2>
+          <p>
+            This policy does not limit rights you have under applicable law,
+            including rights to a remedy if the software does not conform to the
+            contract.
+          </p>
         </div>
       )}
       {page === 'confirmed' && (

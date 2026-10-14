@@ -19,6 +19,15 @@ export const licence = {
     timeZone: 'UTC',
   }),
 };
+export const policies = {
+  ...site.policies,
+  updatedLabel: new Date(site.policies.updated).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }),
+};
 export const licensingAction = {
   label: 'Ask about licensing',
   href: inquiryHref(

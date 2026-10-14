@@ -126,14 +126,18 @@ If the repo is already connected through Cloudflare Workers Builds, use the repo
 
 Before a public product launch:
 
-1. Complete hosting-specific privacy and website disclosures. Company details and the software licence are published from the supplied agreement; the general application contact still needs configuration.
+1. Review the Terms of Service, Privacy Notice, and Refund Policy against the final products and any licence-activation data flow. Company details and the software licence are published from the supplied agreement.
 2. Add the final domain, canonical URLs, sitemap, and an intentional indexing policy.
 3. Integrate the **existing shared schemaVersion 2 release manifest**, owned at `SlangSolvers/schemas/release-manifest.schema.json`, when real approved releases exist. No competing release schema or fake manifest is created here. Add schema/approved-host validation, actual platform eligibility, hashes/sizes, freshness, and failure-state tests before enabling downloads or `alpha_open`.
 4. Configure the agreed release/deployment process. Keep installers on their separate release host.
 
 Outstanding publication inputs are an approved public application-inquiry address, approved genuine product media with version/case/evidence context, approved public verification/validation records, qualified release/platform information, and approved commercial offers, pricing, and support schedules. Any later indexing change requires its own decision. Website publication approval does not supply any of those approvals. No commercial price proposals or draft licence promises belong in this public repository.
 
-No advertising, cookies, analytics, session replay, remote fonts, third-party embeds, or backend have been added. Hosting providers may process request logs; the full hosting-specific privacy notice remains product-launch work.
+No advertising, cookies, analytics, session replay, remote fonts, third-party embeds, or backend have been added.
+
+## Policies for Paddle
+
+Commercial licences are sold through Paddle as Merchant of Record. Paddle's domain review requires public `/terms/`, `/privacy/`, and `/refunds/` pages, linked from every page footer and from `/legal/`. Their body copy is in `src/pages/[page].astro`; `policies` in `site.json` holds the last-updated date and the refund window (Paddle accepts 14–90 days and rejects "no refunds" wording). The terms and refund pages must keep the sentence "Paddle.com is the Merchant of Record for all our orders", and the legal entity name must match the Paddle account exactly. A content test enforces these. Update the date whenever the policies change.
 
 ## Design references
 

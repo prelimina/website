@@ -157,7 +157,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 20);
+  assert.equal(htmlFiles.length, 23);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -218,6 +218,9 @@ test('active pages remain available and retired pages are removed or redirected'
     'capabilities',
     'pricing',
     'legal',
+    'terms',
+    'privacy',
+    'refunds',
     'download',
     'changelog',
     'showcases/sloshing-validation',
@@ -298,6 +301,32 @@ test('licensing summaries link the supplied agreement and preserve its core perm
       /Access terms to be published|terms are not yet approved|terms are not yet published|eligibility will be stated/i,
     );
     assert.ok(html.includes(`mailto:${site.licence.email}`));
+  }
+});
+
+test('policy pages carry the disclosures Paddle requires and are linked from every page', () => {
+  const text = (path) =>
+    readFileSync(path, 'utf8')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ');
+  const mor = /Paddle\.com is the Merchant of Record for all our orders/;
+  const terms = text('dist/terms/index.html');
+  assert.match(terms, mor);
+  assert.ok(terms.includes(site.company));
+  const privacy = text('dist/privacy/index.html');
+  assert.ok(privacy.includes(site.company));
+  assert.ok(privacy.includes(site.licence.address));
+  assert.match(privacy, /Paddle/);
+  const refunds = text('dist/refunds/index.html');
+  assert.match(refunds, mor);
+  assert.ok(site.policies.refundDays >= 14 && site.policies.refundDays <= 90);
+  assert.ok(refunds.includes(`within ${site.policies.refundDays} days`));
+  assert.doesNotMatch(refunds, /no refunds|all sales are final/i);
+  for (const path of ['dist/index.html', 'dist/legal/index.html']) {
+    const html = readFileSync(path, 'utf8');
+    for (const route of ['/terms/', '/privacy/', '/refunds/']) {
+      assert.ok(html.includes(`href="${route}"`), `${path}: ${route}`);
+    }
   }
 });
 
