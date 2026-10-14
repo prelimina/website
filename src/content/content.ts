@@ -28,6 +28,14 @@ export const policies = {
     timeZone: 'UTC',
   }),
 };
+export const commercial = {
+  ...site.commercial,
+  priceLabel: new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: site.commercial.currency,
+    maximumFractionDigits: 0,
+  }).format(site.commercial.price),
+};
 export const licensingAction = {
   label: 'Ask about licensing',
   href: inquiryHref(
@@ -571,7 +579,7 @@ export const faqs = [
   {
     question: 'Is Prelimina free?',
     answer:
-      'Yes, during the development phase; for lawful noncommercial use: personal projects, learning, teaching, and research without a commercial purpose. No purchase, subscription, academic affiliation, or separate permission is required.',
+      'Yes, during the development phase; for lawful noncommercial use: personal projects, learning, teaching, and research without a commercial purpose. No purchase, subscription, academic affiliation, or separate permission is required. Development versions (before 1.0) include all features, and keep them. From version 1.0, the free version may be limited, for example to the FLIP solver without CUDA acceleration and with a limited cell count; full features will need a licence. Commercial use is never free.',
   },
   {
     question: 'Can I use it for commercial work?',

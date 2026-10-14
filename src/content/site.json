@@ -15,10 +15,21 @@
   "licence": {
     "version": "1.0",
     "date": "2026-09-23",
-    "href": "/licenses/Prelimina-Licence-Agreement.txt",
+    "href": "/legal/licence/",
+    "textHref": "/licenses/Prelimina-Licence-Agreement.txt",
     "email": "licensing@prelimina.com",
     "address": "R. Boškovića 32, 21000 Split, Croatia",
     "vatId": "HR57846556748"
+  },
+  "commercial": {
+    "price": 700,
+    "currency": "EUR",
+    "period": "year",
+    "seat": "one named user, on any of their computers",
+    "discount": {
+      "percent": 50,
+      "for": "Freelancers, startups, and university research funded by a company."
+    }
   },
   "policies": {
     "updated": "2026-10-14",

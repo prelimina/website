@@ -1161,6 +1161,39 @@ em {
   margin: 0;
   font-size: var(--font-ui);
 }
+.pricing-panel {
+  margin-top: 30px;
+}
+.pricing-copy {
+  flex: 1 1 260px;
+}
+.pricing-copy h3 {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.pricing-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+}
+.pricing-rules strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.pricing-panel dd {
+  font-size: var(--font-body);
+}
+.pricing-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  flex-basis: 100%;
+  margin: 0;
+}
 .release-summary .text-link {
   flex-shrink: 0;
   color: var(--accent);
@@ -1462,6 +1495,31 @@ em {
   font-size: var(--font-body);
   line-height: 1.6;
   color: var(--muted);
+}
+.article .legal-docs {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.article .legal-docs li {
+  padding: 0 0 22px;
+  margin: 0 0 22px;
+  border-bottom: 1px solid #dcdcdc;
+}
+.article .legal-docs h2 {
+  font-size: 28px;
+  margin: 0;
+}
+.article .legal-docs p {
+  margin-top: 8px;
+}
+.legal-breadcrumb {
+  margin-bottom: 10px;
+}
+.legal-breadcrumb a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .legal-list {
   margin: 30px 0;
@@ -1800,6 +1858,10 @@ em {
   .release-summary {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .pricing-copy,
+  .pricing-panel dl {
+    flex-basis: auto;
   }
   .release-summary dl {
     align-items: flex-start;

@@ -76,7 +76,7 @@ Quicksand is the default sans-serif family for body text, navigation, controls, 
 
 Set `contactEmail` only when an address is approved for application inquiries and inquiries are open. That enables “Discuss your case” links on application pages, opening a prefilled email draft that the visitor reviews and sends in their own email application. Until configured, those links lead to related application capabilities. The website does not collect or submit case outlines.
 
-The owner directed the licensing content to follow the supplied Prelimina Licence Agreement, version 1.0, dated 23 September 2026. Its complete, unchanged text is published at `public/licenses/Prelimina-Licence-Agreement.txt`; the short homepage licensing FAQ and legal copy summarise that agreement. When updating it, replace the complete text from the authoritative product licence and review the summaries and `site.json` metadata together. The tests check the version, contact, core permissions, and built copy. The agreement grants free noncommercial use and requires a paid entitlement before commercial use, including business evaluation. It does not itself make a public installer available.
+The owner directed the licensing content to follow the supplied Prelimina Licence Agreement, version 1.0, dated 23 September 2026. Its complete, unchanged text is published at `public/licenses/Prelimina-Licence-Agreement.txt` and rendered at `/legal/licence/`; the short homepage licensing FAQ and legal copy summarise that agreement. When updating it, replace the complete text from the authoritative product licence and review the summaries and `site.json` metadata together. The tests check the version, contact, core permissions, and built copy. The agreement grants free noncommercial use and requires a paid entitlement before commercial use, including business evaluation. It does not itself make a public installer available.
 
 `site.json` contains owner-requested temporary download display values in `downloadPreview`: version **0.1**, date **2026-09-23**, and the destination **https://github.com/prelimina/desktop/releases**. The date is sample content, not a verified release date. Windows and Linux download buttons open that releases page; no installer filename or release asset URL is assumed. macOS remains a disabled coming-soon panel. Replace the preview details when publishing the actual release, using the shared release manifest for installer metadata rather than expanding this display configuration into another manifest.
 
@@ -84,7 +84,9 @@ Platform cards describe the current native packaging targets, checked against `S
 
 The homepage ends with a release-updates signup. `newsletter.action` in `src/content/site.json` is the Brevo form endpoint (double opt-in is configured in Brevo; confirmation redirects to `/confirmed/`). The form posts with a small first-party script because Brevo answers a plain form post with raw JSON; Brevo's own scripts, styles, and fonts are not loaded. `public/_headers` allows `connect-src` and `form-action` for that one Brevo host only, and a content test fails if the configured endpoint and the headers disagree. Browser tests intercept the endpoint and never contact Brevo. `contactEmail` (`hello@prelimina.com`) powers the pilot link under the signup and the "Discuss your case" action on application pages.
 
-`licence.email` is the agreement's licensing/legal contact, used to obtain commercial entitlement or clarify intended use. It does not enable the general application-inquiry CTA or change `contactEmail`. Prices, commercial packages, and purchased support commitments require their own approved terms.
+`licence.email` is the agreement's licensing/legal contact, used to obtain commercial entitlement or clarify intended use. It does not enable the general application-inquiry CTA or change `contactEmail`.
+
+The owner approved the commercial subscription on 14 October 2026: €700 per seat per year, a seat being one named user on any of their computers, every release during the subscription included, no support. `commercial` in `site.json` holds these values; the homepage `#pricing` panel (also reached from `/pricing/`) and the Terms of Service read them. A content test allows only this configured price on the site. A 50% discount (`commercial.discount`) is offered to freelancers, startups, and company-funded university research, confirmed by email before purchase.
 
 Application availability (`released`, `in_development`, `planned`) is shown on each application page. The current application pages cover prescribed tank roll, liquid handling, gated spillways, and reduced-gravity sloshing. Validation reports are not published yet; application pages state the question, inputs, comparison quantities, assumptions, and scope without validation disclaimers.
 
@@ -135,9 +137,20 @@ Outstanding publication inputs are an approved public application-inquiry addres
 
 No advertising, cookies, analytics, session replay, remote fonts, third-party embeds, or backend have been added.
 
-## Policies for Paddle
+## Legal pages
 
-Commercial licences are sold through Paddle as Merchant of Record. Paddle's domain review requires public `/terms/`, `/privacy/`, and `/refunds/` pages, linked from every page footer and from `/legal/`. Their body copy is in `src/pages/[page].astro`; `policies` in `site.json` holds the last-updated date and the refund window (Paddle accepts 14–90 days and rejects "no refunds" wording). The terms and refund pages must keep the sentence "Paddle.com is the Merchant of Record for all our orders", and the legal entity name must match the Paddle account exactly. A content test enforces these. Update the date whenever the policies change.
+Everything legal lives under `/legal/`. The hub at `/legal/` lists each document with one line on when it applies, plus company details and third-party asset licences:
+
+| URL | Document | Source |
+| --- | --- | --- |
+| `/legal/licence/` | Prelimina Licence Agreement: how anyone may use the software | Rendered at build time from `public/licenses/Prelimina-Licence-Agreement.txt` by `src/content/licence-agreement.mjs`; the .txt stays published as the plain-text copy |
+| `/legal/terms/` | Terms of Service: the website and buying through Paddle | `src/pages/legal/[doc].astro` |
+| `/legal/refunds/` | Refund Policy | `src/pages/legal/[doc].astro` |
+| `/legal/privacy/` | Privacy Notice | `src/pages/legal/[doc].astro` |
+
+Titles and hub summaries are in `legalPages` in `src/content/pages.ts`. The former `/terms/`, `/privacy/` and `/refunds/` URLs redirect. The Terms state that they and the order are the "commercial order terms" in section 10 of the Licence Agreement, so they must not contradict it; termination follows its section 9.
+
+Commercial licences are sold through Paddle as Merchant of Record. Paddle's domain review requires public terms, privacy, and refund pages linked from the site. `policies` in `site.json` holds the last-updated date and the refund window (Paddle accepts 14–90 days and rejects "no refunds" wording). The terms and refund pages must keep the sentence "Paddle.com is the Merchant of Record for all our orders", and the legal entity name must match the Paddle account exactly. A content test enforces these and checks that the licence page contains the full agreement text. Update the date whenever the policies change.
 
 ## Design references
 

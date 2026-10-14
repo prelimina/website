@@ -157,14 +157,17 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 23);
+  assert.equal(htmlFiles.length, 27);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
-      pricing: '/#download',
+      pricing: '/#pricing',
       download: '/#download',
       docs: '/capabilities/',
       'showcases/tank-motion': '/showcases/rolling-tank-impact/',
+      terms: '/legal/terms/',
+      privacy: '/legal/privacy/',
+      refunds: '/legal/refunds/',
     }).find(([route]) => path === join(root, route, 'index.html'));
     if (redirect) {
       assert.match(html, /name="robots" content="noindex"/);
@@ -218,9 +221,10 @@ test('active pages remain available and retired pages are removed or redirected'
     'capabilities',
     'pricing',
     'legal',
-    'terms',
-    'privacy',
-    'refunds',
+    'legal/licence',
+    'legal/terms',
+    'legal/privacy',
+    'legal/refunds',
     'download',
     'changelog',
     'showcases/sloshing-validation',
@@ -238,10 +242,20 @@ test('active pages remain available and retired pages are removed or redirected'
     assert.equal(existsSync(join('dist', route, 'index.html')), false, route);
   }
   assert.equal(existsSync('dist/validation/index.html'), false);
-  for (const route of ['pricing', 'download']) {
+  for (const route of ['terms', 'privacy', 'refunds']) {
     assert.match(
       readFileSync(`dist/${route}/index.html`, 'utf8'),
-      /http-equiv="refresh" content="0;url=\/#download"/,
+      new RegExp(`http-equiv="refresh" content="0;url=/legal/${route}/"`),
+    );
+  }
+  for (const [route, target] of [
+    ['pricing', '/#pricing'],
+    ['download', '/#download'],
+  ]) {
+    assert.ok(
+      readFileSync(`dist/${route}/index.html`, 'utf8').includes(
+        `http-equiv="refresh" content="0;url=${target}"`,
+      ),
     );
   }
   // The prescribed-roll demo was retired for the SPHERIC Test 10 validation (9 Oct 2026).
@@ -252,9 +266,9 @@ test('active pages remain available and retired pages are removed or redirected'
 });
 
 test('licensing summaries link the supplied agreement and preserve its core permissions', () => {
-  const agreement = readFileSync(join('public', site.licence.href), 'utf8');
+  const agreement = readFileSync(join('public', site.licence.textHref), 'utf8');
   assert.equal(
-    readFileSync(join('dist', site.licence.href), 'utf8'),
+    readFileSync(join('dist', site.licence.textHref), 'utf8'),
     agreement,
   );
   assert.match(
@@ -266,6 +280,20 @@ test('licensing summaries link the supplied agreement and preserve its core perm
   assert.ok(agreement.includes(site.licence.vatId));
   assert.equal(site.licence.version, '1.0');
   assert.equal(site.licence.date, '2026-09-23');
+  const page = readFileSync('dist/legal/licence/index.html', 'utf8')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ');
+  const words = (value) => value.replace(/^(?:#+|-) /gm, '').split(/\s+/);
+  // Every word of the agreement after its version line appears on the web page, in order.
+  let at = 0;
+  for (const word of words(agreement.split('\n').slice(3).join('\n')).filter(Boolean)) {
+    const found = page.indexOf(word, at);
+    assert.ok(found >= 0, `licence page is missing "${word}" after position ${at}`);
+    at = found + word.length;
+  }
   for (const section of [
     '2. Free noncommercial licence',
     '3. Commercial use requires a paid entitlement',
@@ -310,31 +338,55 @@ test('policy pages carry the disclosures Paddle requires and are linked from eve
       .replace(/<[^>]*>/g, ' ')
       .replace(/\s+/g, ' ');
   const mor = /Paddle\.com is the Merchant of Record for all our orders/;
-  const terms = text('dist/terms/index.html');
+  const terms = text('dist/legal/terms/index.html');
   assert.match(terms, mor);
   assert.ok(terms.includes(site.company));
-  const privacy = text('dist/privacy/index.html');
+  const privacy = text('dist/legal/privacy/index.html');
   assert.ok(privacy.includes(site.company));
   assert.ok(privacy.includes(site.licence.address));
   assert.match(privacy, /Paddle/);
-  const refunds = text('dist/refunds/index.html');
+  const refunds = text('dist/legal/refunds/index.html');
   assert.match(refunds, mor);
   assert.ok(site.policies.refundDays >= 14 && site.policies.refundDays <= 90);
   assert.ok(refunds.includes(`within ${site.policies.refundDays} days`));
   assert.doesNotMatch(refunds, /no refunds|all sales are final/i);
   for (const path of ['dist/index.html', 'dist/legal/index.html']) {
     const html = readFileSync(path, 'utf8');
-    for (const route of ['/terms/', '/privacy/', '/refunds/']) {
+    for (const route of [
+      '/legal/licence/',
+      '/legal/terms/',
+      '/legal/privacy/',
+      '/legal/refunds/',
+    ]) {
       assert.ok(html.includes(`href="${route}"`), `${path}: ${route}`);
     }
   }
 });
 
+test('the commercial price appears only as configured', () => {
+  const price = new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: site.commercial.currency,
+    maximumFractionDigits: 0,
+  }).format(site.commercial.price);
+  const text = (path) =>
+    readFileSync(path, 'utf8').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+  assert.match(text('dist/index.html'), new RegExp(`${price} per seat per year`));
+  assert.match(text('dist/legal/terms/index.html'), new RegExp(`${price} per seat per year`));
+  assert.ok(readFileSync('dist/index.html', 'utf8').includes('id="pricing"'));
+});
+
 test('prelaunch pages do not invent downloads, offers, evidence, or private source links', () => {
+  const price = new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: site.commercial.currency,
+    maximumFractionDigits: 0,
+  }).format(site.commercial.price);
   for (const path of files(resolve('dist')).filter((file) =>
     file.endsWith('.html'),
   )) {
-    const html = readFileSync(path, 'utf8');
+    // The configured commercial price is the only price allowed.
+    const html = readFileSync(path, 'utf8').replaceAll(price, '');
     for (const match of html.matchAll(/href="([^"]+\.(?:exe|msi|dmg|zip|AppImage)(?:[?#][^"]*)?)"/gi)) {
       assert.ok(catalogue.current?.downloads.some(download => download.installerUrl === match[1]),
         'Installer links must come from the verified catalogue');

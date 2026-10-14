@@ -2,7 +2,12 @@
 import Icon from './Icon.astro';
 import FlowBackdrop from './FlowBackdrop.astro';
 import site from '../content/site.json';
-import { downloadPlatforms } from '../content/content';
+import {
+  commercial,
+  downloadPlatforms,
+  licensingAction,
+  policies,
+} from '../content/content';
 import { loadCatalogue } from '../data/releases.mjs';
 const { current } = loadCatalogue();
 const version = current?.version ?? site.downloadPreview.version;
@@ -86,5 +91,50 @@ const releaseDateLabel = new Date(date).toLocaleDateString(
         )}
       </article>
     ))}
+  </div>
+  <div class="release-summary pricing-panel" id="pricing">
+    <div class="pricing-copy">
+      <h3>Full features and commercial licence</h3>
+      <ul class="pricing-rules">
+        <li>
+          Development versions (<1.0) offer all implemented features, free for
+          noncommercial use.
+        </li>
+        <li>
+          Commercial use always needs a licence, including business evaluation.
+        </li>
+      </ul>
+    </div>
+    <dl>
+      <div>
+        <dt>Price</dt>
+        <dd>
+          {commercial.priceLabel} per seat per {commercial.period}, plus VAT
+          where applicable
+        </dd>
+      </div>
+      <div>
+        <dt>{commercial.discount.percent}% discount</dt>
+        <dd>{commercial.discount.for}</dd>
+      </div>
+      <div>
+        <dt>Includes</dt>
+        <dd>
+          Every release during the subscription. Support is not included.{' '}
+          {policies.refundDays}-day refund.
+        </dd>
+      </div>
+    </dl>
+    <p class="pricing-links">
+      <a class="text-link" href={licensingAction.href}>
+        {licensingAction.label} <Icon size={16} />
+      </a>
+      <a class="text-link" href="/legal/terms/">
+        Terms <Icon size={16} />
+      </a>
+      <a class="text-link" href="/legal/refunds/">
+        Refund policy <Icon size={16} />
+      </a>
+    </p>
   </div>
 </section>

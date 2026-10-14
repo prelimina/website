@@ -8,9 +8,10 @@ const routes = [
   '/showcases/',
   '/capabilities/',
   '/legal/',
-  '/terms/',
-  '/privacy/',
-  '/refunds/',
+  '/legal/licence/',
+  '/legal/terms/',
+  '/legal/privacy/',
+  '/legal/refunds/',
   '/changelog/',
   '/showcases/sloshing-validation/',
   '/showcases/liquid-handling/',
@@ -401,8 +402,8 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
     'Linux',
     'macOS',
   ]);
-  await expect(page.locator('.release-summary')).toContainText(/v\d+\.\d+\.\d+/);
-  await expect(page.locator('.release-summary time')).toHaveAttribute(
+  await expect(page.locator('.release-summary:not(.pricing-panel)')).toContainText(/v\d+\.\d+\.\d+/);
+  await expect(page.locator('.release-summary:not(.pricing-panel) time')).toHaveAttribute(
     'datetime',
     /^\d{4}-\d{2}-\d{2}$/,
   );
@@ -437,9 +438,9 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
     'business evaluation',
   );
   await page.getByRole('link', { name: 'Read the full agreement' }).click();
-  await expect(page).toHaveURL(/\/licenses\/Prelimina-Licence-Agreement\.txt$/);
-  await expect(page.locator('body')).toContainText(
-    'Version 1.0 | 23 September 2026',
+  await expect(page).toHaveURL(/\/legal\/licence\/$/);
+  await expect(page.locator('main')).toContainText(
+    'Version 1.0 · 23 September 2026',
   );
   await expect(page.locator('body')).toContainText(
     'Free noncommercial licence',
@@ -455,11 +456,12 @@ test('homepage downloads, combined FAQ, and retired routes work', async ({
   await expect(
     page.getByRole('link', { name: 'licensing@prelimina.com', exact: true }),
   ).toHaveAttribute('href', /^mailto:licensing@prelimina\.com\?/);
-  for (const route of ['/pricing/', '/download/']) {
-    await page.goto(route);
-    await expect(page).toHaveURL(/\/#download$/);
-    await expect(page.locator('#download h2')).toBeInViewport();
-  }
+  await page.goto('/download/');
+  await expect(page).toHaveURL(/\/#download$/);
+  await expect(page.locator('#download h2')).toBeInViewport();
+  await page.goto('/pricing/');
+  await expect(page).toHaveURL(/\/#pricing$/);
+  await expect(page.locator('#pricing h3')).toBeInViewport();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/capabilities/');
   const menu = page.getByRole('button', { name: 'Menu' });
@@ -511,9 +513,10 @@ test('pages pass automated WCAG A and AA checks', async ({ page }) => {
     '/showcases/liquid-handling/',
     '/showcases/spillway-gates/',
     '/legal/',
-    '/terms/',
-    '/privacy/',
-    '/refunds/',
+    '/legal/licence/',
+    '/legal/terms/',
+    '/legal/privacy/',
+    '/legal/refunds/',
   ]) {
     await page.goto(route);
     const result = await new AxeBuilder({ page })
