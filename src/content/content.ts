@@ -378,7 +378,7 @@ export const showcases: readonly Application[] = [
   {
     slug: 'rolling-tank-impact',
     number: '07',
-    title: 'Check sloshing impacts in a rolling tank against a benchmark.',
+    title: 'Check pressure in a sloshing tank.',
     category: 'Tanks & prescribed motion',
     type: 'tank',
     availability: 'in_development',
@@ -532,9 +532,9 @@ export const showcases: readonly Application[] = [
     media: {
       kind: 'image',
       src: '/assets/showcases/lng-tank-sloshing.webp',
-      alt: 'Side view of a horizontal cylindrical tank with rounded ends, a quarter full of water, pitching three degrees each way. A wave runs back and forth along the tank and climbs the end walls; each time it passes under the sensor on the roof near the left end, the water there rises and falls. Below it, the simulated elevation at the sensor draws in step over the measured trace.',
+      alt: 'A section through the centre plane of a horizontal cylindrical tank with rounded ends, a quarter full of water, pitching three degrees each way. A wave runs back and forth along the tank and climbs the end walls; each time it passes under the sensor on the roof near the left end, the water there rises and falls. Below it, the simulated elevation at the sensor draws in step over the measured trace.',
       caption:
-        'A repeat Prelimina run with the record settings, side view coloured by speed (0–1.5 m/s); isolated spray particles are not drawn. The elevation below is read from this run’s particles under the sensor, so it differs slightly from the chart; brief spikes where a sheet of water crosses the sensor run off the top. Development build 8efc8505.',
+        'A section through the centre plane of the 3D simulation (a 40 mm thick slice), from a repeat Prelimina run with the record settings, coloured by speed (0–1.5 m/s); isolated spray particles are not drawn. The elevation below is read from this run’s particles under the sensor, so it differs slightly from the chart; brief spikes where a sheet of water crosses the sensor run off the top. Development build 8efc8505.',
       aspectRatio: '960 / 769',
       fit: 'contain',
     },
