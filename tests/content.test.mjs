@@ -157,7 +157,7 @@ test('all built local links, anchors, and assets exist, and every page stays noi
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 27);
+  assert.equal(htmlFiles.length, 28);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -235,6 +235,7 @@ test('active pages remain available and retired pages are removed or redirected'
     'showcases/rolling-tank-impact',
     'showcases/heat-conduction-validation',
     'showcases/heated-cavity-validation',
+    'showcases/lng-tank-sloshing',
   ]) {
     assert.ok(existsSync(join('dist', route, 'index.html')), route);
   }

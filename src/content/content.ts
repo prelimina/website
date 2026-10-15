@@ -520,6 +520,55 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#multiphysics',
     },
   },
+  {
+    slug: 'lng-tank-sloshing',
+    number: '10',
+    title: 'Check sloshing in a pitching fuel tank against experiment.',
+    category: 'Tanks & prescribed motion',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'Pitch a cylindrical LNG fuel tank near its first sloshing mode and compare the free-surface elevation at a roof sensor with measurements and a published 3D RANS simulation.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/lng-tank-sloshing.webp',
+      alt: 'Side view of a horizontal cylindrical tank with rounded ends, a quarter full of water, pitching three degrees each way. A wave runs back and forth along the tank and climbs the end walls; each time it passes under the sensor on the roof near the left end, the water there rises and falls. Below it, the simulated elevation at the sensor draws in step over the measured trace.',
+      caption:
+        'A repeat Prelimina run with the record settings, side view coloured by speed (0–1.5 m/s); isolated spray particles are not drawn. The elevation below is read from this run’s particles under the sensor, so it differs slightly from the chart; brief spikes where a sheet of water crosses the sensor run off the top. Development build 8efc8505.',
+      aspectRatio: '960 / 769',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/lng-tank-sloshing-chart.svg',
+      alt: 'Top: free-surface elevation at the roof sensor over five forcing periods. The Prelimina curve follows the measured troughs and rises with each measured crest, but from the second period on its crests arrive a little early and reach higher. The 3D RANS curve lies close to the measurement throughout. Bottom: RMS difference to the experiment per period. Prelimina and RANS agree in the first period, about 0.02; from the second period on Prelimina is 0.14 to 0.21 and RANS 0.06 to 0.08.',
+      caption:
+        'Free-surface elevation η at the ultrasonic sensor on the tank roof, 0.122 m from the left end of the straight section, as a fraction of the 88.6 mm fill depth h. Experiment and 3D RANS from Grotle (2018), PhD thesis, NTNU, Fig. 3.5, digitised. Prelimina FLIP without density projection or PBD and with the affine (APIC) particle transfer off, 5 mm grid, CFL 0.4 with a 0.5 ms step limit; elevation from the reconstructed free surface over a 10 mm footprint. Development build 8efc8505.',
+      aspectRatio: '960 / 760',
+      fit: 'contain',
+    },
+    metricsHeading: 'Comparison with measurements',
+    question:
+      'Does the simulated free surface in a pitching cylindrical tank rise and fall with the measurement, period after period?',
+    inputs:
+      'A horizontal cylindrical tank, 0.347 m inside diameter with a 0.89 m straight section and 2:1 elliptic heads, a quarter full of water (h/D = 0.255). It pitches ±3° about the bottom of its centre section at a 2.17 s period, 0.92 times the first sloshing frequency, starting from rest. Water properties and gravity.',
+    variables:
+      'Grid spacing (5 and 4 mm), the time-step limit (CFL 2 and 0.4), density projection and PBD, and the particle-transfer settings.',
+    controls:
+      'The tank, fill, motion and sensor position of the experiment by Grotle and Æsøy (2017): an ultrasonic level sensor on the roof of the straight section, looking down.',
+    outputs:
+      'Free-surface exports from which the elevation under the sensor is read, the tank motion and a bottom pressure probe as CSV, and the live fluid view.',
+    metrics:
+      'RMS difference of η/h to the experiment over five periods: 0.16 (the published 3D RANS: 0.06). Period by period: 0.02, 0.14, 0.16, 0.21 and 0.18 (RANS: 0.02 to 0.08). The troughs are within 0.07 h of the measurement in every period. The crests of periods 1 to 4 reach 0.66 to 0.89 h against a measured 0.57 to 0.74 h, and arrive 0.03 to 0.09 periods early; delaying the simulated curve by 0.05 periods lowers the RMS difference to 0.12. A repeat run of the same set-up, read from its particles instead of the reconstructed surface, gave 0.19.',
+    assumptions:
+      'A single liquid; the air above it is not simulated. The tank is the inner surface only, rotating as a rigid body in a still domain, with gravity fixed. The sensor is modelled as the highest crossing of the reconstructed free surface along vertical lines within 10 mm of its axis, in the tank frame; the experiment’s ultrasonic beam is a few centimetres wide.',
+    limitation:
+      'One sensor, one fill and one forcing frequency from a single experiment, and the curves are digitised from a printed figure. From the second period on, the simulated crests come early and high, so the error is about three times that of the published RANS. This run turns the affine (APIC) particle transfer off: with the current default transfer the same set-up gives an RMS difference of 0.45, because the surface reads too high from the second period on. With density projection and two PBD iterations the run completes with 0.34, from short spikes where thin sheets of water cross the sensor line.',
+    nextAction: {
+      label: 'Explore motion capabilities',
+      href: '/capabilities/#motion',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux
