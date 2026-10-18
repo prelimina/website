@@ -569,6 +569,55 @@ export const showcases: readonly Application[] = [
       href: '/capabilities/#motion',
     },
   },
+  {
+    slug: 'two-phase-sloshing',
+    number: '11',
+    title: 'Check sloshing wall pressure with the air resolved.',
+    category: 'Tanks & prescribed motion',
+    type: 'tank',
+    availability: 'in_development',
+    description:
+      'The same tank as application 01, now with the air resolved: shake the closed tank side to side with both water and air simulated, and compare the wall-pressure impulse with published measurements.',
+    media: {
+      kind: 'image',
+      src: '/assets/showcases/two-phase-sloshing.webp',
+      alt: 'Section through the middle of the closed tank, seen in the tank frame, over two forcing periods. The water, coloured by speed, runs along the floor, climbs the right-hand end wall and falls back, then runs to the left wall and back again; the air above it is light grey. Below it, the simulated pressure at the wall probe P1 draws in step over the measured trace, rising with each measured impact.',
+      caption:
+        'A two-phase Prelimina run (water and air) on the 6 mm grid over the last two forcing periods: a section through the centre plane of the 3D tank, in the tank frame, with the water coloured by speed (0–2 m/s) and the air light grey. The P1 pressure, relative to the probe in the air at the roof, draws in step over the measured trace, placed by a cross-correlation phase shift. This run’s impulse: −4.7 %. Prelimina multiphase branch 412740b5 (PR #182).',
+      aspectRatio: '960 / 900',
+      fit: 'contain',
+    },
+    chart: {
+      kind: 'image',
+      src: '/assets/showcases/two-phase-sloshing-chart.svg',
+      alt: 'Two panels, 6 mm and 4 mm grid, each showing the pressure impulse at P1 in forcing periods 4, 5 and 6 for single-phase and two-phase runs, over the measured mean and period range. In period 4 both models sit at or below the bottom of the measured range; in periods 5 and 6 they lie inside it. On the 6 mm grid the two models are close in every period; on the 4 mm grid the two-phase runs lie closer to the measured mean. Mean over the three periods against the experiment: 6 mm, single phase −2.3 % and water and air −4.6 %; 4 mm, single phase −6.5 % and water and air −1.5 %.',
+      caption:
+        'Pressure impulse at P1 per forcing period, clipped at 2500 Pa (the top of the printed figure) and integrated over each period. Markers are the mean over runs of one configuration; bars run from the lowest to the highest run. Experiment from Hu, Kashiwagi and Kishev (2004), Fig. 3: the mean of its five printed periods (dashed) and their range (band). The two-phase pressure is taken relative to a probe in the air at the roof centre, which removes the pressure level of the closed tank. Prelimina FLIP, phase-field variant with grid-velocity RK3 advection, CFL 2, on an RTX 5080 (Vulkan). Prelimina multiphase branch 412740b5 (PR #182), being merged into main.',
+      aspectRatio: '960 / 560',
+      fit: 'contain',
+    },
+    metricsHeading: 'Comparison with measurements',
+    question:
+      'Does the wall-pressure impulse still match the measurement when the air above the water is simulated too?',
+    inputs:
+      'The tank of application 01: closed, 0.6 m long, 0.3 m high and 0.06 m wide, with 6 cm of water and air above it at a 1000:1 density ratio. It is moved sideways with a 6 cm amplitude at a 1.3 s period, ramped in over the first three periods. Water and air properties and gravity.',
+    variables:
+      'Single phase or water and air, grid spacing (8, 6 and 4 mm), and repeat runs of each configuration.',
+    controls:
+      'The tank, fill, motion and probe position of the experiment: pressure sensor P1 on the right-hand end wall, 5 cm above the floor. A second probe in the air at the roof centre sets the reference level for the two-phase pressure. Impulses are compared over forcing periods 4 to 6.',
+    outputs:
+      'Pressure histories at P1 and the roof probe, exported as CSV, volume fields of phase and velocity for the section view, and the live fluid view.',
+    metrics:
+      'Mean pressure impulse per period against the experiment: water and air −4.6 % on the 6 mm grid (four runs) and −1.5 % on the 4 mm grid (two runs); single phase −2.3 % (three runs) and −6.5 % (one run). Period by period the two-phase mean stays within about 10 % of single phase (at most 12 %, on the 4 mm grid, where single phase has one run), and its run-to-run scatter is similar. Resolving the air costs about 1.8 times the single-phase run time: 134 s against 75 s for 7.8 s simulated on the 4 mm grid.',
+    assumptions:
+      'Water and air are both simulated, the air at 1/1000 of the water density. Both are incompressible: the air has no equation of state, so it does not cushion the impacts. Prelimina FLIP in its phase-field variant (Braun, Bender and Thuerey 2025) with grid-velocity RK3 advection. The tank motion is imposed as an acceleration of the tank frame. Each pressure is the average over a small sphere at the probe, not a flush wall transducer. The model is a 6 cm wide slice between walls, so the flow is close to two-dimensional.',
+    limitation:
+      'Impulses are compared, not impact peaks: the air is incompressible, so it cannot cushion an impact. The tank is closed. On the 8 mm grid the impulse comes out 24 % high; use about ten cells or more across the water depth. Repeat runs of one set-up differ from period to period, so use at least three runs per configuration where that scatter matters.',
+    nextAction: {
+      label: 'Explore physics capabilities',
+      href: '/capabilities/#multiphysics',
+    },
+  },
 ] as const satisfies readonly Application[];
 
 // Provisional targets from the 24 September 2026 runtime assessment, with Linux
