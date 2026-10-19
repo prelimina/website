@@ -1050,6 +1050,74 @@ em {
   display: block;
   min-width: 0;
 }
+/* Homepage applications: a horizontal rail that bleeds to the viewport edges
+   and snaps cards to the container's left edge. */
+.showcase-rail {
+  container-type: inline-size;
+}
+.showcase-track {
+  /* cqw, not %: scroll-padding percentages resolve against the track itself. */
+  --rail-bleed: calc(50vw - 50cqw);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(480px, 78vw);
+  gap: 29px;
+  margin-inline: calc(-1 * var(--rail-bleed));
+  padding: 4px var(--rail-bleed) 8px;
+  scroll-padding-inline: var(--rail-bleed);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.showcase-track::-webkit-scrollbar {
+  display: none;
+}
+.showcase-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.showcase-track > .showcase-card {
+  scroll-snap-align: start;
+}
+.showcase-track .showcase-copy p {
+  max-width: none;
+}
+.showcase-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 30px;
+}
+.showcase-arrows {
+  display: flex;
+  gap: 10px;
+}
+.showcase-arrow {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #ededed;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
+}
+.showcase-arrow:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.showcase-arrow:disabled {
+  opacity: 0.4;
+}
+.showcase-arrow-back {
+  display: grid;
+  transform: rotate(180deg);
+}
 .showcase-visual {
   background: #ededed;
   border-radius: 8px;

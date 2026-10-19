@@ -1,0 +1,91 @@
+---
+import Icon from './Icon.astro';
+import ShowcaseCard from './ShowcaseCard.astro';
+import { showcases } from '../content/content';
+---
+
+<div class="showcase-rail" data-showcase-rail>
+  <div
+    class="showcase-track"
+    role="region"
+    aria-label="Applications"
+    tabindex="0"
+    data-showcase-track
+  >
+    {showcases.map((item) => (
+      <ShowcaseCard item={item} />
+    ))}
+  </div>
+  <div class="showcase-controls">
+    <a class="text-link" href="/showcases/">
+      All {showcases.length} applications <Icon size={16} />
+    </a>
+    <div class="showcase-arrows">
+      <button
+        class="showcase-arrow"
+        type="button"
+        aria-label="Previous applications"
+        data-showcase-prev
+        disabled
+      >
+        <span class="showcase-arrow-back"><Icon size={18} /></span>
+      </button>
+      <button
+        class="showcase-arrow"
+        type="button"
+        aria-label="Next applications"
+        data-showcase-next
+      >
+        <Icon size={18} />
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document
+    .querySelectorAll<HTMLElement>('[data-showcase-rail]')
+    .forEach((rail) => {
+      const track = rail.querySelector<HTMLElement>('[data-showcase-track]');
+      const prev = rail.querySelector<HTMLButtonElement>('[data-showcase-prev]');
+      const next = rail.querySelector<HTMLButtonElement>('[data-showcase-next]');
+      if (!track || !prev || !next) return;
+
+      // One step = one card plus the gap, so every click lands on a snap point.
+      const step = () => {
+        const card = track.firstElementChild as HTMLElement | null;
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return card ? card.offsetWidth + gap : track.clientWidth;
+      };
+      // Where a smooth scroll is heading, so quick repeat clicks keep stepping.
+      let target: number | undefined;
+      const update = () => {
+        const max = track.scrollWidth - track.clientWidth;
+        if (target !== undefined && Math.abs(track.scrollLeft - target) < 2) {
+          target = undefined;
+        }
+        prev.disabled = track.scrollLeft <= 1;
+        next.disabled = track.scrollLeft >= max - 1;
+      };
+      const move = (direction: number) => {
+        const size = step();
+        const max = track.scrollWidth - track.clientWidth;
+        const from = target ?? track.scrollLeft;
+        target = Math.min(
+          max,
+          Math.max(0, (Math.round(from / size) + direction) * size),
+        );
+        track.scrollTo({
+          left: target,
+          behavior: reducedMotion.matches ? 'auto' : 'smooth',
+        });
+      };
+
+      prev.addEventListener('click', () => move(-1));
+      next.addEventListener('click', () => move(1));
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    });
+</script>

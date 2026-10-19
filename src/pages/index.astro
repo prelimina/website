@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Workbench from '../components/Workbench.astro';
-import ShowcaseCard from '../components/ShowcaseCard.astro';
+import ShowcaseRail from '../components/ShowcaseRail.astro';
 import DownloadSection from '../components/DownloadSection.astro';
 import CapabilitySummary from '../components/CapabilitySummary.astro';
 import TeamSection from '../components/TeamSection.astro';
@@ -11,7 +11,6 @@ import SignupPanel from '../components/SignupPanel.astro';
 import AppScreenshot from '../components/AppScreenshot.astro';
 import site from '../content/site.json';
 import {
-  showcases,
   faqs,
   licence,
   licensingAction,
@@ -44,11 +43,7 @@ import {
           microgravity.
         </p>
       </div>
-      <div class="showcase-grid">
-        {showcases.map((item) => (
-          <ShowcaseCard item={item} />
-        ))}
-      </div>
+      <ShowcaseRail />
     </div>
   </section>
   <AppScreenshot />
