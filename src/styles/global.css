@@ -1069,6 +1069,16 @@ em {
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  /* Cards stay solid inside the content column and fade out in the margins. */
+  --rail-fade: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--rail-bleed),
+    #000 calc(100% - var(--rail-bleed)),
+    transparent
+  );
+  -webkit-mask-image: var(--rail-fade);
+  mask-image: var(--rail-fade);
 }
 .showcase-track::-webkit-scrollbar {
   display: none;
