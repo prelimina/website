@@ -87,5 +87,42 @@ import { showcases } from '../content/content';
       track.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update);
       update();
+
+      // Autoplay: step one card at a time while the rail is on screen and the
+      // reader is not hovering, focused in it, or recently touching it.
+      const autoplayDelay = 4000;
+      const idleAfterInteraction = 8000;
+      let lastInteraction = 0;
+      let inView = false;
+      const interact = () => {
+        lastInteraction = Date.now();
+      };
+      ['pointerdown', 'wheel', 'keydown'].forEach((type) =>
+        rail.addEventListener(type, interact, { passive: true }),
+      );
+      new IntersectionObserver(
+        ([entry]) => {
+          inView = entry.isIntersecting;
+        },
+        { threshold: 0.5 },
+      ).observe(track);
+      window.setInterval(() => {
+        if (
+          !inView ||
+          reducedMotion.matches ||
+          document.hidden ||
+          rail.matches(':hover') ||
+          rail.contains(document.activeElement) ||
+          Date.now() - lastInteraction < idleAfterInteraction
+        ) {
+          return;
+        }
+        if (next.disabled) {
+          target = 0;
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          move(1);
+        }
+      }, autoplayDelay);
     });
 </script>
