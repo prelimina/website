@@ -2141,6 +2141,12 @@ em {
   overflow: hidden;
   background: #ededed;
 }
+.app-shot figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: var(--font-meta);
+  line-height: 1.5;
+}
 .app-shot-frame img {
   display: block;
   width: 100%;
