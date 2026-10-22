@@ -101,7 +101,7 @@ export const capabilityGroups = [
         name: 'Domain inlets and pressure outlets',
         status: 'experimental',
         description:
-          'Prescribe inlet velocity or outlet pressure on domain faces, with availability determined by the selected method.',
+          'Prescribe inlet velocity or outlet pressure on domain faces, with availability determined by the selected method. Pressure outlets can use a hydrostatic reference level to help keep water at rest under gravity.',
       },
       {
         name: 'Mesh-surface inflow',
@@ -161,13 +161,13 @@ export const capabilityGroups = [
         name: 'Surface tension',
         status: 'experimental',
         description:
-          'Include capillary forces in the supported free-surface formulations.',
+          'Include capillary forces in supported free-surface formulations. Compatible PF-FLIP setups use sharp interfaces and carried curvature by default, with particle advection selected automatically.',
       },
       {
         name: 'Contact angles and wetting',
         status: 'experimental',
         description:
-          'Static wetting, and selected dynamic or hysteretic models.',
+          'Static wetting and selected dynamic or hysteretic models, with an experimental wall-energy method for surface-tension simulations.',
       },
       {
         name: 'Wave-generation boundaries',
@@ -263,7 +263,13 @@ export const capabilityGroups = [
         name: 'Resolved liquid–gas flow',
         status: 'experimental',
         description:
-          'Two-phase formulations, with configuration-specific density-ratio and interface behaviour.',
+          'Simulate liquid and gas together, with configuration-specific density-ratio and interface behaviour. PF-FLIP can use volume correction to limit liquid-volume drift during expansion; gas is incompressible by default.',
+      },
+      {
+        name: 'Compressible air in closed tanks',
+        status: 'experimental',
+        description:
+          'An optional compressible-air model for closed-tank PF-FLIP simulations; experimental and off by default.',
       },
       {
         name: 'Turbulence and wall treatment',
@@ -353,7 +359,7 @@ export const capabilityGroups = [
         name: 'Checkpoint and restart',
         status: 'implemented',
         description:
-          'Save and resume supported FLIP and meshless configurations. Persistent finite-volume restart is not yet available.',
+          'Resume supported FLIP and meshless runs after reopening a desktop document, or configure checkpoints in CLI setups. Restart begins at time zero; persistent finite-volume restart is not yet available.',
       },
       {
         name: 'Python runtime',
@@ -369,16 +375,21 @@ export const capabilityGroups = [
     icon: 'sparkle',
     summaryTitle: 'Controllable by AI',
     summary:
-      'Setups are plain, schema-validated files that AI agents can read, write, and check before a run. Next: an assistant that sets up a case, runs it, and summarises the results with you.',
-    summaryStatus: 'development',
+      'Plain, schema-validated setup files and packaged CLI/MCP tools let AI agents check setups and run CFD tasks. A local setup assistant is experimental.',
     description:
-      'Setup documents that software can author and check, and the assistant being built on them.',
+      'Machine-readable setup documents and packaged tools that software can use to validate and run CFD tasks.',
     features: [
       {
         name: 'Machine-readable setup schema',
         status: 'implemented',
         description:
           'A generated JSON schema describes the setup document, and setups and studies can be validated from the command line without starting a simulation.',
+      },
+      {
+        name: 'Agent Pack CLI and MCP tools',
+        status: 'implemented',
+        description:
+          'Windows and Linux desktop packages include tools to validate setups and run task-based CFD workflows from the command line or through MCP.',
       },
       {
         name: 'Local setup assistant',
