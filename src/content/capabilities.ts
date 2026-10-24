@@ -41,7 +41,7 @@ export const solverCards = [
   },
 ] as const;
 
-interface CapabilityGroup {
+export interface CapabilityGroup {
   id: string;
   title: string;
   icon: string;
