@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.8",
+  "releaseId": 422837695,
+  "publishedAt": "2026-10-24T16:16:54Z",
+  "notesSha256": "a9388ee9951b976cd53f508d3d751ee947d331c3bf4d7a2bf5d26c12971606ea",
+  "manifestSha256": "6f565830bf1adb2f25ccacd1de152b4fa8abf56e02a03aa9a54805e0c29a201b",
+  "manifestUrl": "https://github.com/prelimina/desktop/releases/download/v0.2.8/download-manifest.json",
+  "downloads": [
+    {
+      "channel": "linux-x64",
+      "installerUrl": "https://github.com/prelimina/desktop/releases/download/v0.2.8/Prelimina-0.2.8-linux-x64.AppImage",
+      "sha256": "03aa7dd5dc55d9a700a675847131b31ada61aa00eb009f2bd834dcd1839bb668",
+      "bytes": 72772088,
+      "requirements": [
+        "Vulkan-capable GPU and vendor driver",
+        "No CUDA backend",
+        "No .NET runtime required",
+        "Standard Linux AppImage includes CalculiX + preCICE; licences and upstream source links in COUPLING_LICENSES.md",
+        "Bundled Linux system libraries and AppImage runtime; licences and upstream source links in system-licenses/",
+        "Linux x64; glibc build target: 2.28 (see separate ABI validation report)",
+        "FUSE 2 for AppImage mounting",
+        "Executable AppImage in a user-writable directory for self-updates"
+      ],
+      "signing": "unsigned"
+    },
+    {
+      "channel": "win-x64",
+      "installerUrl": "https://github.com/prelimina/desktop/releases/download/v0.2.8/Prelimina-0.2.8-win-x64-Setup.exe",
+      "sha256": "c0c5d8fefec5403012a73de896d7b3f5065bb892c073b3321fb783e309ec3cb4",
+      "bytes": 52607218,
+      "requirements": [
+        "Vulkan-capable GPU and vendor driver",
+        "No CUDA backend",
+        "No .NET runtime required",
+        "Windows x64; MSVC runtime bundled; supported Windows versions require qualification"
+      ],
+      "signing": "unsigned"
+    }
+  ]
+}
