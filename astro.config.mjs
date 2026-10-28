@@ -8,6 +8,8 @@ export default defineConfig({
     '/docs/': '/capabilities/',
     '/pricing/': '/#pricing',
     '/download/': '/#download',
+    '/about/': '/#team',
+    '/consulting/': '/#pilot-contact',
     '/showcases/tank-motion/': '/showcases/rolling-tank-impact/',
     // Policy pages moved under /legal/ on 14 Oct 2026.
     '/terms/': '/legal/terms/',

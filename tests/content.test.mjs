@@ -153,17 +153,19 @@ function files(directory) {
       : [join(directory, entry.name)],
   );
 }
-test('all built local links, anchors, and assets exist, and every page stays noindex', () => {
+test('built pages, links, anchors, and assets are indexable where intended', () => {
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 29);
+  assert.equal(htmlFiles.length, 31);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
       pricing: '/#pricing',
       download: '/#download',
       docs: '/capabilities/',
+      about: '/#team',
+      consulting: '/#pilot-contact',
       'showcases/tank-motion': '/showcases/rolling-tank-impact/',
       terms: '/legal/terms/',
       privacy: '/legal/privacy/',
@@ -175,7 +177,15 @@ test('all built local links, anchors, and assets exist, and every page stays noi
         html.includes(`http-equiv="refresh" content="0;url=${redirect[1]}"`),
       );
     } else {
-      assert.match(html, /name="robots" content="noindex, nofollow"/);
+      if (
+        path === join(root, 'confirmed', 'index.html') ||
+        path === join(root, '404.html')
+      ) {
+        assert.match(html, /name="robots" content="noindex, follow"/);
+      } else {
+        assert.doesNotMatch(html, /name="robots" content="noindex/);
+        assert.match(html, /rel="canonical" href="https:\/\/prelimina\.com\//);
+      }
       // Capabilities carries a second h1 for its Solvers section (140a307).
       const h1s = path.endsWith(join('capabilities', 'index.html')) ? 2 : 1;
       assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, h1s, path);

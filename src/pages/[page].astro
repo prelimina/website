@@ -26,7 +26,11 @@ const title = page === 'changelog' && current ? 'Release history.' : content.tit
 const description = page === 'changelog' && current ? 'Approved notes for published desktop releases.' : content.description;
 ---
 
-<Layout title={title} description={description}>
+<Layout
+  title={title}
+  description={description}
+  noindex={page === 'confirmed'}
+>
   <div class="container">
     {page === 'capabilities' && <SolverSection />}
     <header

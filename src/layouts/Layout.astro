@@ -7,12 +7,15 @@ import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 const {
   title = 'GPU-native CFD for moving liquids and early-stage design',
   description = 'Explore sloshing, baffle layouts, and free-surface motion with Prelimina, a GPU-native desktop CFD application in development for early-stage design.',
+  noindex = false,
 } = Astro.props;
 const path = Astro.url.pathname;
+const canonicalUrl = new URL(path, 'https://prelimina.com').href;
 ---
 
 <!doctype html>
@@ -21,9 +24,15 @@ const path = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="robots" content="noindex, nofollow" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="theme-color" content="#000000" />
     <title>{title} — Prelimina</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Prelimina" />
+    <meta property="og:title" content={`${title} — Prelimina`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/assets/logo_black_white.svg" />
     <link
       rel="preload"

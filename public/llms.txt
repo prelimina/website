@@ -1,0 +1,23 @@
+# Prelimina
+
+> GPU-native CFD for moving liquids and early-stage design.
+
+Prelimina is a desktop computational fluid dynamics application for early-stage design work involving moving liquids and free surfaces. It is developed by PLASMICA d.o.o. in Split, Croatia.
+
+The Windows and Linux desktop application is in development. Current releases are available from the official GitHub releases page. Review the current system requirements and licence before installing or using it. Commercial use requires a paid licence; noncommercial use is available under the published licence terms.
+
+## Product information
+
+- [Home and product overview](https://prelimina.com/): Product scope, current status, and key actions.
+- [Applications](https://prelimina.com/showcases/): Validation cases and demonstrations, with assumptions, comparisons, and limitations.
+- [Capabilities](https://prelimina.com/capabilities/): Features and their current maturity.
+- [Download and system requirements](https://prelimina.com/#download): Current desktop release links, supported platforms, and hardware requirements.
+- [Release status](https://prelimina.com/release-status.json): Machine-readable current release identity.
+- [Official desktop releases](https://github.com/prelimina/desktop/releases): Release notes and platform installers.
+- [Prelimina licence](https://prelimina.com/legal/licence/): Permitted use and licensing conditions.
+- [Terms of Service](https://prelimina.com/legal/terms/): Website and commercial order terms.
+- [Privacy Notice](https://prelimina.com/legal/privacy/): Website and correspondence data practices.
+
+## For AI and automation tools
+
+Windows and Linux desktop releases include Agent Pack and CLI/MCP tools for validating setups and running task-based CFD workflows. Use the published setup schema and release information to check compatibility; do not infer supported features from a prompt alone. A simulation result is specific to its solver, inputs, assumptions, and validation evidence.

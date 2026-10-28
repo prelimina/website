@@ -32,7 +32,7 @@ try {
   for (const download of data.downloads) assert.ok(home.includes(`href="${download.installerUrl}"`));
   assert.ok(home.includes('v0.1.0'));
   assert.ok(home.includes('Coming soon'));
-  assert.ok(home.includes('noindex'));
+  assert.ok(!home.includes('noindex'));
   const changelog = readFileSync(join(fixture, 'dist/changelog/index.html'), 'utf8');
   assert.ok(changelog.includes('Corrects A &amp; B.'));
   assert.ok(!changelog.includes('No public product version'));
@@ -40,7 +40,7 @@ try {
   const tests = spawnSync(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/releases.test.mjs'],
     { cwd: fixture, encoding: 'utf8', timeout: 60000 });
   if (tests.status !== 0) throw new Error(tests.stdout + tests.stderr);
-  console.log('PASS: verified alpha fixture builds with exact downloads, escaped notes, noindex, current identity and content tests.');
+  console.log('PASS: verified alpha fixture builds with exact downloads, escaped notes, indexable pages, current identity and content tests.');
 } finally {
   // This exact directory was allocated by mkdtemp above; no user checkout is removed.
   rmSync(fixture, { recursive: true, force: true });

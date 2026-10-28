@@ -111,7 +111,7 @@ When replacing a concept schematic with a real capture, record the product versi
 
 The owner approved publishing this **prelaunch design preview** on 2026-09-22. `src/content/site.json` records that website approval as `publicationApproved: true`. That website approval does not approve software releases, prices, or a general application contact service. The later instruction to publish the supplied Licence Agreement is recorded above. The site still labels its candidate illustrations and unavailable downloads explicitly.
 
-`robots.txt`, page metadata, and `_headers` request no indexing. Noindex is not access control: the approved preview may be public, and nothing in this repository should depend on it being private.
+The owner approved indexing the public website on 2026-10-28. The site allows crawling, publishes canonical URLs, an XML sitemap, and an AI-readable content map at `/llms.txt`, and redirects the former `/about/` and `/consulting/` pages to the closest current sections. The newsletter confirmation and 404 pages remain noindex. The browser app remains noindex because it is an interactive application route, not a search landing page. Noindex is not access control: the approved preview may be public, and nothing in this repository should depend on it being private.
 
 The existing **Cloudflare Workers Static Assets** target is `prelimina-website`. Wrangler builds the Astro site before uploading `dist/`, so both a direct deployment and an existing Cloudflare Git integration receive current static output. The 404 page and security headers are included.
 
@@ -129,7 +129,7 @@ If the repo is already connected through Cloudflare Workers Builds, use the repo
 Before a public product launch:
 
 1. Review the Terms of Service, Privacy Notice, and Refund Policy against the final products and any licence-activation data flow. Company details and the software licence are published from the supplied agreement.
-2. Add the final domain, canonical URLs, sitemap, and an intentional indexing policy.
+2. Canonical host, canonical page URLs, sitemap, and indexing policy are configured for `https://prelimina.com`. Submit the sitemap and request recrawling in Google Search Console after deployment.
 3. Integrate the **existing shared schemaVersion 2 release manifest**, owned at `SlangSolvers/schemas/release-manifest.schema.json`, when real approved releases exist. No competing release schema or fake manifest is created here. Add schema/approved-host validation, actual platform eligibility, hashes/sizes, freshness, and failure-state tests before enabling downloads or `alpha_open`.
 4. Configure the agreed release/deployment process. Keep installers on their separate release host.
 
@@ -164,11 +164,11 @@ This iteration uses the supplied initial website brief as product context, with 
 
 Trusted source release automation validates the authoritative desktop download manifest (schemaVersion 2), public asset hashes and completed publication receipt before synchronizing a public projection into `src/data/releases/<version>.json`, the exact reviewed notes into `src/content/releases/<version>.md`, and `src/data/current-release.json`. It never copies private qualification evidence. The initial pointer is `null`, so the current preview remains unchanged until an approved software release is verified. No sample release is checked in.
 
-The data loader checks identities, hashes, approved GitHub download URLs, supported platforms, note safety and newest-version selection. Existing release identities are immutable. Verified data supplies real version/date/installer links and changelog history while retaining unsupported-platform labels, licensing and noindex. Notes render as escaped text, never executable Markdown/MDX. The `alpha_open` content state requires this catalogue; synchronization does not edit the site's launch or publication-approval settings.
+The data loader checks identities, hashes, approved GitHub download URLs, supported platforms, note safety and newest-version selection. Existing release identities are immutable. Verified data supplies real version/date/installer links and changelog history while retaining unsupported-platform labels and licensing. Notes render as escaped text, never executable Markdown/MDX. The `alpha_open` content state requires this catalogue; synchronization does not edit the site's launch or publication-approval settings.
 
 `/release-status.json` reports the selected public release ID, version and notes hash, or `null`. Source automation checks this actual deployed response after the existing Workers Builds connection deploys a synchronization commit. A successful push alone is not deployment verification. No new Cloudflare deployment integration is added.
 
-Run `npm run test:releases` for a disposable build with a synthetic verified alpha catalogue. It verifies actual download links, escaped reviewed notes, unchanged noindex, deployment status and content checks without modifying the real preview or publishing fixture packages. `npm run check`, `npm run build` and `npm test` cover the checked-in empty catalogue.
+Run `npm run test:releases` for a disposable build with a synthetic verified alpha catalogue. It verifies actual download links, escaped reviewed notes, deployment status and content checks without modifying the real preview or publishing fixture packages. `npm run check`, `npm run build` and `npm test` cover the checked-in empty catalogue.
 
 ## Browser app
 
