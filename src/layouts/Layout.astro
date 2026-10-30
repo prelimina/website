@@ -11,7 +11,7 @@ interface Props {
 }
 const {
   title = 'GPU-native CFD for moving liquids and early-stage design',
-  description = 'Explore sloshing, baffle layouts, and free-surface motion with Prelimina, a GPU-native desktop CFD application in development for early-stage design.',
+  description = 'Explore sloshing, baffle layouts, and free-surface motion with Prelimina, a GPU-native CFD application for desktop and browser, in development for early-stage design.',
   noindex = false,
 } = Astro.props;
 const path = Astro.url.pathname;
@@ -129,7 +129,7 @@ const canonicalUrl = new URL(path, 'https://prelimina.com').href;
       <div class="container footer-bottom">
         <span>Developed by {site.company}</span>
         <span class="preview-label">
-          <i></i> DESIGN PREVIEW · PRELAUNCH
+          <i></i> PRE-RELEASE · IN DEVELOPMENT
         </span>
         <span>© {new Date().getFullYear()} Prelimina</span>
       </div>

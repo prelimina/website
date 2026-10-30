@@ -712,7 +712,7 @@ export const faqs = [
   {
     question: 'Does it run in my browser?',
     answer:
-      'The browser version of Prelimina is currently in development and coming soon. It will run natively in your browser. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation.',
+      'Yes. The browser version of Prelimina runs natively in your browser, with no installation: open it from Try here at the top of the page. Like the desktop application, it is in development and not yet ready for production use. The interactive workflow illustration on this website explains an engineering task; it does not run a fluid simulation.',
   },
 ] as const;
 

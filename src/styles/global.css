@@ -325,13 +325,18 @@ em {
 .menu-toggle {
   display: none;
 }
+/* Copy and workflow window span the content width; the window column is capped
+   so the copy keeps most of the row. */
 .hero {
   display: grid;
-  grid-template-columns: 0.82fr 1fr;
-  gap: 52px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, min(540px, 46%));
+  gap: 48px;
   align-items: center;
-  padding-top: 79px;
-  padding-bottom: 66px;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.hero h1 {
+  font-size: clamp(52px, 6.2vw, 88px);
 }
 .preview-label i {
   width: 6px;
@@ -345,12 +350,12 @@ em {
 .hero-descriptor {
   font-size: var(--font-lead);
   line-height: 1.55;
-  max-width: 390px;
+  max-width: 480px;
   margin-top: 28px;
 }
 .hero-description {
   color: var(--muted);
-  max-width: 421px;
+  max-width: 480px;
   margin-top: 13px;
   line-height: 1.6;
 }
@@ -401,11 +406,17 @@ em {
 .hero-object {
   min-width: 0;
 }
-.bench-screen {
+
+/* A raised ambient window; the stage frames sit in a groove inside it.
+   Plain amb-fillet keeps the pressed amb-fillet-2 style (whose :active also
+   matches ancestors of a pressed button) off the window. */
+.bench-screen.ambient {
+  --amb-albedo: #f2f2f2;
+  --amb-elevation: 1;
+  --amb-thickness: 2;
+  --amb-fillet-width: 2;
   padding: 12px;
-  background: #ededed;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px;
 }
 .screen-top {
   display: flex;
@@ -419,10 +430,19 @@ em {
   position: relative;
   z-index: 1;
 }
-.screen-top > span:last-child {
-  color: #6e6079;
+.window-controls {
+  display: flex;
+  gap: 14px;
   flex-shrink: 0;
-  white-space: nowrap;
+  padding: 4px 2px 0 0;
+  color: #6e6079;
+}
+.window-controls svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
 }
 .screen-top .workflow-label {
   color: var(--muted);
@@ -477,38 +497,35 @@ em {
   gap: 8px;
   margin-top: 12px;
 }
+/* Zero shadow gain drops the cast shadow but keeps the fillet and convex shading. */
 .bench-key {
+  --_amb-sh-gain: 0;
   border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  background: transparent;
   min-height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s,
-    color 0.2s;
   padding: 8px 6px;
+  color: var(--muted);
 }
 .key-number {
   color: var(--muted);
 }
+.bench-key:hover {
+  filter: brightness(1.03);
+}
 .bench-key[aria-pressed='true'] {
   color: var(--ink);
-  background: #e8e8e8;
-  border-bottom-color: var(--accent);
 }
-.bench-key:hover {
-  background-color: #eeeeee;
-}
-.bench-key:active {
-  background-color: #e2e2e2;
+.bench-key[aria-pressed='true'] .key-number {
+  color: var(--accent);
 }
 .bench-media {
   aspect-ratio: 48 / 29;
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .bench-frame {
   display: none;
@@ -1610,9 +1627,8 @@ em {
 }
 @media (min-width: 1500px) {
   .hero {
-    gap: 80px;
-    padding-top: 100px;
-    padding-bottom: 85px;
+    padding-top: 88px;
+    padding-bottom: 88px;
   }
 }
 @media (max-width: 1100px) {
@@ -1629,7 +1645,6 @@ em {
     padding: 10px 14px;
   }
   .hero {
-    gap: 32px;
     padding-top: 65px;
     padding-bottom: 55px;
   }
@@ -1781,6 +1796,7 @@ em {
   }
 }
 @media (max-width: 620px) {
+
   h1 {
     font-size: clamp(40px, 10.5vw, 44px);
   }
@@ -1864,7 +1880,7 @@ em {
     gap: 14px;
     padding: 14px;
   }
-  .bench-screen {
+  .bench-screen.ambient {
     padding: 8px;
   }
   .bench-controls {

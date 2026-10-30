@@ -4,7 +4,7 @@ import { workflowIllustration } from '../content/content';
 
 <div class="workbench" data-workbench>
   <div
-    class="bench-screen"
+    class="bench-screen ambient amb-surface amb-fillet"
     id="workflow-visual"
     data-stage={workflowIllustration[0].id}
   >
@@ -12,9 +12,13 @@ import { workflowIllustration } from '../content/content';
       <span class="workflow-label" data-workflow-label>
         {workflowIllustration[0].illustration}
       </span>
-      <span data-study-label>01 / {workflowIllustration[0].title}</span>
+      <span class="window-controls" aria-hidden="true">
+        <svg viewBox="0 0 10 10"><path d="M1 5.5h8" /></svg>
+        <svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" /></svg>
+        <svg viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" /></svg>
+      </span>
     </div>
-    <div class="bench-media">
+    <div class="bench-media ambient amb-groove">
       {workflowIllustration.map((step, index) => (
         <picture class="bench-frame" data-frame={step.id}>
           <source
@@ -32,20 +36,20 @@ import { workflowIllustration } from '../content/content';
         </picture>
       ))}
     </div>
-  </div>
-  <div class="bench-controls" role="group" aria-label="Select a workflow stage">
-    {workflowIllustration.map((step, index) => (
-      <button
-        class="bench-key"
-        type="button"
-        data-step-button={index}
-        aria-pressed={index === 0}
-        aria-controls="workflow-visual"
-      >
-        <span class="key-number">0{index + 1}</span>
-        {step.title}
-      </button>
-    ))}
+    <div class="bench-controls" role="group" aria-label="Select a workflow stage">
+      {workflowIllustration.map((step, index) => (
+        <button
+          class="bench-key ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+          type="button"
+          data-step-button={index}
+          aria-pressed={index === 0}
+          aria-controls="workflow-visual"
+        >
+          <span class="key-number">0{index + 1}</span>
+          {step.title}
+        </button>
+      ))}
+    </div>
   </div>
 </div>
 <script>
@@ -69,13 +73,9 @@ import { workflowIllustration } from '../content/content';
       );
     const screen = workbench.querySelector<HTMLElement>('.bench-screen');
     const description = workbench.querySelector('[data-workflow-label]');
-    const label = workbench.querySelector('[data-study-label]');
     if (screen) screen.dataset.stage = workflowIllustration[activeIndex].id;
     if (description)
       description.textContent = workflowIllustration[activeIndex].illustration;
-    if (label) {
-      label.textContent = `0${activeIndex + 1} / ${workflowIllustration[activeIndex].title}`;
-    }
   };
 
   const stopAutoplay = () => {

@@ -85,7 +85,6 @@ test('schematic controls update selected state, drawing, and description with ke
     'data-stage',
     'set-up',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
   await expect(page.locator('[data-frame="set-up"]')).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(
@@ -110,7 +109,6 @@ test('schematic controls update selected state, drawing, and description with ke
     'data-stage',
     'iterate',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('03 / Iterate');
   await expect(page.locator('[data-workflow-label]')).toHaveText(
     'Add a baffle, rerun, and compare.',
   );
@@ -135,7 +133,6 @@ test('schematic controls update selected state, drawing, and description with ke
     'data-stage',
     'set-up',
   );
-  await expect(page.locator('[data-study-label]')).toHaveText('01 / Set up');
   await expect(page.locator('[data-workflow-label]')).toHaveText(
     'Define a tank, its fill level, and the motion.',
   );

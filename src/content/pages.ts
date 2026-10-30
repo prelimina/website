@@ -19,7 +19,7 @@ export const pages = {
   confirmed: {
     title: 'You’re on the list.',
     description:
-      'Thanks for confirming. We’ll email you when new Prelimina releases and the browser version ship, and nothing else.',
+      'Thanks for confirming. We’ll email you when new Prelimina releases ship, and nothing else.',
   },
   changelog: {
     title: 'The story starts here.',
