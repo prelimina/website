@@ -27,7 +27,7 @@ The portable output is `dist/`. Astro 7 can run preview servers in the backgroun
 
 ## User guide
 
-Chapters are Markdown in `src/content/guide/`, numbered by file name. The same files build the pages at `/guide/` and the PDF in `public/downloads/`. A paragraph holding only an image becomes a figure with its alt text as the caption. Bold names interface labels, `> **Note.** ...` makes a callout, and guide images go in `public/assets/guide/` as WebP.
+Chapters are Markdown in `src/content/guide/`, numbered by file name. The same files build the single page at `/guide/` and the PDF in `public/downloads/`. A paragraph holding only an image becomes a figure with its alt text as the caption. Bold names interface labels, `> **Note.** ...` makes a callout, and guide images go in `public/assets/guide/` as WebP.
 
 After changing a chapter, image or `guide-pdf/template.typ`, rebuild the PDF and commit it. A test fails if it no longer matches. The build needs `pandoc`, `typst`, `magick` and `woff2_decompress`:
 

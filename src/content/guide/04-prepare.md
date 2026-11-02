@@ -3,7 +3,7 @@ title: Prepare a run
 summary: Set the grid and time step, choose particle settings, check memory, and test the numbers before you trust a long run.
 ---
 
-The **Prepare** stage holds the numerical choices: how finely the flow is resolved and how the solver advances in time. These settings decide whether a result means anything, and the defaults of a new setup are not always safe. This chapter starts by correcting the tank from [The scene](/guide/scene/), then explains why each change matters.
+The **Prepare** stage holds the numerical choices: how finely the flow is resolved and how the solver advances in time. These settings decide whether a result means anything, and the defaults of a new setup are not always safe. This chapter starts by correcting the tank from [The scene](/guide/#scene), then explains why each change matters.
 
 All measurements here come from Prelimina 0.3.2 on that tank, with FLIP on an NVIDIA RTX 5080. They show how to test your own case. They are not general limits.
 
@@ -189,5 +189,5 @@ For work you will rely on, compare with a measured or analytical case first. [Ap
 
 ## Next steps
 
-- Read and save the results in [Run and read the results](/guide/simulate/).
+- Read and save the results in [Run and read the results](/guide/#simulate).
 - See which features are ready for use in [Capabilities](/capabilities/).

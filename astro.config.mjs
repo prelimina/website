@@ -15,6 +15,12 @@ export default defineConfig({
     '/terms/': '/legal/terms/',
     '/privacy/': '/legal/privacy/',
     '/refunds/': '/legal/refunds/',
+    // The guide became a single page on 2 Nov 2026.
+    '/guide/getting-started/': '/guide/#getting-started',
+    '/guide/workspace/': '/guide/#workspace',
+    '/guide/scene/': '/guide/#scene',
+    '/guide/prepare/': '/guide/#prepare',
+    '/guide/simulate/': '/guide/#simulate',
   },
   // Highlighted code uses inline styles, which the site's CSP blocks.
   markdown: { syntaxHighlight: false },

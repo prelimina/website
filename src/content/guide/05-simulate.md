@@ -3,7 +3,7 @@ title: Run and read the results
 summary: Control a run, look inside the flow, compare with measured data, and save the numbers you need.
 ---
 
-The **Simulate** stage runs the solver and shows the flow as it develops. This chapter uses the corrected tank from [Prepare a run](/guide/prepare/), paused at about 10.6 s.
+The **Simulate** stage runs the solver and shows the flow as it develops. This chapter uses the corrected tank from [Prepare a run](/guide/#prepare), paused at about 10.6 s.
 
 Decide what you need to keep before you start a long run, because Prelimina saves much less than it shows.
 
@@ -82,7 +82,7 @@ Click the graph icon at the top right to open these tabs. A coloured dot on the 
 
 The graphs in **Residuals** and **Flow** cover about the last second of the run, so they suit checking the flow as it runs, not reading a history. For a full record, use the probe file below.
 
-**Velocity monitor** only checks whether the speeds are finite numbers. As it says on screen, it does not show that the solution is sound. [Prepare a run](/guide/prepare/#check-a-setup-before-a-long-run) has the checks that do, and explains why **Relative volume conservation error** can stay at zero when the volume is wrong.
+**Velocity monitor** only checks whether the speeds are finite numbers. As it says on screen, it does not show that the solution is sound. [Prepare a run](/guide/#check-a-setup-before-a-long-run) has the checks that do, and explains why **Relative volume conservation error** can stay at zero when the volume is wrong.
 
 ## Compare with a measurement
 
@@ -192,10 +192,10 @@ The bar shows **Initialization failed** or the run stops, and a message appears 
 
 | Message contains | Cause | What to do |
 | --- | --- | --- |
-| `exceeding the particle capacity` | The initial liquid needs more particles than allowed | Raise **Particle capacity**. See [Particles](/guide/prepare/#particles). |
-| `density projection candidate validation failed` | Usually a time step that is too long | Use the [recommended settings](/guide/prepare/#recommended-starting-point) |
+| `exceeding the particle capacity` | The initial liquid needs more particles than allowed | Raise **Particle capacity**. See [Particles](/guide/#particles). |
+| `density projection candidate validation failed` | Usually a time step that is too long | Use the [recommended settings](/guide/#recommended-starting-point) |
 
-A run that finishes can still be wrong, so a clean Log is not enough. See [Check a setup before a long run](/guide/prepare/#check-a-setup-before-a-long-run).
+A run that finishes can still be wrong, so a clean Log is not enough. See [Check a setup before a long run](/guide/#check-a-setup-before-a-long-run).
 
 ## Next steps
 

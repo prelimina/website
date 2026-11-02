@@ -718,9 +718,41 @@ export const faqs = [
 
 export const nav = [
   { label: 'Applications', href: '/#applications' },
-  { label: 'Capabilities', href: '/capabilities/' },
-  { label: 'Guide', href: '/guide/' },
   { label: 'About', href: '/#team' },
+];
+
+// Header dropdown. The release page stays out of the main navigation, so it is footer-only.
+export const docsMenu = [
+  { label: 'User Guide', href: '/guide/' },
+  { label: 'Capabilities', href: '/capabilities/' },
+  { label: 'Legal', href: '/legal/' },
+];
+
+export const footerColumns = [
+  {
+    heading: { label: 'Product' },
+    links: [
+      { label: 'Download', href: '/#download' },
+      { label: 'FAQ', href: '/#faq' },
+    ],
+  },
+  {
+    heading: { label: 'Docs' },
+    links: [
+      { label: 'User Guide', href: '/guide/' },
+      { label: 'All capabilities', href: '/capabilities/' },
+      { label: 'Release status', href: '/changelog/' },
+    ],
+  },
+  {
+    heading: { label: 'Legal', href: '/legal/' },
+    links: [
+      { label: 'Licence Agreement', href: '/legal/licence/' },
+      { label: 'Terms of Service', href: '/legal/terms/' },
+      { label: 'Refund Policy', href: '/legal/refunds/' },
+      { label: 'Privacy Notice', href: '/legal/privacy/' },
+    ],
+  },
 ];
 
 export const team = {

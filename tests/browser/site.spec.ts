@@ -8,11 +8,6 @@ const routes = [
   '/showcases/',
   '/capabilities/',
   '/guide/',
-  '/guide/getting-started/',
-  '/guide/workspace/',
-  '/guide/scene/',
-  '/guide/prepare/',
-  '/guide/simulate/',
   '/legal/',
   '/legal/licence/',
   '/legal/terms/',
@@ -339,6 +334,14 @@ test('capability panels lead to grouped features with a maturity label on every 
   await page.getByRole('link', { name: /No meshing/ }).click();
   await expect(page).toHaveURL(/\/capabilities\/#geometry$/);
   await expect(page.locator('#geometry h2')).toBeInViewport();
+  const docsMenu = page.getByRole('navigation').locator('summary');
+  await docsMenu.click();
+  await page.keyboard.press('Escape');
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'User Guide' }),
+  ).toBeHidden();
+  await expect(docsMenu).toBeFocused();
+  await docsMenu.click();
   await page
     .getByRole('navigation')
     .getByRole('link', { name: 'Capabilities', exact: true })

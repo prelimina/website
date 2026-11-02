@@ -1,5 +1,5 @@
 import guide from '../content/guide/guide.json';
-import { guideFigures } from './guide-figures.mjs';
+import { guidePageHtml } from './guide-figures.mjs';
 
 interface ChapterModule {
   frontmatter: { title: string; summary: string };
@@ -20,8 +20,10 @@ export const chapters = await Promise.all(
       slug: path.match(/\d+-([a-z0-9-]+)\.md$/)![1],
       title: modules[path].frontmatter.title,
       summary: modules[path].frontmatter.summary,
-      html: guideFigures(await modules[path].compiledContent()),
-      headings: modules[path].getHeadings().filter((h) => h.depth === 2),
+      html: guidePageHtml(await modules[path].compiledContent()),
+      headings: modules[path]
+        .getHeadings()
+        .filter((h) => h.depth === 2 && h.slug !== 'next-steps'),
     })),
 );
 

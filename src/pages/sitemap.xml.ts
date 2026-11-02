@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import { pages, legalPages } from '../content/pages';
 import { showcases } from '../content/content';
-import { chapters } from '../data/guide';
 
 const siteOrigin = 'https://prelimina.com';
 const publicPages = [
@@ -12,7 +11,6 @@ const publicPages = [
   ...Object.keys(legalPages).map((doc) => `/legal/${doc}/`),
   ...showcases.map((showcase) => `/showcases/${showcase.slug}/`),
   '/guide/',
-  ...chapters.map((chapter) => `/guide/${chapter.slug}/`),
 ];
 
 export const GET: APIRoute = () => {

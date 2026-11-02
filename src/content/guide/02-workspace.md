@@ -3,7 +3,7 @@ title: The workspace
 summary: Find your way around the window, the three stages, setup files, the view tools, the simulation preview and the setup tour.
 ---
 
-This chapter explains what is on screen and how the parts work together. To follow along, open the `sloshing_tank` example from [Getting started](/guide/getting-started/).
+This chapter explains what is on screen and how the parts work together. To follow along, open the `sloshing_tank` example from [Getting started](/guide/#getting-started).
 
 ## The main window
 

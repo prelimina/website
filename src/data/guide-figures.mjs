@@ -39,3 +39,12 @@ export function guideFigures(html) {
     );
   });
 }
+
+// All chapters share one page under its h1, so each heading drops one level. The PDF keeps
+// "Next steps", which only points at the following chapter and repeats on a continuous page.
+export function guidePageHtml(html) {
+  return guideFigures(html)
+    .replace(/<h2 id="next-steps">[\s\S]*$/, '')
+    .replace(/<(\/?)h3(?=[\s>])/g, (_, slash) => `<${slash}h4`)
+    .replace(/<(\/?)h2(?=[\s>])/g, (_, slash) => `<${slash}h3`);
+}

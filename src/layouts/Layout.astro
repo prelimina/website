@@ -2,7 +2,7 @@
 import '@ambientcss/css/ambient.css';
 import '../styles/global.css';
 import site from '../content/site.json';
-import { browserAction, nav, productActionConfig } from '../content/content';
+import { browserAction, docsMenu, footerColumns, nav, productActionConfig } from '../content/content';
 import Icon from '../components/Icon.astro';
 interface Props {
   title?: string;
@@ -73,14 +73,26 @@ const canonicalUrl = new URL(path, 'https://prelimina.com').href;
           Menu <span aria-hidden="true">☰</span>
         </button>
         <nav id="main-navigation" aria-label="Main navigation">
-          {nav.map((link) => (
-            <a
-              class="nav-link"
-              href={link.href}
-              aria-current={path === link.href ? 'page' : undefined}
+          <a class="nav-link" href={nav[0].href}>{nav[0].label}</a>
+          <details class="nav-menu">
+            <summary
+              class:list={[
+                'nav-link',
+                { 'is-current': docsMenu.some((link) => path === link.href || path.startsWith(link.href)) },
+              ]}
             >
-              {link.label}
-            </a>
+              Docs
+            </summary>
+            <div class="nav-menu-panel">
+              {docsMenu.map((link) => (
+                <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </details>
+          {nav.slice(1).map((link) => (
+            <a class="nav-link" href={link.href}>{link.label}</a>
           ))}
           <a
             class="header-cta ambient amb-surface-convex amb-mat-matte amb-fillet-2"
@@ -115,16 +127,16 @@ const canonicalUrl = new URL(path, 'https://prelimina.com').href;
           <p>Fluid insight for your next design iteration.</p>
         </div>
         <div class="footer-links">
-          <a href="/#download">Download</a>
-          <a href="/#faq">FAQ</a>
-          <a href="/guide/">User Guide</a>
-          <a href="/capabilities/">All capabilities</a>
-          <a href="/changelog/">Release status</a>
-          <a href="/legal/">Legal</a>
-          <a href="/legal/licence/">Licence Agreement</a>
-          <a href="/legal/terms/">Terms of Service</a>
-          <a href="/legal/refunds/">Refund Policy</a>
-          <a href="/legal/privacy/">Privacy Notice</a>
+          {footerColumns.map((column) => (
+            <div class="footer-column">
+              {column.heading.href ? (
+                <a class="footer-heading" href={column.heading.href}>{column.heading.label}</a>
+              ) : (
+                <span class="footer-heading">{column.heading.label}</span>
+              )}
+              {column.links.map((link) => <a href={link.href}>{link.label}</a>)}
+            </div>
+          ))}
         </div>
       </div>
       <div class="container footer-bottom">
@@ -149,7 +161,16 @@ const canonicalUrl = new URL(path, 'https://prelimina.com').href;
           nav.classList.remove('is-open');
         }),
       );
+      const docs = document.querySelector<HTMLDetailsElement>('.nav-menu');
+      document.addEventListener('click', (event) => {
+        if (docs?.open && !docs.contains(event.target as Node)) docs.open = false;
+      });
       document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && docs?.open) {
+          docs.open = false;
+          docs.querySelector('summary')?.focus();
+          return;
+        }
         if (
           event.key === 'Escape' &&
           toggle?.getAttribute('aria-expanded') === 'true'

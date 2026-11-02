@@ -83,7 +83,7 @@ The probe starts near the hydrostatic pressure of 1,470 Pa for 0.15 m of water. 
 
 Prelimina writes the probe data to `results/probes/measurements.csv` without being asked. Each new run starts a new numbered file, so earlier runs are kept.
 
-> **This is a first run, not a result.** A new setup uses a fixed time step of 0.01 s, which is too long for this tank. Even a still tank goes unstable after about 5 s at this step. [Prepare a run](/guide/prepare/) corrects it and shows how to check a setup.
+> **This is a first run, not a result.** A new setup uses a fixed time step of 0.01 s, which is too long for this tank. Even a still tank goes unstable after about 5 s at this step. [Prepare a run](/guide/#prepare) corrects it and shows how to check a setup.
 
 ## The domain
 
@@ -154,7 +154,7 @@ Every body has a role:
 | Obstacle | Outside the surface | Baffles, hulls, gates and other objects in the flow |
 | Container | Inside the surface | Tanks and vessels |
 
-**Placement** sets the position, the rotation in degrees and the scale. You can also use the Move, Rotate and Scale tools described in [The workspace](/guide/workspace/). **Scale** works around the body's position, so a box stays centred where you put it.
+**Placement** sets the position, the rotation in degrees and the scale. You can also use the Move, Rotate and Scale tools described in [The workspace](/guide/#workspace). **Scale** works around the body's position, so a box stays centred where you put it.
 
 ### Import a mesh
 
@@ -235,7 +235,7 @@ To set up a face, select **Domain** and choose **Inlet** or **Open (pressure out
 
 ![An inlet on X min and an outlet on X max, with the inlet velocity in the Timeline Editor.](/assets/guide/scene-domain-faces.webp)
 
-A new inlet flows inward at 1 m/s. Change this in the Timeline Editor, as a number, an expression or keyframes. Inlets need a shorter time step than a new setup uses: at the default 0.01 s, inlet runs stopped with an error within 5 s. Use the [settings for inlets and outlets](/guide/prepare/#recommended-starting-point). Adding an inlet can bring back the **Optimizing the simulation for your device** message for that run.
+A new inlet flows inward at 1 m/s. Change this in the Timeline Editor, as a number, an expression or keyframes. Inlets need a shorter time step than a new setup uses: at the default 0.01 s, inlet runs stopped with an error within 5 s. Use the [settings for inlets and outlets](/guide/#recommended-starting-point). Adding an inlet can bring back the **Optimizing the simulation for your device** message for that run.
 
 An outlet has these settings:
 
@@ -267,5 +267,5 @@ Set the position in three ways: type it, drag it with the Move tool, or click **
 
 ## Next steps
 
-- Set the time step and grid properly in [Prepare a run](/guide/prepare/).
+- Set the time step and grid properly in [Prepare a run](/guide/#prepare).
 - See how a body, its motion and its probes are set up in a measured case in [Applications](/showcases/).

@@ -171,6 +171,11 @@ test('built pages, links, anchors, and assets are indexable where intended', () 
       terms: '/legal/terms/',
       privacy: '/legal/privacy/',
       refunds: '/legal/refunds/',
+      'guide/getting-started': '/guide/#getting-started',
+      'guide/workspace': '/guide/#workspace',
+      'guide/scene': '/guide/#scene',
+      'guide/prepare': '/guide/#prepare',
+      'guide/simulate': '/guide/#simulate',
     }).find(([route]) => path === join(root, route, 'index.html'));
     if (redirect) {
       assert.match(html, /name="robots" content="noindex"/);
@@ -481,27 +486,9 @@ test('the guide PDF matches its chapters and is linked from the guide', () => {
     'Guide sources changed: run npm run guide:pdf and commit the PDF.',
   );
   const home = readFileSync('dist/guide/index.html', 'utf8');
-  assert.ok(home.includes(`href="/${pdf.replace('public/', '')}"`));
-  assert.ok(home.includes('/guide/getting-started/'));
-  // The CSP blocks inline styles, so highlighted code would lose its colours.
-  assert.doesNotMatch(
-    readFileSync('dist/guide/getting-started/index.html', 'utf8'),
-    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
-  );
-  assert.doesNotMatch(
-    readFileSync('dist/guide/workspace/index.html', 'utf8'),
-    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
-  );
-  assert.doesNotMatch(
-    readFileSync('dist/guide/scene/index.html', 'utf8'),
-    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
-  );
-  assert.doesNotMatch(
-    readFileSync('dist/guide/prepare/index.html', 'utf8'),
-    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
-  );
-  assert.doesNotMatch(
-    readFileSync('dist/guide/simulate/index.html', 'utf8'),
-    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
-  );
+  assert.ok(home.includes(`/downloads/prelimina-user-guide-${guide.appVersion}.pdf`));
+  assert.ok(home.includes('href="#getting-started"'));
+  assert.doesNotMatch(home, /<article[\s\S]*\sstyle=[\s\S]*<\/article>/);
+  const ids = [...home.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(ids.filter((id, index) => ids.indexOf(id) !== index), []);
 });
