@@ -2168,3 +2168,221 @@ em {
   width: 100%;
   height: auto;
 }
+
+/* User guide */
+.guide-chapters {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+  max-width: 780px;
+}
+.guide-chapters a {
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.guide-chapters strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--font-card-heading);
+  font-weight: 500;
+}
+.guide-chapters a:hover strong {
+  text-decoration: underline;
+}
+.guide-chapters span span {
+  color: var(--muted);
+}
+.guide-chapter-number {
+  font-family: var(--font-serif);
+  font-size: var(--font-card-heading);
+  color: var(--muted);
+}
+.guide-download {
+  display: inline-flex;
+  width: fit-content;
+  gap: 8px;
+  align-items: center;
+}
+.guide-meta {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: var(--font-meta);
+}
+.guide-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 760px);
+  gap: 56px;
+  padding-block: 56px 80px;
+}
+.guide-sidebar nav {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 16px;
+  font-size: 15px;
+}
+.guide-sidebar ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.guide-sidebar a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.guide-sidebar a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.guide-sidebar .guide-back {
+  color: var(--ink);
+  font-weight: 600;
+}
+.guide-sidebar-pdf {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.guide-kicker {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: var(--font-meta);
+}
+.guide-article {
+  counter-reset: guide-figure;
+  font-size: var(--font-body);
+  line-height: 1.6;
+}
+.guide-article h1 {
+  margin: 0 0 24px;
+  font-size: var(--font-section-heading);
+}
+.guide-article h2 {
+  margin: 48px 0 12px;
+  font-size: 30px;
+  scroll-margin-top: 96px;
+}
+.guide-article h3 {
+  margin: 28px 0 8px;
+  font-size: var(--font-card-heading);
+  scroll-margin-top: 96px;
+}
+.guide-article li {
+  margin-block: 8px;
+}
+.guide-article p a,
+.guide-article li a,
+.guide-article td a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+.guide-article code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--band);
+  font-size: 0.86em;
+  overflow-wrap: anywhere;
+}
+.guide-article pre {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--band);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.guide-article pre code {
+  padding: 0;
+  background: none;
+}
+.guide-article figure {
+  margin: 24px 0;
+  counter-increment: guide-figure;
+}
+.guide-article figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.guide-article figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.guide-article figcaption::before {
+  content: 'Figure ' counter(guide-figure) '. ';
+  font-weight: 600;
+}
+.guide-article blockquote {
+  margin: 24px 0;
+  padding: 12px 18px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--band);
+}
+.guide-article blockquote p {
+  margin: 0;
+}
+.guide-article blockquote p + p {
+  margin-top: 10px;
+}
+.guide-article table {
+  display: block;
+  width: 100%;
+  margin: 20px 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+.guide-article th,
+.guide-article td {
+  padding: 10px 14px 10px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.guide-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 900px) {
+  .guide-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-block: 32px 56px;
+  }
+  .guide-sidebar nav {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .guide-sidebar ul {
+    display: none;
+  }
+  .guide-sidebar-pdf {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .guide-article {
+    font-size: 17px;
+  }
+}

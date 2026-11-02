@@ -16,6 +16,8 @@ export default defineConfig({
     '/privacy/': '/legal/privacy/',
     '/refunds/': '/legal/refunds/',
   },
+  // Highlighted code uses inline styles, which the site's CSP blocks.
+  markdown: { syntaxHighlight: false },
   build: { inlineStylesheets: 'never' },
   devToolbar: { enabled: false },
   vite: { build: { assetsInlineLimit: 0 } },

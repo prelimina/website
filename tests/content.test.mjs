@@ -6,6 +6,7 @@ import { loadCatalogue } from '../src/data/releases.mjs';
 const catalogue = loadCatalogue();
 
 import { validateContent } from '../scripts/check-content.mjs';
+import { guideSourceHash } from '../scripts/guide-source.mjs';
 import {
   getInquiryState,
   inquiryHref,
@@ -157,7 +158,7 @@ test('built pages, links, anchors, and assets are indexable where intended', () 
   const root = resolve('dist');
   assert.ok(existsSync(root), 'Run npm run build before npm test.');
   const htmlFiles = files(root).filter((path) => path.endsWith('.html'));
-  assert.equal(htmlFiles.length, 31);
+  assert.equal(htmlFiles.length, 37);
   for (const path of htmlFiles) {
     const html = readFileSync(path, 'utf8');
     const redirect = Object.entries({
@@ -468,4 +469,39 @@ test('prelaunch pages do not invent downloads, offers, evidence, or private sour
     // Status labels only; ordinary prose such as "the leading candidate" is allowed.
     assert.doesNotMatch(application, /not validated|Evidence:|Candidate:|release candidate/i);
   }
+});
+
+test('the guide PDF matches its chapters and is linked from the guide', () => {
+  const guide = JSON.parse(readFileSync('src/content/guide/guide.json', 'utf8'));
+  const pdf = `public/downloads/prelimina-user-guide-${guide.appVersion}.pdf`;
+  assert.equal(readFileSync(pdf).subarray(0, 5).toString(), '%PDF-');
+  assert.equal(
+    guide.sourceSha256,
+    guideSourceHash(),
+    'Guide sources changed: run npm run guide:pdf and commit the PDF.',
+  );
+  const home = readFileSync('dist/guide/index.html', 'utf8');
+  assert.ok(home.includes(`href="/${pdf.replace('public/', '')}"`));
+  assert.ok(home.includes('/guide/getting-started/'));
+  // The CSP blocks inline styles, so highlighted code would lose its colours.
+  assert.doesNotMatch(
+    readFileSync('dist/guide/getting-started/index.html', 'utf8'),
+    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
+  );
+  assert.doesNotMatch(
+    readFileSync('dist/guide/workspace/index.html', 'utf8'),
+    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
+  );
+  assert.doesNotMatch(
+    readFileSync('dist/guide/scene/index.html', 'utf8'),
+    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
+  );
+  assert.doesNotMatch(
+    readFileSync('dist/guide/prepare/index.html', 'utf8'),
+    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
+  );
+  assert.doesNotMatch(
+    readFileSync('dist/guide/simulate/index.html', 'utf8'),
+    /<article[\s\S]*\sstyle=[\s\S]*<\/article>/,
+  );
 });

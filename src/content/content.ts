@@ -719,6 +719,7 @@ export const faqs = [
 export const nav = [
   { label: 'Applications', href: '/#applications' },
   { label: 'Capabilities', href: '/capabilities/' },
+  { label: 'Guide', href: '/guide/' },
   { label: 'About', href: '/#team' },
 ];
 

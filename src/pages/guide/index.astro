@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { chapters, guidePdf } from '../../data/guide';
+---
+
+<Layout
+  title="User Guide"
+  description="Learn Prelimina from your first simulation onwards. Read the guide online or download it as a PDF."
+>
+  <div class="container">
+    <header class="page-hero">
+      <h1>User Guide</h1>
+      <p>
+        Learn Prelimina from your first simulation onwards. Written for version {guidePdf.version}.
+      </p>
+    </header>
+    <div class="page-container guide-home">
+      <ol class="guide-chapters">
+        {chapters.map((chapter) => (
+          <li>
+            <a href={`/guide/${chapter.slug}/`}>
+              <span class="guide-chapter-number">{chapter.number}</span>
+              <span>
+                <strong>{chapter.title}</strong>
+                <span>{chapter.summary}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <a
+        class="button guide-download ambient amb-surface-convex amb-mat-matte amb-fillet-2"
+        href={guidePdf.href}
+        download
+      >
+        <Icon name="download" size={18} /> Download PDF
+      </a>
+      <p class="guide-meta">Updated {guidePdf.updatedLabel}.</p>
+    </div>
+  </div>
+</Layout>

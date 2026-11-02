@@ -11,6 +11,7 @@ Prelimina is in development. The browser version runs at https://prelimina.com/a
 - [Home and product overview](https://prelimina.com/): Product scope, current status, and key actions.
 - [Applications](https://prelimina.com/showcases/): Validation cases and demonstrations, with assumptions, comparisons, and limitations.
 - [Capabilities](https://prelimina.com/capabilities/): Features and their current maturity.
+- [User Guide](https://prelimina.com/guide/): How to install Prelimina and run a first simulation, also available as a PDF.
 - [Browser app](https://prelimina.com/app/): The current release, running in the browser.
 - [Download and system requirements](https://prelimina.com/#download): Current desktop release links, supported platforms, and hardware requirements.
 - [Release status](https://prelimina.com/release-status.json): Machine-readable current release identity.

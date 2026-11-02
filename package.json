@@ -15,7 +15,8 @@
     "test:browser": "playwright test",
     "check:publication": "node scripts/check-content.mjs --publication",
     "deploy": "npm run check:publication && wrangler deploy",
-    "test:releases": "node scripts/check-release-fixture.mjs"
+    "test:releases": "node scripts/check-release-fixture.mjs",
+    "guide:pdf": "node scripts/build-guide-pdf.mjs"
   },
   "dependencies": {
     "@ambientcss/css": "3.1.0",

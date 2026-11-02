@@ -10,7 +10,7 @@ import { releaseFixture } from '../tests/fixtures/release.mjs';
 const root = resolve('.');
 const fixture = mkdtempSync(join(tmpdir(), 'prelimina-verified-site-'));
 try {
-  for (const file of ['src', 'public', 'scripts', 'tests', 'package.json', 'package-lock.json', 'astro.config.mjs', 'tsconfig.json'])
+  for (const file of ['src', 'public', 'scripts', 'guide-pdf', 'tests', 'package.json', 'package-lock.json', 'astro.config.mjs', 'tsconfig.json'])
     cpSync(join(root, file), join(fixture, file), { recursive: true });
   symlinkSync(join(root, 'node_modules'), join(fixture, 'node_modules'), process.platform === 'win32' ? 'junction' : 'dir');
   const { data, notes } = releaseFixture();
