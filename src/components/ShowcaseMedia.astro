@@ -15,9 +15,6 @@ interface Props {
 const { illustration, large = false, media, aspectRatio } = Astro.props;
 const activeMedia = media?.src ? media : undefined;
 const frameAspectRatio = aspectRatio ?? activeMedia?.aspectRatio;
-const frameStyle = frameAspectRatio
-  ? `aspect-ratio: ${frameAspectRatio};`
-  : undefined;
 ---
 
 <figure class="showcase-media">
@@ -29,7 +26,6 @@ const frameStyle = frameAspectRatio
         'fit-cover': activeMedia?.fit === 'cover',
       },
     ]}
-    style={frameStyle}
   >
     {activeMedia ? (
       activeMedia.kind === 'image' ? (

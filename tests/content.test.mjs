@@ -489,6 +489,21 @@ test('the guide PDF matches its chapters and is linked from the guide', () => {
   assert.ok(home.includes(`/downloads/prelimina-user-guide-${guide.appVersion}.pdf`));
   assert.ok(home.includes('href="#getting-started"'));
   assert.doesNotMatch(home, /<article[\s\S]*\sstyle=[\s\S]*<\/article>/);
+  const full = readFileSync('dist/llms-full.txt', 'utf8');
+  for (const title of [...home.matchAll(/<h2>([^<]+)<\/h2>/g)].map((match) => match[1]))
+    assert.ok(full.includes(`# ${title}\n`), title);
+  assert.doesNotMatch(full, /^---$|!\[|\]\(\/|^## Next steps$/m);
+  assert.ok(
+    readFileSync('public/llms.txt', 'utf8').includes(
+      `prelimina-user-guide-${guide.appVersion}.pdf`,
+    ),
+    'Update the guide PDF link in public/llms.txt for the new version.',
+  );
+  // The CSP blocks inline styles, so a framed figure must not depend on one.
+  assert.doesNotMatch(
+    readFileSync('dist/index.html', 'utf8'),
+    /showcase-media-frame[^>]*\sstyle=/,
+  );
   const ids = [...home.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual(ids.filter((id, index) => ids.indexOf(id) !== index), []);
 });
