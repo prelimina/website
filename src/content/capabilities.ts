@@ -1,5 +1,7 @@
 // Editorial feature catalogue checked against the current product contracts.
 // Source references and the meaning of maturity labels are recorded in README.md.
+// Copy is written for engineers new to CFD: say what a feature lets you do,
+// not which algorithm does it.
 export const maturity = {
   implemented: {
     label: 'Implemented',
@@ -20,62 +22,61 @@ export const maturity = {
   },
 } as const;
 
-// Ordered from Eulerian to fully Lagrangian; schematics are drawn at build
-// time by SolverSchematic.astro.
+// Schematics are drawn at build time by SolverSchematic.astro.
 export const solverCards = [
-  {
-    name: 'FVM',
-    status: 'experimental',
-    schematic: 'fvm',
-    kind: 'Cut-cell Eulerian',
-    schematicLabel:
-      'A fixed Cartesian grid cut by a curved wall; cells the wall crosses are shaded, and the liquid surface is one straight piece per cell.',
-    legend: [
-      { key: 'cut-cell', text: 'Cells the wall cuts' },
-      { key: 'plic', text: 'PLIC interface, one piece per cell' },
-    ],
-    description:
-      'PISO finite volumes on a Cartesian grid that the CAD walls cut through. Tiny cut cells merge with a neighbour instead of shrinking the time step, and a multigrid-preconditioned pressure solve keeps mass conserved cell by cell.',
-    bestFor:
-      'internal flow, pressure loss, heat transfer, liquid–gas interfaces.',
-  },
   {
     name: 'FLIP',
     status: 'implemented',
     schematic: 'flip',
-    kind: 'Particles on a cut-face grid',
+    kind: 'Particles + GPU grid',
     schematicLabel:
-      'Particles fill the liquid over a sparse grid; the open parts of grid faces crossed by the curved wall are highlighted.',
+      'Particles fill the liquid over a grid; where the curved wall crosses the grid, the open parts of the grid faces are highlighted.',
     legend: [
       { key: 'particle', text: 'Particles carry the liquid' },
-      { key: 'grid', text: 'Sparse grid solves pressure' },
-      { key: 'cut-face', text: 'Open fraction of cut faces' },
+      { key: 'grid', text: 'Grid keeps it incompressible' },
+      { key: 'cut-face', text: 'Walls cut straight through' },
     ],
     description:
-      'Particles carry the liquid and its velocity; a sparse GPU grid, allocated only around the liquid, enforces incompressibility with walls entering through the open fraction of each cut face. Splashes, break-up, and reconnection need no interface surgery.',
+      'The everyday workhorse for liquids on the move. Sloshing, splashing, pouring, and floating bodies run on one workstation GPU, and you watch the result take shape while it computes. Bring the CAD, set the motion, press run.',
     bestFor:
-      'sloshing, splashing, filling, moving and fluid-driven bodies, wetting.',
+      'sloshing, splashing, filling, wetting, and parts the liquid pushes around.',
+  },
+  {
+    name: 'FVM',
+    status: 'experimental',
+    schematic: 'fvm',
+    kind: 'Finite volumes, no meshing',
+    schematicLabel:
+      'A fixed grid cut by a curved wall; cells the wall crosses are shaded, and the liquid surface is drawn piece by piece in each cell.',
+    legend: [
+      { key: 'cut-cell', text: 'Cells the wall cuts' },
+      { key: 'plic', text: 'Sharp liquid surface' },
+    ],
+    description:
+      'Classic CFD for when the numbers have to add up: pressure drop, flow rates, heat transfer, and gas–liquid flow with mass conserved cell by cell. The CAD walls cut straight through a fixed grid, so the meshing week becomes a coffee break.',
+    bestFor:
+      'internal flow, pressure loss, heat transfer, liquid and gas together.',
   },
   {
     name: 'FIRM',
     status: 'experimental',
     schematic: 'firm',
-    kind: 'Fully Lagrangian, implicit',
+    kind: 'Meshless particles',
     schematicLabel:
-      'Particles only, with no grid; one particle’s support circle is cut by the curved wall, its neighbours are tinted, and the wall facets inside it are highlighted.',
+      'Particles only, with no grid; one particle’s neighbourhood is circled and tinted, and the stretch of wall it touches is highlighted.',
     legend: [
-      { key: 'support', text: 'Renormalised support and neighbours' },
-      { key: 'wall-patch', text: 'Wall condition on the CAD facets' },
+      { key: 'support', text: 'Each particle talks to its neighbours' },
+      { key: 'wall-patch', text: 'Walls taken straight from CAD' },
     ],
     description:
-      'The particles are the discretisation. Pressure and viscosity are solved implicitly on renormalised meshless operators, with wall, free-surface, inlet, and outlet conditions built into the operators instead of layers of dummy particles. Body loads are integrated over the wetted CAD triangles, and the time step follows the flow, not an artificial sound speed.',
+      'No grid and no mesh: the particles are the simulation. Built for flows that fold, stretch, and tear apart, with a time step set by the flow itself, so long runs stay stable and affordable.',
     bestFor:
-      'large deformation, prescribed moving parts, long restartable runs.',
+      'large deformation, moving parts, long runs you can pause and resume.',
   },
 ] as const;
 
 export const solverShared =
-  'CAD-surface import · moving reference frames · probes, forces, and moments · CSV and VTK export · one JSON setup schema · one GPU runtime.';
+  'CAD import · moving and rotating tanks · probes, forces, and moments · CSV and ParaView export · one setup file · one GPU engine.';
 
 export interface CapabilityGroup {
   id: string;
@@ -101,55 +102,55 @@ export const capabilityGroups = [
     summary:
       'Bring triangulated surfaces straight from your CAD tools. Complex vessels, baffles, and internal parts work as they are, with no volume mesh to build.',
     description:
-      'Turn surfaces, liquid regions, and boundary conditions into a simulation setup.',
+      'Bring your CAD surfaces, say where the liquid starts and where it comes in or goes out, and run. There is no volume mesh to build.',
     features: [
       {
-        name: 'Surface-mesh import',
+        name: 'CAD surface import',
         status: 'implemented',
         description:
-          'Load STL, OBJ, PLY, glTF, and GLB geometry from your modelling tools.',
+          'Load STL, OBJ, PLY, glTF, or GLB files exported from your modelling tool.',
       },
       {
-        name: 'Immersed geometry',
+        name: 'No volume meshing',
         status: 'implemented',
         description:
-          'Represent vessel walls and internal surfaces within the solver’s particle or Cartesian-grid discretisation.',
+          'Tank walls, baffles, and internal parts go into the simulation as they are. There is no mesh to generate, repair, or refine.',
       },
       {
-        name: 'Initial liquid regions',
+        name: 'Initial liquid fill',
         status: 'implemented',
         description:
-          'Define the initial liquid with surfaces and fluid seeds, and inspect the fill preview in the scene.',
+          'Say where the liquid starts, with a surface or a fill point, and preview the fill before you run.',
       },
       {
-        name: 'Visual scene authoring',
+        name: 'Visual scene editor',
         status: 'implemented',
         description:
-          'Edit geometry, materials, initial liquid, prescribed motion, and measurement regions in contextual inspectors.',
+          'Edit geometry, fluids, the initial liquid, motion, and measurement points in side panels, without touching a setup file.',
       },
       {
-        name: 'Periodic boundaries',
+        name: 'Repeating boundaries',
         status: 'implemented',
         description:
-          'Use periodic domain axes in compatible solver configurations.',
+          'Flow leaving one side of the domain comes back in on the opposite side, for repeating geometry such as a long channel.',
       },
       {
-        name: 'Domain inlets and pressure outlets',
+        name: 'Inflow and outflow at the domain sides',
         status: 'experimental',
         description:
-          'Prescribe inlet velocity or outlet pressure on domain faces, with availability determined by the selected method, including liquid–gas PF-FLIP. Pressure outlets can use a hydrostatic reference level to help keep water at rest under gravity.',
+          'Set the incoming flow speed, or the pressure where the flow leaves, on the sides of the simulation box. Outlets can keep still water at rest under gravity. What is available depends on the solver.',
       },
       {
-        name: 'Mesh-surface inflow',
+        name: 'Pouring from any surface',
         status: 'experimental',
         description:
-          'Emit liquid from a triangulated surface with a prescribed discharge or velocity profile. FLIP inlets can be curved, closed, moving, or rocking, such as a sweeping nozzle; FIRM emits particles from inlet meshes, and finite-volume inlets cap a passage at a domain face.',
+          'Let liquid flow in through a surface you draw, such as a nozzle, at a set flow rate. In FLIP the nozzle can move, sweep, or rock while it pours.',
       },
       {
-        name: 'Finite mesh-surface outlets',
+        name: 'Outflow through a surface',
         status: 'development',
         description:
-          'FLIP removes particles that cross a static surface mesh. Pressure conditions and independent discharge measurements on such outlets are being developed.',
+          'Liquid that reaches a chosen surface leaves the simulation (FLIP today). Pressure control and flow-rate measurement on these outlets are in progress.',
       },
     ],
   },
@@ -161,61 +162,61 @@ export const capabilityGroups = [
     summary:
       'Rotate, oscillate, shake, or accelerate the geometry. The liquid splashes, breaks up, and reconnects, keeping a sharp surface through impacts, with surface tension and wetting acting at the interface.',
     description:
-      'Prescribe how the geometry moves and follow the free surface it drives.',
+      'Move the geometry the way it moves in service and watch the liquid respond.',
     features: [
       {
-        name: 'Incompressible free-surface flow',
+        name: 'Liquids with a free surface',
         status: 'implemented',
         description:
-          'Single-liquid simulation with particles tracking the moving liquid and a grid solving pressure.',
+          'Waves, splashes, jets, and droplets: liquid with an open surface that can break up and merge again.',
       },
       {
-        name: 'Prescribed rigid-body motion',
+        name: 'Prescribed motion',
         status: 'implemented',
         description:
-          'Author translations and rotations with keyframes and time-dependent motion sources.',
+          'Move, tilt, and spin parts with keyframes or with motion read from a file.',
       },
       {
-        name: 'Animation timeline and preview',
+        name: 'Motion timeline and preview',
         status: 'implemented',
         description:
-          'Edit keyframes and preview the body motion before running the fluid simulation.',
+          'Edit keyframes on a timeline and preview the motion before you simulate the liquid.',
       },
       {
-        name: 'Moving reference frames',
+        name: 'Moving and rotating tanks',
         status: 'implemented',
         description:
-          'Model prescribed domain translation and rotation; rotating-frame forces are available in compatible FLIP, finite-volume, and meshless configurations.',
+          'Simulate the liquid inside a tank that travels, accelerates, or spins, in all three solvers.',
       },
       {
-        name: 'Adaptive time stepping',
+        name: 'Automatic time step',
         status: 'implemented',
         description:
-          'Use CFL-based time-step control with a maximum step, or select a fixed step for a controlled study.',
+          'The solver picks a safe time step as the flow speeds up or calms down. Fix it yourself when you want a controlled comparison.',
       },
       {
         name: 'Surface tension',
         status: 'experimental',
         description:
-          'Include capillary forces in FLIP, finite-volume, and meshless free-surface formulations. FLIP uses sharp interfaces with carried curvature, and an optional semi-implicit treatment runs free drops stably at several times the explicit capillary time-step limit.',
+          'Capture what matters at small scales and in low gravity: droplets, capillary rise, and curved liquid surfaces. Available in all three solvers.',
       },
       {
-        name: 'Contact angles and wetting',
+        name: 'Wetting and contact angles',
         status: 'experimental',
         description:
-          'Static, dynamic (Cox–Voinov), and hysteretic contact angles. FLIP fits the near-wall level set to the prescribed angle, finite volumes impose it on height functions, and the meshless solver supports dynamic angles with hysteresis.',
+          'Set how readily the liquid wets each wall, including how the contact line sticks before it slides and how its angle changes while it moves.',
       },
       {
-        name: 'Wave-generation boundaries',
+        name: 'Wave makers',
         status: 'development',
         description:
-          'Analytical wave targets with direct and relaxation-zone wave generation.',
+          'Generate regular waves at a boundary, or steer the flow toward a target wave.',
       },
       {
-        name: 'Calm exterior water for moving domains',
+        name: 'Calm water around a moving body',
         status: 'experimental',
         description:
-          'Keep the surrounding water still in world coordinates while the computational domain travels with a moving body, so open boundaries and numerical beaches connect to a calm basin.',
+          'Keep the surrounding water still while the simulation box follows a moving hull or body.',
       },
     ],
   },
@@ -227,61 +228,60 @@ export const capabilityGroups = [
     summary:
       'Every simulation step runs on the graphics card in your workstation, and memory follows the liquid rather than the empty space around it. Watch the result take shape while it runs.',
     description:
-      'A native compute pipeline built around GPU execution, with a live view of the run.',
+      'Everything runs on the graphics card in your workstation. No cluster, no queue, and you watch the result while it computes.',
     features: [
       {
-        name: 'GPU-native simulation',
+        name: 'Runs entirely on the GPU',
         status: 'implemented',
         description:
-          'Fluid kernels, intermediate fields, and reductions execute on the GPU, with compact measurements returned to the application.',
+          'The whole simulation stays on the graphics card; only the numbers you asked for come back to the app.',
       },
       {
-        name: 'Vulkan backend',
+        name: 'Windows and Linux (Vulkan)',
         status: 'implemented',
         description:
-          'The Windows and Linux package configuration uses Vulkan with a compatible GPU and vendor driver.',
+          'The downloads run on a compatible GPU through Vulkan, the cross-vendor graphics standard, with the vendor’s driver.',
       },
       {
-        name: 'Sparse FLIP grids',
+        name: 'Memory follows the liquid',
         status: 'implemented',
         description:
-          'Use sparse tiled grids around the active liquid for the particle/grid solver.',
+          'FLIP stores the grid only where the liquid is, so a large, mostly empty tank costs little memory.',
       },
       {
-        name: 'Multigrid pressure solves',
+        name: 'Fast on large models',
         status: 'implemented',
         description:
-          'Geometric-multigrid preconditioning for the pressure equation, selected automatically for large FLIP grids and used by the finite-volume solver.',
+          'A multi-level pressure solver keeps big simulations converging quickly. It switches on by itself when the model gets large.',
       },
       {
-        name: 'Live 3D visualisation',
+        name: 'Live 3D view',
         status: 'implemented',
         description:
-          'Inspect the evolving liquid, geometry, and supported scalar-field colouring while a simulation runs.',
+          'Watch the liquid, the geometry, and colour-coded results while the simulation runs.',
       },
       {
         name: 'Cutting planes',
         status: 'implemented',
-        description:
-          'Use an interactive slice plane to inspect the interior of the displayed model.',
+        description: 'Slice the model with an interactive plane to look inside.',
       },
       {
-        name: 'Run controls and diagnostics',
+        name: 'Run controls and health checks',
         status: 'implemented',
         description:
-          'Start, pause, step, or reset a simulation and follow numerical diagnostics, measurement graphs, and logs.',
+          'Start, pause, step, or reset a run, and follow graphs, solver health, and logs as it goes.',
       },
       {
-        name: 'CUDA backend',
+        name: 'NVIDIA CUDA',
         status: 'experimental',
         description:
-          'An optional NVIDIA compute path in development builds, separate from the Vulkan download configuration.',
+          'An optional NVIDIA-only path in development builds. The downloads use Vulkan.',
       },
       {
-        name: 'Metal backend for macOS',
+        name: 'macOS (Metal)',
         status: 'experimental',
         description:
-          'The solvers and the native viewer run on Apple GPUs through Metal. macOS packages are built locally and are not yet part of the download.',
+          'The simulation and viewer run on Apple GPUs. A macOS download is not available yet.',
       },
     ],
   },
@@ -291,69 +291,69 @@ export const capabilityGroups = [
     icon: 'nodes',
     summaryTitle: 'Coupled physics',
     summary:
-      'Simulate liquid and gas together. Couple the liquid to free-moving bodies and structural solvers. Choose yield-stress, shear-thinning, or viscoelastic fluids. Transfer heat, and boil off a cryogenic tank through its vent.',
+      'Simulate liquid and gas together, parts the liquid pushes around, and coupling to structural solvers. Choose thick, pasty, or elastic fluids. Add heat, and follow the boil-off of a cryogenic tank.',
     description:
-      'Fluid models, method choices, and coupling to bodies and other solvers.',
+      'Go beyond plain water: gas, real-world fluids, heat, and parts the flow moves.',
     features: [
       {
-        name: 'Newtonian viscosity',
+        name: 'Viscous liquids',
         status: 'implemented',
         description:
-          'Vary density and viscosity across Newtonian flow regimes, with implicit viscosity solver support.',
+          'Anything from water to thick oils, staying stable even when the liquid is very viscous.',
       },
       {
-        name: 'Fluid-driven rigid bodies',
+        name: 'Parts moved by the liquid',
         status: 'experimental',
         description:
-          'Six-degree-of-freedom (6-DOF) either imposed or reactive body coupling.',
+          'Let floating or loose parts move freely under the liquid’s forces in all six directions of motion, or impose how they move.',
       },
       {
-        name: 'External structural coupling',
+        name: 'Coupling to structural solvers',
         status: 'experimental',
         description:
-          'Native coupling through preCICE on Linux, including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces. Explicit and implicit (sub-iterated) coupling for FLIP and single-liquid finite volumes.',
+          'Exchange forces and motion with a structural model, such as CalculiX, through preCICE on Linux. FLIP and FVM can repeat each step until both sides agree.',
       },
       {
-        name: 'Resolved liquid–gas flow',
+        name: 'Liquid and gas together',
         status: 'experimental',
         description:
-          'Simulate liquid and gas together, with configuration-specific density-ratio and interface behaviour. PF-FLIP can use volume correction to limit liquid-volume drift during expansion; gas is incompressible by default.',
+          'Simulate the air or vapour above the liquid as well, for bubbles, trapped gas pockets, and closed tanks.',
       },
       {
-        name: 'Compressible air in closed tanks',
+        name: 'Compressible gas in closed tanks',
         status: 'experimental',
         description:
-          'An optional compressible gas for closed PF-FLIP tanks, including rotating frames and pressurised ullage; off by default.',
+          'Let the gas trapped in a sealed tank compress and expand as the liquid moves, including pressurised tanks. Off by default.',
       },
       {
-        name: 'Turbulence and wall treatment',
+        name: 'Turbulence',
         status: 'experimental',
         description:
-          'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment, on uniform grids for single-fluid flow.',
+          'The widely used SST k–ω turbulence model with wall functions, in FVM for single-fluid flow.',
       },
       {
-        name: 'Non-Newtonian models',
+        name: 'Non-Newtonian fluids',
         status: 'implemented',
         description:
-          'Bingham, power-law, Casson, Herschel–Bulkley, and Carreau–Yasuda fluids in FLIP and finite volumes. FLIP also offers experimental unregularised yield-stress laws, so plugs genuinely stop.',
+          'Pastes, slurries, gels, and polymer solutions that get thinner or thicker as they flow, including fluids that stay put until pushed hard enough. FLIP and FVM.',
       },
       {
-        name: 'Viscoelasticity models',
+        name: 'Viscoelastic fluids',
         status: 'implemented',
         description:
-          'Oldroyd-B, Giesekus, and linear PTT fluids in FLIP and finite volumes, with configuration limits stated by each solver.',
+          'Fluids with an elastic memory, such as polymer solutions, in FLIP and FVM.',
       },
       {
         name: 'Heat transfer',
         status: 'experimental',
         description:
-          'Transport temperature with buoyancy and exchange heat with walls and bodies at a set temperature, a set heat flux, or through a surface film. Liquid and gas in PF-FLIP and finite volumes; liquid only in the meshless solver.',
+          'Heat or cool the liquid through walls and parts, with warm fluid rising and cold fluid sinking. The gas is included in liquid–gas runs.',
       },
       {
-        name: 'Phase change and tank pressurisation',
+        name: 'Boil-off and tank pressure',
         status: 'experimental',
         description:
-          'Evaporation and condensation at the PF-FLIP liquid–vapour interface of a sealed tank, or a lumped vapour ullage with relief vent, regulated pressurant, and liquid ports on keyframed set points. Nucleate wall boiling is planned.',
+          'Follow evaporation, condensation, and tank pressure in a sealed or vented tank, with relief valves and pressurant gas, for example in a cryogenic propellant tank (FLIP). Boiling at hot walls is planned.',
       },
     ],
   },
@@ -365,73 +365,73 @@ export const capabilityGroups = [
     summary:
       'Dimensions, fill levels, motion, and fluid properties are all plain setup inputs. Run batches of variants from the command line, compare the results automatically, or drive the solver from your own optimisation loop.',
     description:
-      'Run many variants, capture the quantities behind a design decision, and take them into your analysis tools.',
+      'Turn one setup into a design study, and take the numbers into your own tools.',
     features: [
       {
-        name: 'Easy setup files',
+        name: 'Plain setup files',
         status: 'implemented',
         description:
-          'Save and reload JSON setups, share common inputs through inheritance, and run the same setup from the command line. The setup format is versioned at 1.0, and older setups migrate offline.',
+          'Every setup is a readable JSON file. Save it, share it, reuse common parts across variants, and run it from the command line. Setups from earlier versions can be upgraded with an included converter.',
       },
       {
-        name: 'Study comparisons and automation',
+        name: 'Batch studies and comparisons',
         status: 'implemented',
         description:
-          'Run multi-case studies from the command line and write comparisons as JSON, CSV, and Markdown.',
+          'Run many variants from the command line and get comparison tables as JSON, CSV, and Markdown.',
       },
       {
-        name: 'Numerical controls',
+        name: 'Settings for every level',
         status: 'implemented',
         description:
-          'Choose resolution, time stepping, and solver settings. FLIP offers Basic, Advanced, Expert, and Search views.',
+          'Choose resolution, time step, and solver settings. FLIP offers Basic, Advanced, and Expert views, plus search.',
       },
       {
         name: 'Pressure and velocity probes',
         status: 'implemented',
         description:
-          'Sample selected regions and display time histories. Pressure probes measure fluid regions rather than wall-pressure taps.',
+          'Place probes in the liquid and plot pressure or velocity over time. Probes measure a region of fluid, not a pressure tap on the wall.',
       },
       {
-        name: 'Automatic measurement CSV',
+        name: 'Automatic CSV recording',
         status: 'implemented',
         description:
-          'Record configured probes and body measurements during the run, with separate files for successive runs.',
+          'Probe and body measurements are written to CSV while the run proceeds, with separate files for each run.',
       },
       {
-        name: 'Body motion, forces, and moments',
+        name: 'Forces, moments, and body motion',
         status: 'implemented',
         description:
-          'Track named bodies and export motion or integrated loads where the selected method provides them.',
+          'Track the loads on named parts and how they move, where the solver provides them.',
       },
       {
         name: 'Wall shear stress',
         status: 'experimental',
         description:
-          'Export wall shear stress on wetted body walls and colour bodies by pressure or shear in the viewer. Finite volumes also accumulate time-averaged shear and the oscillatory shear index.',
+          'See where the flow scrubs the walls hardest. Export it, or colour parts by pressure or shear in the viewer.',
       },
       {
-        name: 'Passive tracers',
+        name: 'Flow tracers',
         status: 'implemented',
         description:
-          'Release tracer particles from the Probes tree, watch their paths live, and export them with FLIP and finite-volume results.',
+          'Release tracer particles and watch their paths live to see where the liquid goes.',
       },
       {
-        name: 'VTK field and surface export',
+        name: 'Export to ParaView',
         status: 'implemented',
         description:
-          'Export supported particle fields, finite-volume grids, and reconstructed free surfaces for external post-processing.',
+          'Export particles, grid results, and the liquid surface as VTK files for ParaView and other post-processing tools.',
       },
       {
-        name: 'Checkpoint and restart',
+        name: 'Pause, close, and resume',
         status: 'implemented',
         description:
-          'Resume supported FLIP and meshless runs after reopening a desktop document, or configure checkpoints in CLI setups. Restart begins at time zero; persistent finite-volume restart is not yet available.',
+          'Continue FLIP and FIRM runs after reopening a document, or write checkpoints from the command line. FVM runs cannot be resumed yet.',
       },
       {
-        name: 'Python runtime',
+        name: 'Python control',
         status: 'experimental',
         description:
-          'Configure, validate, and step simulations in-process from Python, for example inside an external optimisation loop, or drive a tank’s motion through a Gymnasium-style reset/step environment for control and reinforcement learning. The initial package targets Linux x86_64 with Vulkan.',
+          'Set up, check, and step simulations from Python, for example inside an optimisation loop, or let your own controller move a tank step by step for control and reinforcement-learning studies. Linux with Vulkan for now.',
       },
     ],
   },
@@ -443,31 +443,31 @@ export const capabilityGroups = [
     summary:
       'Plain, schema-validated setup files and packaged CLI/MCP tools let AI agents check setups and run CFD tasks. A local setup assistant is experimental.',
     description:
-      'Machine-readable setup documents and packaged tools that software can use to validate and run CFD tasks.',
+      'Setup files and tools that AI assistants can read, check, and run.',
     features: [
       {
-        name: 'Machine-readable setup schema',
+        name: 'Machine-readable setup format',
         status: 'implemented',
         description:
-          'A generated JSON schema describes the setup document, and setups and studies can be validated from the command line without starting a simulation.',
+          'A published schema describes every setup option, so a setup can be checked from the command line without running it.',
       },
       {
-        name: 'Agent Pack CLI and MCP tools',
+        name: 'Agent Pack: command-line and MCP tools',
         status: 'implemented',
         description:
-          'Windows and Linux desktop packages include tools to validate setups and run task-based CFD workflows from the command line or through MCP.',
+          'The Windows and Linux downloads include tools that let AI agents check setups and run CFD tasks, from the command line or through MCP.',
       },
       {
         name: 'Local setup assistant',
         status: 'experimental',
         description:
-          'A prototype that runs locally and turns a short English description of a partially filled tank under sinusoidal motion into a reviewable setup. Running the simulation stays a separate step.',
+          'A prototype that runs on your own machine and turns a short English description of a partly filled tank shaken back and forth into a setup you can review. Running it stays a separate step.',
       },
       {
         name: 'Assistant-guided studies',
         status: 'planned',
         description:
-          'Set up, run, and summarise a study together with an assistant inside the workspace.',
+          'Plan, run, and summarise a study together with an assistant inside the app.',
       },
     ],
   },

@@ -6,14 +6,9 @@ import { maturity, solverCards, solverShared } from '../content/capabilities';
 <section class="solver-section" aria-labelledby="solvers-title">
   <h1 id="solvers-title">Solvers</h1>
   <p>
-    Three solvers, from Eulerian to fully Lagrangian, share one setup file,
-    one GPU runtime, and one viewer. Pick the discretisation that suits the
-    flow, not the one your mesher tolerates.
+    Three solvers share one setup file, one GPU engine, and one viewer. Pick
+    the one that suits your flow, not the one your mesher tolerates.
   </p>
-  <div class="solver-spectrum" aria-hidden="true">
-    <span>Eulerian <small>· the fluid flows through a fixed grid</small></span>
-    <span>Lagrangian <small>· the discretisation moves with the fluid</small></span>
-  </div>
   <div class="solver-card-grid">
     {solverCards.map((solver) => (
       <article class="solver-card">
