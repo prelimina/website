@@ -1154,6 +1154,46 @@ em {
   font-size: var(--font-ui);
   margin-bottom: 26px;
 }
+.gpu-vendors {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: var(--font-meta);
+}
+.capability-group .gpu-vendors {
+  margin: -10px 0 26px;
+}
+.gpu-vendors .gpu-vendors-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--font-meta);
+}
+.gpu-vendors ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gpu-vendors li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fafafa;
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.gpu-vendors li svg {
+  color: var(--vendor);
+}
 .capability-feature-list {
   list-style: none;
   padding: 0;

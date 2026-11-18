@@ -1,0 +1,16 @@
+---
+import Icon from './Icon.astro';
+import { gpuVendors } from '../content/capabilities';
+---
+
+<div class="gpu-vendors">
+  <p class="gpu-vendors-label">Runs on Vulkan 1.3 graphics cards from</p>
+  <ul aria-label="GPU vendors">
+    {gpuVendors.map((vendor) => (
+      <li style={`--vendor: ${vendor.color}`}>
+        <Icon name="gpu" size={18} />
+        {vendor.name}
+      </li>
+    ))}
+  </ul>
+</div>

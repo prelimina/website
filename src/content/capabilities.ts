@@ -78,6 +78,13 @@ export const solverCards = [
 export const solverShared =
   'CAD import · moving and rotating tanks · probes, forces, and moments · CSV and ParaView export · one setup file · one GPU engine.';
 
+// Vulkan 1.3 is vendor-neutral; colours tint a generic GPU icon, not logos.
+export const gpuVendors = [
+  { name: 'NVIDIA', color: '#76b900' },
+  { name: 'AMD', color: '#ed1c24' },
+  { name: 'Intel', color: '#0071c5' },
+] as const;
+
 export interface CapabilityGroup {
   id: string;
   title: string;

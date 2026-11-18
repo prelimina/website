@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import GpuVendors from './GpuVendors.astro';
 import { capabilityGroups, maturity } from '../content/capabilities';
 import { productActionConfig } from '../content/content';
 ---
@@ -18,6 +19,7 @@ import { productActionConfig } from '../content/content';
         <h2 id={`${group.id}-title`}>{group.title}</h2>
       </div>
       <p class="capability-group-description">{group.description}</p>
+      {group.id === 'compute' && <GpuVendors />}
       <ul class="capability-feature-list">
         {group.features.map((feature) => (
           <li>

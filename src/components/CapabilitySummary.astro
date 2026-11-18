@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import FlowBackdrop from './FlowBackdrop.astro';
+import GpuVendors from './GpuVendors.astro';
 import { capabilityGroups, maturity, type CapabilityGroup } from '../content/capabilities';
 ---
 
@@ -29,6 +30,7 @@ import { capabilityGroups, maturity, type CapabilityGroup } from '../content/cap
           </span>
         )}
         <p>{group.summary}</p>
+        {group.id === 'compute' && <GpuVendors />}
       </a>
     ))}
   </div>
