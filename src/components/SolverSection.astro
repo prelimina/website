@@ -1,24 +1,46 @@
 ---
-import { maturity, solverCards } from '../content/capabilities';
+import SolverSchematic from './SolverSchematic.astro';
+import { maturity, solverCards, solverShared } from '../content/capabilities';
 ---
 
 <section class="solver-section" aria-labelledby="solvers-title">
   <h1 id="solvers-title">Solvers</h1>
   <p>
-    Prelimina brings the complete fluid simulation workflow into one suite,
-    ready to put every design assumption to the test.
+    Three solvers, from Eulerian to fully Lagrangian, share one setup file,
+    one GPU runtime, and one viewer. Pick the discretisation that suits the
+    flow, not the one your mesher tolerates.
   </p>
+  <div class="solver-spectrum" aria-hidden="true">
+    <span>Eulerian <small>· the fluid flows through a fixed grid</small></span>
+    <span>Lagrangian <small>· the discretisation moves with the fluid</small></span>
+  </div>
   <div class="solver-card-grid">
     {solverCards.map((solver) => (
       <article class="solver-card">
+        <figure class="solver-figure">
+          <SolverSchematic kind={solver.schematic} label={solver.schematicLabel} />
+          <figcaption>
+            {solver.legend.map((item) => (
+              <span>
+                <i class="solver-key" data-key={item.key} aria-hidden="true" />
+                {item.text}
+              </span>
+            ))}
+          </figcaption>
+        </figure>
         <div class="solver-card-heading">
           <h2>{solver.name}</h2>
           <span class="maturity-badge" data-maturity={solver.status}>
             {maturity[solver.status].label}
           </span>
         </div>
+        <p class="solver-kind">{solver.kind}</p>
         <p>{solver.description}</p>
+        <p class="solver-best">
+          <strong>Best for</strong> {solver.bestFor}
+        </p>
       </article>
     ))}
   </div>
+  <p class="solver-shared"><strong>Shared by all three:</strong> {solverShared}</p>
 </section>

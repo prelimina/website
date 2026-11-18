@@ -20,26 +20,62 @@ export const maturity = {
   },
 } as const;
 
+// Ordered from Eulerian to fully Lagrangian; schematics are drawn at build
+// time by SolverSchematic.astro.
 export const solverCards = [
-  {
-    name: 'FLIP',
-    status: 'implemented',
-    description:
-      'The fastest ever, industry accurate Eulerian–Lagrangian hybrid for quick prototyping.',
-  },
   {
     name: 'FVM',
     status: 'experimental',
+    schematic: 'fvm',
+    kind: 'Cut-cell Eulerian',
+    schematicLabel:
+      'A fixed Cartesian grid cut by a curved wall; cells the wall crosses are shaded, and the liquid surface is one straight piece per cell.',
+    legend: [
+      { key: 'cut-cell', text: 'Cells the wall cuts' },
+      { key: 'plic', text: 'PLIC interface, one piece per cell' },
+    ],
     description:
-      'The most flexible cut-cell finite-volume solver ever, with Eulerian conservation for cases where that is important.',
+      'PISO finite volumes on a Cartesian grid that the CAD walls cut through. Tiny cut cells merge with a neighbour instead of shrinking the time step, and a multigrid-preconditioned pressure solve keeps mass conserved cell by cell.',
+    bestFor:
+      'internal flow, pressure loss, heat transfer, liquid–gas interfaces.',
+  },
+  {
+    name: 'FLIP',
+    status: 'implemented',
+    schematic: 'flip',
+    kind: 'Particles on a cut-face grid',
+    schematicLabel:
+      'Particles fill the liquid over a sparse grid; the open parts of grid faces crossed by the curved wall are highlighted.',
+    legend: [
+      { key: 'particle', text: 'Particles carry the liquid' },
+      { key: 'grid', text: 'Sparse grid solves pressure' },
+      { key: 'cut-face', text: 'Open fraction of cut faces' },
+    ],
+    description:
+      'Particles carry the liquid and its velocity; a sparse GPU grid, allocated only around the liquid, enforces incompressibility with walls entering through the open fraction of each cut face. Splashes, break-up, and reconnection need no interface surgery.',
+    bestFor:
+      'sloshing, splashing, filling, moving and fluid-driven bodies, wetting.',
   },
   {
     name: 'FIRM',
-    status: 'planned',
+    status: 'experimental',
+    schematic: 'firm',
+    kind: 'Fully Lagrangian, implicit',
+    schematicLabel:
+      'Particles only, with no grid; one particle’s support circle is cut by the curved wall, its neighbours are tinted, and the wall facets inside it are highlighted.',
+    legend: [
+      { key: 'support', text: 'Renormalised support and neighbours' },
+      { key: 'wall-patch', text: 'Wall condition on the CAD facets' },
+    ],
     description:
-      'The most robust and accurate implicit pure Lagrangian method in the world, where everything easily moves and deforms.',
+      'The particles are the discretisation. Pressure and viscosity are solved implicitly on renormalised meshless operators, with wall, free-surface, inlet, and outlet conditions built into the operators instead of layers of dummy particles. Body loads are integrated over the wetted CAD triangles, and the time step follows the flow, not an artificial sound speed.',
+    bestFor:
+      'large deformation, prescribed moving parts, long restartable runs.',
   },
 ] as const;
+
+export const solverShared =
+  'CAD-surface import · moving reference frames · probes, forces, and moments · CSV and VTK export · one JSON setup schema · one GPU runtime.';
 
 export interface CapabilityGroup {
   id: string;
@@ -101,19 +137,19 @@ export const capabilityGroups = [
         name: 'Domain inlets and pressure outlets',
         status: 'experimental',
         description:
-          'Prescribe inlet velocity or outlet pressure on domain faces, with availability determined by the selected method. Pressure outlets can use a hydrostatic reference level to help keep water at rest under gravity.',
+          'Prescribe inlet velocity or outlet pressure on domain faces, with availability determined by the selected method, including liquid–gas PF-FLIP. Pressure outlets can use a hydrostatic reference level to help keep water at rest under gravity.',
       },
       {
         name: 'Mesh-surface inflow',
-        status: 'development',
+        status: 'experimental',
         description:
-          'Prescribed discharge and particle emission exist in FLIP/FIRM; broader surface shapes, motion, and flow enforcement are being developed.',
+          'Emit liquid from a triangulated surface with a prescribed discharge or velocity profile. FLIP inlets can be curved, closed, moving, or rocking, such as a sweeping nozzle; FIRM emits particles from inlet meshes, and finite-volume inlets cap a passage at a domain face.',
       },
       {
         name: 'Finite mesh-surface outlets',
-        status: 'planned',
+        status: 'development',
         description:
-          'Outflow through a bounded surface, with particle removal and independent discharge measurements.',
+          'FLIP removes particles that cross a static surface mesh. Pressure conditions and independent discharge measurements on such outlets are being developed.',
       },
     ],
   },
@@ -149,7 +185,7 @@ export const capabilityGroups = [
         name: 'Moving reference frames',
         status: 'implemented',
         description:
-          'Model prescribed domain translation; rotating-frame forces are available in compatible FLIP and meshless configurations.',
+          'Model prescribed domain translation and rotation; rotating-frame forces are available in compatible FLIP, finite-volume, and meshless configurations.',
       },
       {
         name: 'Adaptive time stepping',
@@ -161,19 +197,25 @@ export const capabilityGroups = [
         name: 'Surface tension',
         status: 'experimental',
         description:
-          'Include capillary forces in supported free-surface formulations. Compatible PF-FLIP setups use sharp interfaces and carried curvature by default, with particle advection selected automatically.',
+          'Include capillary forces in FLIP, finite-volume, and meshless free-surface formulations. FLIP uses sharp interfaces with carried curvature, and an optional semi-implicit treatment runs free drops stably at several times the explicit capillary time-step limit.',
       },
       {
         name: 'Contact angles and wetting',
         status: 'experimental',
         description:
-          'Static wetting and selected dynamic or hysteretic models, with an experimental wall-energy method for surface-tension simulations.',
+          'Static, dynamic (Cox–Voinov), and hysteretic contact angles. FLIP fits the near-wall level set to the prescribed angle, finite volumes impose it on height functions, and the meshless solver supports dynamic angles with hysteresis.',
       },
       {
         name: 'Wave-generation boundaries',
         status: 'development',
         description:
           'Analytical wave targets with direct and relaxation-zone wave generation.',
+      },
+      {
+        name: 'Calm exterior water for moving domains',
+        status: 'experimental',
+        description:
+          'Keep the surrounding water still in world coordinates while the computational domain travels with a moving body, so open boundaries and numerical beaches connect to a calm basin.',
       },
     ],
   },
@@ -206,6 +248,12 @@ export const capabilityGroups = [
           'Use sparse tiled grids around the active liquid for the particle/grid solver.',
       },
       {
+        name: 'Multigrid pressure solves',
+        status: 'implemented',
+        description:
+          'Geometric-multigrid preconditioning for the pressure equation, selected automatically for large FLIP grids and used by the finite-volume solver.',
+      },
+      {
         name: 'Live 3D visualisation',
         status: 'implemented',
         description:
@@ -229,6 +277,12 @@ export const capabilityGroups = [
         description:
           'An optional NVIDIA compute path in development builds, separate from the Vulkan download configuration.',
       },
+      {
+        name: 'Metal backend for macOS',
+        status: 'experimental',
+        description:
+          'The solvers and the native viewer run on Apple GPUs through Metal. macOS packages are built locally and are not yet part of the download.',
+      },
     ],
   },
   {
@@ -237,7 +291,7 @@ export const capabilityGroups = [
     icon: 'nodes',
     summaryTitle: 'Coupled physics',
     summary:
-      'Simulate multiple phases. Couple the liquid to free-moving bodies and structural solvers. Choose non-Newtonian fluids. Transfer heat through the liquid. Viscoelasticity is on the roadmap.',
+      'Simulate liquid and gas together. Couple the liquid to free-moving bodies and structural solvers. Choose yield-stress, shear-thinning, or viscoelastic fluids. Transfer heat, and boil off a cryogenic tank through its vent.',
     description:
       'Fluid models, method choices, and coupling to bodies and other solvers.',
     features: [
@@ -257,7 +311,7 @@ export const capabilityGroups = [
         name: 'External structural coupling',
         status: 'experimental',
         description:
-          'Native coupling (through preCICE on Linux), including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces.',
+          'Native coupling through preCICE on Linux, including the CalculiX adapter, for force and motion exchange on fixed-topology surfaces. Explicit and implicit (sub-iterated) coupling for FLIP and single-liquid finite volumes.',
       },
       {
         name: 'Resolved liquid–gas flow',
@@ -269,37 +323,37 @@ export const capabilityGroups = [
         name: 'Compressible air in closed tanks',
         status: 'experimental',
         description:
-          'An optional compressible-air model for closed-tank PF-FLIP simulations; experimental and off by default.',
+          'An optional compressible gas for closed PF-FLIP tanks, including rotating frames and pressurised ullage; off by default.',
       },
       {
         name: 'Turbulence and wall treatment',
-        status: 'development',
+        status: 'experimental',
         description:
-          'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment.',
+          'Finite-volume SST k–ω turbulence with resolved walls or a smooth-wall Spalding treatment, on uniform grids for single-fluid flow.',
       },
       {
         name: 'Non-Newtonian models',
-        status: 'development',
+        status: 'implemented',
         description:
-          'Add constitutive models for fluids whose viscosity changes with shear or deformation.',
+          'Bingham, power-law, Casson, Herschel–Bulkley, and Carreau–Yasuda fluids in FLIP and finite volumes. FLIP also offers experimental unregularised yield-stress laws, so plugs genuinely stop.',
       },
       {
         name: 'Viscoelasticity models',
-        status: 'planned',
+        status: 'implemented',
         description:
-          'Represent fluids with both viscous and elastic response through planned constitutive models.',
+          'Oldroyd-B, Giesekus, and linear PTT fluids in FLIP and finite volumes, with configuration limits stated by each solver.',
       },
       {
         name: 'Heat transfer',
         status: 'experimental',
         description:
-          'Transport temperature through the liquid, with buoyancy, and exchange heat with walls and bodies at a set temperature, a set heat flux or through a surface film. Liquid side only; the gas side and phase change are planned.',
+          'Transport temperature with buoyancy and exchange heat with walls and bodies at a set temperature, a set heat flux, or through a surface film. Liquid and gas in PF-FLIP and finite volumes; liquid only in the meshless solver.',
       },
       {
-        name: 'Phase-change and boiling',
-        status: 'planned',
+        name: 'Phase change and tank pressurisation',
+        status: 'experimental',
         description:
-          'Simulate phase change, including boiling and condensation.',
+          'Evaporation and condensation at the PF-FLIP liquid–vapour interface of a sealed tank, or a lumped vapour ullage with relief vent, regulated pressurant, and liquid ports on keyframed set points. Nucleate wall boiling is planned.',
       },
     ],
   },
@@ -317,7 +371,7 @@ export const capabilityGroups = [
         name: 'Easy setup files',
         status: 'implemented',
         description:
-          'Save and reload JSON setups, share common inputs through inheritance, and run the same setup from the command line.',
+          'Save and reload JSON setups, share common inputs through inheritance, and run the same setup from the command line. The setup format is versioned at 1.0, and older setups migrate offline.',
       },
       {
         name: 'Study comparisons and automation',
@@ -350,6 +404,18 @@ export const capabilityGroups = [
           'Track named bodies and export motion or integrated loads where the selected method provides them.',
       },
       {
+        name: 'Wall shear stress',
+        status: 'experimental',
+        description:
+          'Export wall shear stress on wetted body walls and colour bodies by pressure or shear in the viewer. Finite volumes also accumulate time-averaged shear and the oscillatory shear index.',
+      },
+      {
+        name: 'Passive tracers',
+        status: 'implemented',
+        description:
+          'Release tracer particles from the Probes tree, watch their paths live, and export them with FLIP and finite-volume results.',
+      },
+      {
         name: 'VTK field and surface export',
         status: 'implemented',
         description:
@@ -365,7 +431,7 @@ export const capabilityGroups = [
         name: 'Python runtime',
         status: 'experimental',
         description:
-          'Configure, validate, and step simulations in-process from Python, for example inside an external optimisation loop. The initial package targets Linux x86_64 with Vulkan.',
+          'Configure, validate, and step simulations in-process from Python, for example inside an external optimisation loop, or drive a tank’s motion through a Gymnasium-style reset/step environment for control and reinforcement learning. The initial package targets Linux x86_64 with Vulkan.',
       },
     ],
   },

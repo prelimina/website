@@ -1,0 +1,216 @@
+---
+// Build-time schematic of each solver's discretisation, ported from the
+// partnership-brief generator: the same free surface and curved CAD wall drawn
+// as cut cells with PLIC pieces (FVM), particles on a sparse grid with cut
+// faces (FLIP), or particles alone with a wall-truncated support (FIRM).
+interface Props {
+  kind: 'fvm' | 'flip' | 'firm';
+  label: string;
+}
+const { kind, label } = Astro.props;
+
+const W = 120;
+const H = 40;
+const STEP = 10;
+const LIQUID = '#4686fb';
+const WALL_FILL = '#d9dbe0';
+const ACCENT = '#c0645a';
+const NEIGHBOUR = '#e3a49b';
+
+const surface = (x: number) => 15 + 3.6 * Math.sin(x / 13 + 0.6);
+const dsurface = (x: number) => (3.6 / 13) * Math.cos(x / 13 + 0.6);
+const wall = (x: number) => 36 - 0.004 * (x - 20) ** 2;
+const f = (v: number) => v.toFixed(2);
+
+// Deterministic jitter so every build draws the same particles.
+function rng(seed: number) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+
+function bisect(g: (x: number) => number, lo: number, hi: number) {
+  for (let i = 0; i < 40; i++) {
+    const mid = 0.5 * (lo + hi);
+    if (g(lo) * g(mid) <= 0) hi = mid;
+    else lo = mid;
+  }
+  return 0.5 * (lo + hi);
+}
+
+// Per-cell linear interface pieces (tangent at each piece midpoint): the
+// surface is split at grid lines so every piece lies in one cell, as in PLIC.
+function plicPieces() {
+  const pieces: [number, number, number, number][] = [];
+  for (let gx = 0; gx < W; gx += STEP) {
+    const cuts = [gx, gx + STEP];
+    for (let xa = gx; xa < gx + STEP - 1e-9; xa += 0.05) {
+      const xb = xa + 0.05;
+      if (Math.floor(surface(xa) / STEP) !== Math.floor(surface(xb) / STEP)) {
+        cuts.push(0.5 * (xa + xb));
+      }
+    }
+    cuts.sort((a, b) => a - b);
+    for (let i = 0; i + 1 < cuts.length; i++) {
+      const [a, b] = [cuts[i], cuts[i + 1]];
+      const m = 0.5 * (a + b);
+      const ym = surface(m);
+      const k = dsurface(m);
+      pieces.push([a, ym + k * (a - m), b, ym + k * (b - m)]);
+    }
+  }
+  return pieces;
+}
+
+const out: string[] = [];
+const xs = Array.from({ length: 2 * W + 1 }, (_, i) => i * 0.5);
+const wallPts = xs.map((x) => `${x},${f(Math.min(H + 4, wall(x)))}`).join(' ');
+const liquidPts =
+  xs.map((x) => `${x},${f(surface(x))}`).join(' ') +
+  ' ' +
+  [...xs].reverse().map((x) => `${x},${f(Math.min(H, wall(x)))}`).join(' ');
+
+if (kind === 'fvm') {
+  // Liquid volume bounded by the PLIC pieces, then the cut cells.
+  for (const [a, ya, b, yb] of plicPieces()) {
+    const top: [number, number][] = [];
+    for (let i = 0; i <= 8; i++) {
+      const x = a + ((b - a) * i) / 8;
+      const y = ya + ((yb - ya) * (x - a)) / (b - a);
+      if (wall(x) > y) top.push([x, y]);
+    }
+    if (top.length < 2) continue;
+    const pts = [
+      ...top,
+      ...[...top].reverse().map(([x]) => [x, Math.min(H, wall(x))]),
+    ];
+    out.push(
+      `<polygon points="${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(' ')}" fill="${LIQUID}" fill-opacity="0.3"/>`,
+    );
+  }
+  for (let gx = 0; gx < W; gx += STEP) {
+    for (let gy = 0; gy < H; gy += STEP) {
+      const ys = [0, STEP / 2, STEP].map((t) => wall(gx + t));
+      if (ys.some((y) => gy <= y && y <= gy + STEP)) {
+        out.push(
+          `<rect x="${gx}" y="${gy}" width="${STEP}" height="${STEP}" fill="#e4460a" fill-opacity="0.16"/>`,
+        );
+      }
+    }
+  }
+} else if (kind === 'flip') {
+  out.push(`<polygon points="${liquidPts}" fill="${LIQUID}" fill-opacity="0.1"/>`);
+}
+
+if (kind !== 'firm') {
+  const stroke = kind === 'fvm' ? '#9aa3b2' : '#b9bfca';
+  for (let gx = 0; gx <= W; gx += STEP) {
+    out.push(`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="${stroke}" stroke-width="0.45"/>`);
+  }
+  for (let gy = 0; gy <= H; gy += STEP) {
+    out.push(`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="${stroke}" stroke-width="0.45"/>`);
+  }
+}
+
+// FIRM: one particle's support, truncated by the wall it integrates over.
+const support = { x: 52, y: 25.2, r: 8.4 };
+if (kind !== 'fvm') {
+  const rand = rng(kind === 'flip' ? 7 : 11);
+  const spacing = kind === 'flip' ? 3.1 : 3.6;
+  const r = kind === 'flip' ? 0.95 : 1.25;
+  for (let y = 0, row = 0; y < H; y += spacing * 0.87, row++) {
+    for (let x = (spacing / 2) * (row % 2); x < W; x += spacing) {
+      const px = x + (rand() - 0.5) * 1.4;
+      const py = y + (rand() - 0.5) * 1.4;
+      if (surface(px) + 0.9 < py && py < wall(px) - 0.9) {
+        const neighbour =
+          kind === 'firm' &&
+          (px - support.x) ** 2 + (py - support.y) ** 2 < support.r ** 2;
+        out.push(
+          `<circle cx="${f(px)}" cy="${f(py)}" r="${r}" fill="${neighbour ? NEIGHBOUR : LIQUID}"/>`,
+        );
+      }
+    }
+  }
+  for (const [sx, sy] of [[92, 8], [98, 5], [104, 9], [87, 4]]) {
+    out.push(`<circle cx="${sx}" cy="${sy}" r="${r}" fill="${LIQUID}"/>`);
+  }
+  if (kind === 'firm') {
+    out.push(
+      `<circle cx="${support.x}" cy="${support.y}" r="${support.r}" fill="${ACCENT}" fill-opacity="0.1" stroke="${ACCENT}" stroke-width="0.8" stroke-dasharray="1.6 1"/>`,
+    );
+  }
+}
+
+out.push(`<polygon points="${wallPts} ${W},${H} 0,${H}" fill="${WALL_FILL}"/>`);
+
+const marks: [number, number][] = [];
+if (kind === 'flip') {
+  // Cut faces: the open (fluid-side) part of each grid face the wall crosses.
+  const seg = 'stroke="#2f6fe0" stroke-width="0.9"';
+  for (let gx = 0; gx <= W; gx += STEP) {
+    const yw = wall(gx);
+    const gy = Math.floor(yw / STEP) * STEP;
+    if (gy >= 0 && gy < H && yw - gy > 0.3) {
+      out.push(`<line x1="${gx}" y1="${gy}" x2="${gx}" y2="${f(yw)}" ${seg}/>`);
+      marks.push([gx, yw]);
+    }
+  }
+  for (let gy = STEP; gy < H; gy += STEP) {
+    for (let gx = 0; gx < W; gx += STEP) {
+      const a = wall(gx) - gy;
+      const b = wall(gx + STEP) - gy;
+      if (a * b >= 0) continue;
+      const xc = bisect((x) => wall(x) - gy, gx, gx + STEP);
+      const xf = a > 0 ? gx : gx + STEP;
+      out.push(`<line x1="${xf}" y1="${gy}" x2="${f(xc)}" y2="${gy}" ${seg}/>`);
+      marks.push([xc, gy]);
+    }
+  }
+}
+
+out.push(
+  `<polyline points="${wallPts}" fill="none" stroke="#292929" stroke-width="1.3" stroke-linejoin="round"/>`,
+);
+
+for (const [mx, my] of marks) {
+  out.push(`<circle cx="${f(mx)}" cy="${f(my)}" r="1.05" fill="#fff" stroke="#2f6fe0" stroke-width="0.6"/>`);
+}
+
+if (kind === 'fvm') {
+  for (let [a, ya, b, yb] of plicPieces()) {
+    const line = (x: number) => ya + ((yb - ya) * (x - a)) / (b - a);
+    if (wall(a) <= ya) continue;
+    if (wall(b) <= yb) b = bisect((x) => wall(x) - line(x), a, b);
+    const [a2, b2] = [a + 1, b - 1]; // break at each cell face, as in PLIC
+    if (b2 <= a2) continue;
+    out.push(
+      `<line x1="${f(a2)}" y1="${f(line(a2))}" x2="${f(b2)}" y2="${f(line(b2))}" stroke="#1d4fc4" stroke-width="1.25"/>`,
+    );
+  }
+}
+
+if (kind === 'firm') {
+  // The wall patch inside the support: integrated as CAD triangles.
+  const inside = xs.filter(
+    (x) => (x - support.x) ** 2 + (wall(x) - support.y) ** 2 <= support.r ** 2,
+  );
+  out.push(
+    `<polyline points="${inside.map((x) => `${x},${f(wall(x))}`).join(' ')}" fill="none" stroke="${ACCENT}" stroke-width="1.9" stroke-linecap="round"/>`,
+  );
+  out.push(`<circle cx="${support.x}" cy="${support.y}" r="1.45" fill="${ACCENT}"/>`);
+}
+
+const svg = out.join('');
+---
+
+<svg
+  class="solver-schematic"
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={label}
+  xmlns="http://www.w3.org/2000/svg"
+  set:html={svg}
+/>

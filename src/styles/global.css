@@ -984,6 +984,146 @@ em {
   font-size: var(--font-ui);
   line-height: 1.6;
 }
+.solver-card {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+.solver-card p + p {
+  margin-top: 12px;
+}
+.solver-card .solver-kind {
+  margin-top: -10px;
+  color: var(--ink);
+  font-size: var(--font-meta);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.solver-card .solver-best {
+  align-self: end;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+.solver-card .solver-kind + p {
+  margin-bottom: 16px;
+}
+.solver-best strong,
+.solver-shared strong {
+  color: var(--ink);
+}
+.solver-spectrum {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.solver-spectrum::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--accent-gradient);
+}
+.solver-spectrum span:last-child {
+  text-align: right;
+}
+.solver-spectrum small {
+  font-size: inherit;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+@media (max-width: 620px) {
+  .solver-spectrum small {
+    display: none;
+  }
+}
+.solver-figure {
+  margin: 0 0 20px;
+}
+.solver-schematic {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fafbfc;
+  border: 1px solid #eceef1;
+  border-radius: 6px;
+}
+.solver-figure figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.solver-figure figcaption span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.solver-key {
+  flex: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+.solver-key[data-key='particle'] {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4686fb;
+}
+.solver-key[data-key='cut-cell'] {
+  background: rgba(228, 70, 10, 0.22);
+  border: 1px solid #9aa3b2;
+}
+.solver-key[data-key='plic'] {
+  height: 3px;
+  border-radius: 0;
+  background: #1d4fc4;
+}
+.solver-key[data-key='cut-face'] {
+  height: 3px;
+  border-radius: 0;
+  background: #2f6fe0;
+}
+.solver-key[data-key='grid'] {
+  background:
+    linear-gradient(#b9bfca, #b9bfca) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(#b9bfca, #b9bfca) 0 50% / 100% 1px no-repeat,
+    rgba(70, 134, 251, 0.1);
+  border: 1px solid #b9bfca;
+}
+.solver-key[data-key='support'] {
+  border-radius: 50%;
+  border: 1.5px dashed #c0645a;
+  background: rgba(192, 100, 90, 0.08);
+}
+.solver-key[data-key='wall-patch'] {
+  height: 4px;
+  border-radius: 2px;
+  background: #c0645a;
+}
+.solver-shared {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: var(--font-ui);
+  line-height: 1.6;
+}
 .maturity-guide {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

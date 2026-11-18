@@ -73,6 +73,7 @@ The GitHub Actions check workflow installs from the lockfile, builds, and runs t
 | `src/content/content.ts`                 | Workflow illustration copy, navigation, platform targets, FAQs, and application records.                                                 |
 | `src/content/capabilities.ts`            | Feature groups, maturity definitions, and homepage capability summaries.                                                                           |
 | `src/components/CapabilitySummary.astro` | Homepage feature panels and links to the full catalogue.                                                                                           |
+| `src/components/SolverSection.astro`     | Solver cards on the Capabilities page; `SolverSchematic.astro` draws each solver's discretisation as inline SVG at build time.                     |
 | `src/components/CapabilityCatalog.astro` | Grouped Capabilities page, maturity legend, and group navigation.                                                                                  |
 | `src/components/DownloadSection.astro`   | Homepage download panels, release preview, and licensing FAQ.                                                                                      |
 | `src/content/inquiry.mjs`                | Shared contact/status decisions, inquiry outline, and safe email-draft URL construction.                                                           |
